@@ -13,6 +13,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "C:/Users/Adar/CLionProjects/Ex1/src/Port.cpp" "C:/Users/Adar/CLionProjects/Ex1/cmake-build-debug/CMakeFiles/Ex1.dir/src/Port.cpp.obj"
   "C:/Users/Adar/CLionProjects/Ex1/src/StowageAlgorithm.cpp" "C:/Users/Adar/CLionProjects/Ex1/cmake-build-debug/CMakeFiles/Ex1.dir/src/StowageAlgorithm.cpp.obj"
   "C:/Users/Adar/CLionProjects/Ex1/src/Utility.cpp" "C:/Users/Adar/CLionProjects/Ex1/cmake-build-debug/CMakeFiles/Ex1.dir/src/Utility.cpp.obj"
+  "C:/Users/Adar/CLionProjects/Ex1/src/main.cpp" "C:/Users/Adar/CLionProjects/Ex1/cmake-build-debug/CMakeFiles/Ex1.dir/src/main.cpp.obj"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

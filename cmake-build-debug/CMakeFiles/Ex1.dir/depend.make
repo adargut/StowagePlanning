@@ -78,3 +78,5 @@ CMakeFiles/Ex1.dir/src/Utility.cpp.obj: ../src/StowageAlgorithm.h
 CMakeFiles/Ex1.dir/src/Utility.cpp.obj: ../src/Utility.cpp
 CMakeFiles/Ex1.dir/src/Utility.cpp.obj: ../src/Utility.h
 
+CMakeFiles/Ex1.dir/src/main.cpp.obj: ../src/main.cpp
+

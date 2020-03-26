@@ -365,6 +365,33 @@ src/Utility.cpp.s:
 	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/Utility.cpp.s
 .PHONY : src/Utility.cpp.s
 
+src/main.obj: src/main.cpp.obj
+
+.PHONY : src/main.obj
+
+# target to build an object file
+src/main.cpp.obj:
+	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/main.cpp.obj
+.PHONY : src/main.cpp.obj
+
+src/main.i: src/main.cpp.i
+
+.PHONY : src/main.i
+
+# target to preprocess a source file
+src/main.cpp.i:
+	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/main.cpp.i
+.PHONY : src/main.cpp.i
+
+src/main.s: src/main.cpp.s
+
+.PHONY : src/main.s
+
+# target to generate assembly for a file
+src/main.cpp.s:
+	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/main.cpp.s
+.PHONY : src/main.cpp.s
+
 # Help Target
 help:
 	@echo The following are some of the valid targets for this Makefile:
@@ -401,6 +428,9 @@ help:
 	@echo ... src/Utility.obj
 	@echo ... src/Utility.i
 	@echo ... src/Utility.s
+	@echo ... src/main.obj
+	@echo ... src/main.i
+	@echo ... src/main.s
 .PHONY : help
 
 

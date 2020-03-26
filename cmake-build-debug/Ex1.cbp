@@ -80,67 +80,61 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/Balancer.cpp">
+		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/src/Balancer.cpp">
 			<Option target="Ex1"/>
 		</Unit>
-		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/Balancer.h">
+		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/src/Balancer.h">
 			<Option target="Ex1"/>
 		</Unit>
-		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/CargoShip.cpp">
+		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/src/CargoShip.cpp">
 			<Option target="Ex1"/>
 		</Unit>
-		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/CargoShip.h">
+		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/src/CargoShip.h">
 			<Option target="Ex1"/>
 		</Unit>
-		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/Container.cpp">
+		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/src/Container.cpp">
 			<Option target="Ex1"/>
 		</Unit>
-		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/Container.h">
+		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/src/Container.h">
 			<Option target="Ex1"/>
 		</Unit>
-		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/Crane.cpp">
+		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/src/Crane.cpp">
 			<Option target="Ex1"/>
 		</Unit>
-		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/Crane.h">
+		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/src/Crane.h">
 			<Option target="Ex1"/>
 		</Unit>
-		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/Floor.cpp">
+		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/src/Floor.cpp">
 			<Option target="Ex1"/>
 		</Unit>
-		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/Floor.h">
+		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/src/Floor.h">
 			<Option target="Ex1"/>
 		</Unit>
-		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/Instruction.cpp">
+		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/src/Instruction.cpp">
 			<Option target="Ex1"/>
 		</Unit>
-		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/Instruction.h">
+		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/src/Instruction.h">
 			<Option target="Ex1"/>
 		</Unit>
-		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/NaiveCargoShip.cpp">
+		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/src/Port.cpp">
 			<Option target="Ex1"/>
 		</Unit>
-		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/NaiveCargoShip.h">
+		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/src/Port.h">
 			<Option target="Ex1"/>
 		</Unit>
-		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/Port.cpp">
+		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/src/StowageAlgorithm.cpp">
 			<Option target="Ex1"/>
 		</Unit>
-		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/Port.h">
+		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/src/StowageAlgorithm.h">
 			<Option target="Ex1"/>
 		</Unit>
-		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/StowageAlgorithm.cpp">
+		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/src/Utility.cpp">
 			<Option target="Ex1"/>
 		</Unit>
-		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/StowageAlgorithm.h">
+		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/src/Utility.h">
 			<Option target="Ex1"/>
 		</Unit>
-		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/Utility.cpp">
-			<Option target="Ex1"/>
-		</Unit>
-		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/Utility.h">
-			<Option target="Ex1"/>
-		</Unit>
-		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/main.cpp">
+		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/src/main.cpp">
 			<Option target="Ex1"/>
 		</Unit>
 		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/CMakeLists.txt">
