@@ -1,12 +1,17 @@
+/**
+    Port.h
+    Purpose: representation of port object
+*/
 #ifndef EX1_PORT_H
 #define EX1_PORT_H
 
 #include <string>
 #include <vector>
 #include "Container.h"
+#include "Utility.h"
+
 
 class Port {
-    typedef typename std::vector <Container> Containers; // TODO maybe use dict instead of vector?
 private:
     std::string code;
     Containers containers;

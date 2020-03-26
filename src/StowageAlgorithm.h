@@ -1,12 +1,12 @@
-//
-// Created by Adar on 26/03/2020.
-//
-
+/**
+    StowageAlgorithm.h
+    Algorithmic logic of stowage
+*/
 #ifndef EX1_STOWAGEALGORITHM_H
 #define EX1_STOWAGEALGORITHM_H
 
 
-class StowageAlgorithm {
+class StowageAlgorithm { // TODO implement me
 
 };
 

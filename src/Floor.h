@@ -1,13 +1,16 @@
+/**
+    Floor.h
+    A floor is represented as a two-dimensional matrix with legal/illegal cells for placement
+*/
 #ifndef EX1_FLOOR_H
 #define EX1_FLOOR_H
 
 #include <vector>
 #include "Container.h"
+#include "Utility.h"
 
 
 class Floor {
-    typedef typename std::vector<std::vector<Container>> Containers;
-    typedef typename std::vector<std::vector<bool>> BoolMatrix;
 private:
     BoolMatrix legal_cells;
     bool legalAddition(int row, int col);

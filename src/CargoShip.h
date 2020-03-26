@@ -1,3 +1,7 @@
+/**
+    CargoShip.h
+    Abstract cargo ship
+*/
 #ifndef EX1_CARGOSHIP_H
 #define EX1_CARGOSHIP_H
 
@@ -10,12 +14,10 @@
 #include "Balancer.h"
 #include "Container.h"
 #include "Instruction.h"
+#include "Utility.h"
+
 
 class Ship {
-    typedef typename std::vector <Floor> Floors;
-    typedef typename std::vector <Container> Containers; // TODO maybe use dict instead of vector?
-    typedef typename std::vector <std::string> Ports;
-    typedef typename std::vector <Instruction> Instructions;
 private:
     int id;
     Floors empty_plan;
@@ -28,6 +30,11 @@ public:
     bool loadContainer(int floor_idx, int row, int col, Container container_to_load);
     bool unloadContainer(int floor_idx, int row, int col);
     const Instructions& getInstructions(const Containers& containers_to_load);
+};
+
+class NaiveCargoShip : CargoShip {
+private:
+public:
 };
 
 #endif //EX1_CARGOSHIP_H
