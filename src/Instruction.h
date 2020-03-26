@@ -10,11 +10,11 @@ class Instruction {
 public:
     enum Operation { Load, Unload, Reject };
 private:
-    Operation op;
-    int container_id;
-    int floor_idx;
-    int row;
-    int col;
+    const Operation op;
+    const int container_id;
+    const int floor_idx;
+    const int row;
+    const int col;
 public:
     Instruction(Operation _op, int _container_id, int _floor_idx, int _row, int _col);
     Operation getOp() const;

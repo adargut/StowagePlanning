@@ -13,14 +13,14 @@
 
 class Balancer {
 public:
-    virtual int checkBalance(const Instructions& instructions) = 0;
+    virtual int checkBalance(const Instructions& instructions, const std::vector<int>& weights) = 0;
 private:
-    Floors& ship_plan;
+    const Plan& ship_plan;
 };
 
-class NaiveBalancer:Balancer {
+class NaiveBalancer: public Balancer {
 public:
-    NaiveBalancer(Floors& _ship_plan);
+    NaiveBalancer(const Plan& _ship_plan);
 };
 
 

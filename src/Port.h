@@ -13,12 +13,12 @@
 
 class Port {
 private:
-    std::string code;
+    const std::string code;
     Containers containers;
 public:
     Port(const std::string& code, const Containers& _containers);
-//    bool loadContainer(const Container& container); TODO is this needed?
-//    Container unloadContainer(const Container& container);
+    bool loadContainer(const Container& container); //TODO is this needed?
+    Container unloadContainer(const Container& container);
 };
 
 

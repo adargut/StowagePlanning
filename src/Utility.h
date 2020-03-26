@@ -6,21 +6,25 @@
 #define EX1_UTILITY_H
 
 #include <vector>
+#include <map>
+#include <unordered_map>
 #include <string>
 #include "Instruction.h"
 #include "Port.h"
-#include "CargoShip.h"
+#include "Ship.h"
 #include "StowageAlgorithm.h"
 
 
 // Typedef declarations
 typedef typename std::vector <Instruction> Instructions;
-typedef typename std::vector <std::string> Ports;
-typedef typename std::vector <Container> Containers; // TODO maybe use dict instead of vector?
-typedef typename std::vector<std::vector<bool>> BoolMatrix;
+typedef typename std::vector <std::string> Route;
+typedef typename std::tuple <int, int, int> Position;
+typedef typename std::map<int, std::pair<Container, Position>> ContainerMap;
+typedef typename std::vector<Container> Containers;
+typedef typename std::vector<std::vector<std::vector<int>>> Plan;
 
 // Utility functions
 bool performInstructions(Ship& ship, Port& port, Instructions& instructions);
-bool performSimulation(Ship& ship, Ports ports, StowageAlgorithm algorithm);
+bool performSimulation(Ship& ship, Route ports, StowageAlgorithm algorithm);
 
 #endif //EX1_UTILITY_H

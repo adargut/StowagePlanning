@@ -2,7 +2,7 @@
     Container.h
     A container inside one of the ship's floors
 */
-ifndef EX1_CONTAINER_H
+#ifndef EX1_CONTAINER_H
 #define EX1_CONTAINER_H
 
 #include <vector>
@@ -12,10 +12,11 @@ ifndef EX1_CONTAINER_H
 
 class Container {
 private:
-    std::string port_code;
-    int id;
-    int weight;
+    const int weight;
+    const std::string port_code;
+    const int id;
 public:
+    Container(int _weight, const std::string& _port_code, int _id);
     int getWeight() const;
     const std::string& getPortCode() const;
     int getId() const;
