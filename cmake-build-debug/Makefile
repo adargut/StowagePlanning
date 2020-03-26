@@ -122,302 +122,248 @@ Ex1/fast:
 	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/build
 .PHONY : Ex1/fast
 
-Balancer.obj: Balancer.cpp.obj
+src/Balancer.obj: src/Balancer.cpp.obj
 
-.PHONY : Balancer.obj
-
-# target to build an object file
-Balancer.cpp.obj:
-	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/Balancer.cpp.obj
-.PHONY : Balancer.cpp.obj
-
-Balancer.i: Balancer.cpp.i
-
-.PHONY : Balancer.i
-
-# target to preprocess a source file
-Balancer.cpp.i:
-	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/Balancer.cpp.i
-.PHONY : Balancer.cpp.i
-
-Balancer.s: Balancer.cpp.s
-
-.PHONY : Balancer.s
-
-# target to generate assembly for a file
-Balancer.cpp.s:
-	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/Balancer.cpp.s
-.PHONY : Balancer.cpp.s
-
-CargoShip.obj: CargoShip.cpp.obj
-
-.PHONY : CargoShip.obj
+.PHONY : src/Balancer.obj
 
 # target to build an object file
-CargoShip.cpp.obj:
-	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/CargoShip.cpp.obj
-.PHONY : CargoShip.cpp.obj
+src/Balancer.cpp.obj:
+	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/Balancer.cpp.obj
+.PHONY : src/Balancer.cpp.obj
 
-CargoShip.i: CargoShip.cpp.i
+src/Balancer.i: src/Balancer.cpp.i
 
-.PHONY : CargoShip.i
+.PHONY : src/Balancer.i
 
 # target to preprocess a source file
-CargoShip.cpp.i:
-	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/CargoShip.cpp.i
-.PHONY : CargoShip.cpp.i
+src/Balancer.cpp.i:
+	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/Balancer.cpp.i
+.PHONY : src/Balancer.cpp.i
 
-CargoShip.s: CargoShip.cpp.s
+src/Balancer.s: src/Balancer.cpp.s
 
-.PHONY : CargoShip.s
+.PHONY : src/Balancer.s
 
 # target to generate assembly for a file
-CargoShip.cpp.s:
-	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/CargoShip.cpp.s
-.PHONY : CargoShip.cpp.s
+src/Balancer.cpp.s:
+	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/Balancer.cpp.s
+.PHONY : src/Balancer.cpp.s
 
-Container.obj: Container.cpp.obj
+src/CargoShip.obj: src/CargoShip.cpp.obj
 
-.PHONY : Container.obj
+.PHONY : src/CargoShip.obj
 
 # target to build an object file
-Container.cpp.obj:
-	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/Container.cpp.obj
-.PHONY : Container.cpp.obj
+src/CargoShip.cpp.obj:
+	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/CargoShip.cpp.obj
+.PHONY : src/CargoShip.cpp.obj
 
-Container.i: Container.cpp.i
+src/CargoShip.i: src/CargoShip.cpp.i
 
-.PHONY : Container.i
+.PHONY : src/CargoShip.i
 
 # target to preprocess a source file
-Container.cpp.i:
-	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/Container.cpp.i
-.PHONY : Container.cpp.i
+src/CargoShip.cpp.i:
+	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/CargoShip.cpp.i
+.PHONY : src/CargoShip.cpp.i
 
-Container.s: Container.cpp.s
+src/CargoShip.s: src/CargoShip.cpp.s
 
-.PHONY : Container.s
+.PHONY : src/CargoShip.s
 
 # target to generate assembly for a file
-Container.cpp.s:
-	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/Container.cpp.s
-.PHONY : Container.cpp.s
+src/CargoShip.cpp.s:
+	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/CargoShip.cpp.s
+.PHONY : src/CargoShip.cpp.s
 
-Crane.obj: Crane.cpp.obj
+src/Container.obj: src/Container.cpp.obj
 
-.PHONY : Crane.obj
+.PHONY : src/Container.obj
 
 # target to build an object file
-Crane.cpp.obj:
-	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/Crane.cpp.obj
-.PHONY : Crane.cpp.obj
+src/Container.cpp.obj:
+	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/Container.cpp.obj
+.PHONY : src/Container.cpp.obj
 
-Crane.i: Crane.cpp.i
+src/Container.i: src/Container.cpp.i
 
-.PHONY : Crane.i
+.PHONY : src/Container.i
 
 # target to preprocess a source file
-Crane.cpp.i:
-	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/Crane.cpp.i
-.PHONY : Crane.cpp.i
+src/Container.cpp.i:
+	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/Container.cpp.i
+.PHONY : src/Container.cpp.i
 
-Crane.s: Crane.cpp.s
+src/Container.s: src/Container.cpp.s
 
-.PHONY : Crane.s
+.PHONY : src/Container.s
 
 # target to generate assembly for a file
-Crane.cpp.s:
-	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/Crane.cpp.s
-.PHONY : Crane.cpp.s
+src/Container.cpp.s:
+	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/Container.cpp.s
+.PHONY : src/Container.cpp.s
 
-Floor.obj: Floor.cpp.obj
+src/Crane.obj: src/Crane.cpp.obj
 
-.PHONY : Floor.obj
+.PHONY : src/Crane.obj
 
 # target to build an object file
-Floor.cpp.obj:
-	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/Floor.cpp.obj
-.PHONY : Floor.cpp.obj
+src/Crane.cpp.obj:
+	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/Crane.cpp.obj
+.PHONY : src/Crane.cpp.obj
 
-Floor.i: Floor.cpp.i
+src/Crane.i: src/Crane.cpp.i
 
-.PHONY : Floor.i
+.PHONY : src/Crane.i
 
 # target to preprocess a source file
-Floor.cpp.i:
-	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/Floor.cpp.i
-.PHONY : Floor.cpp.i
+src/Crane.cpp.i:
+	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/Crane.cpp.i
+.PHONY : src/Crane.cpp.i
 
-Floor.s: Floor.cpp.s
+src/Crane.s: src/Crane.cpp.s
 
-.PHONY : Floor.s
+.PHONY : src/Crane.s
 
 # target to generate assembly for a file
-Floor.cpp.s:
-	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/Floor.cpp.s
-.PHONY : Floor.cpp.s
+src/Crane.cpp.s:
+	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/Crane.cpp.s
+.PHONY : src/Crane.cpp.s
 
-Instruction.obj: Instruction.cpp.obj
+src/Floor.obj: src/Floor.cpp.obj
 
-.PHONY : Instruction.obj
+.PHONY : src/Floor.obj
 
 # target to build an object file
-Instruction.cpp.obj:
-	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/Instruction.cpp.obj
-.PHONY : Instruction.cpp.obj
+src/Floor.cpp.obj:
+	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/Floor.cpp.obj
+.PHONY : src/Floor.cpp.obj
 
-Instruction.i: Instruction.cpp.i
+src/Floor.i: src/Floor.cpp.i
 
-.PHONY : Instruction.i
+.PHONY : src/Floor.i
 
 # target to preprocess a source file
-Instruction.cpp.i:
-	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/Instruction.cpp.i
-.PHONY : Instruction.cpp.i
+src/Floor.cpp.i:
+	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/Floor.cpp.i
+.PHONY : src/Floor.cpp.i
 
-Instruction.s: Instruction.cpp.s
+src/Floor.s: src/Floor.cpp.s
 
-.PHONY : Instruction.s
+.PHONY : src/Floor.s
 
 # target to generate assembly for a file
-Instruction.cpp.s:
-	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/Instruction.cpp.s
-.PHONY : Instruction.cpp.s
+src/Floor.cpp.s:
+	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/Floor.cpp.s
+.PHONY : src/Floor.cpp.s
 
-NaiveCargoShip.obj: NaiveCargoShip.cpp.obj
+src/Instruction.obj: src/Instruction.cpp.obj
 
-.PHONY : NaiveCargoShip.obj
+.PHONY : src/Instruction.obj
 
 # target to build an object file
-NaiveCargoShip.cpp.obj:
-	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/NaiveCargoShip.cpp.obj
-.PHONY : NaiveCargoShip.cpp.obj
+src/Instruction.cpp.obj:
+	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/Instruction.cpp.obj
+.PHONY : src/Instruction.cpp.obj
 
-NaiveCargoShip.i: NaiveCargoShip.cpp.i
+src/Instruction.i: src/Instruction.cpp.i
 
-.PHONY : NaiveCargoShip.i
+.PHONY : src/Instruction.i
 
 # target to preprocess a source file
-NaiveCargoShip.cpp.i:
-	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/NaiveCargoShip.cpp.i
-.PHONY : NaiveCargoShip.cpp.i
+src/Instruction.cpp.i:
+	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/Instruction.cpp.i
+.PHONY : src/Instruction.cpp.i
 
-NaiveCargoShip.s: NaiveCargoShip.cpp.s
+src/Instruction.s: src/Instruction.cpp.s
 
-.PHONY : NaiveCargoShip.s
+.PHONY : src/Instruction.s
 
 # target to generate assembly for a file
-NaiveCargoShip.cpp.s:
-	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/NaiveCargoShip.cpp.s
-.PHONY : NaiveCargoShip.cpp.s
+src/Instruction.cpp.s:
+	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/Instruction.cpp.s
+.PHONY : src/Instruction.cpp.s
 
-Port.obj: Port.cpp.obj
+src/Port.obj: src/Port.cpp.obj
 
-.PHONY : Port.obj
+.PHONY : src/Port.obj
 
 # target to build an object file
-Port.cpp.obj:
-	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/Port.cpp.obj
-.PHONY : Port.cpp.obj
+src/Port.cpp.obj:
+	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/Port.cpp.obj
+.PHONY : src/Port.cpp.obj
 
-Port.i: Port.cpp.i
+src/Port.i: src/Port.cpp.i
 
-.PHONY : Port.i
+.PHONY : src/Port.i
 
 # target to preprocess a source file
-Port.cpp.i:
-	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/Port.cpp.i
-.PHONY : Port.cpp.i
+src/Port.cpp.i:
+	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/Port.cpp.i
+.PHONY : src/Port.cpp.i
 
-Port.s: Port.cpp.s
+src/Port.s: src/Port.cpp.s
 
-.PHONY : Port.s
+.PHONY : src/Port.s
 
 # target to generate assembly for a file
-Port.cpp.s:
-	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/Port.cpp.s
-.PHONY : Port.cpp.s
+src/Port.cpp.s:
+	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/Port.cpp.s
+.PHONY : src/Port.cpp.s
 
-StowageAlgorithm.obj: StowageAlgorithm.cpp.obj
+src/StowageAlgorithm.obj: src/StowageAlgorithm.cpp.obj
 
-.PHONY : StowageAlgorithm.obj
+.PHONY : src/StowageAlgorithm.obj
 
 # target to build an object file
-StowageAlgorithm.cpp.obj:
-	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/StowageAlgorithm.cpp.obj
-.PHONY : StowageAlgorithm.cpp.obj
+src/StowageAlgorithm.cpp.obj:
+	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/StowageAlgorithm.cpp.obj
+.PHONY : src/StowageAlgorithm.cpp.obj
 
-StowageAlgorithm.i: StowageAlgorithm.cpp.i
+src/StowageAlgorithm.i: src/StowageAlgorithm.cpp.i
 
-.PHONY : StowageAlgorithm.i
+.PHONY : src/StowageAlgorithm.i
 
 # target to preprocess a source file
-StowageAlgorithm.cpp.i:
-	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/StowageAlgorithm.cpp.i
-.PHONY : StowageAlgorithm.cpp.i
+src/StowageAlgorithm.cpp.i:
+	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/StowageAlgorithm.cpp.i
+.PHONY : src/StowageAlgorithm.cpp.i
 
-StowageAlgorithm.s: StowageAlgorithm.cpp.s
+src/StowageAlgorithm.s: src/StowageAlgorithm.cpp.s
 
-.PHONY : StowageAlgorithm.s
+.PHONY : src/StowageAlgorithm.s
 
 # target to generate assembly for a file
-StowageAlgorithm.cpp.s:
-	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/StowageAlgorithm.cpp.s
-.PHONY : StowageAlgorithm.cpp.s
+src/StowageAlgorithm.cpp.s:
+	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/StowageAlgorithm.cpp.s
+.PHONY : src/StowageAlgorithm.cpp.s
 
-Utility.obj: Utility.cpp.obj
+src/Utility.obj: src/Utility.cpp.obj
 
-.PHONY : Utility.obj
+.PHONY : src/Utility.obj
 
 # target to build an object file
-Utility.cpp.obj:
-	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/Utility.cpp.obj
-.PHONY : Utility.cpp.obj
+src/Utility.cpp.obj:
+	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/Utility.cpp.obj
+.PHONY : src/Utility.cpp.obj
 
-Utility.i: Utility.cpp.i
+src/Utility.i: src/Utility.cpp.i
 
-.PHONY : Utility.i
-
-# target to preprocess a source file
-Utility.cpp.i:
-	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/Utility.cpp.i
-.PHONY : Utility.cpp.i
-
-Utility.s: Utility.cpp.s
-
-.PHONY : Utility.s
-
-# target to generate assembly for a file
-Utility.cpp.s:
-	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/Utility.cpp.s
-.PHONY : Utility.cpp.s
-
-main.obj: main.cpp.obj
-
-.PHONY : main.obj
-
-# target to build an object file
-main.cpp.obj:
-	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/main.cpp.obj
-.PHONY : main.cpp.obj
-
-main.i: main.cpp.i
-
-.PHONY : main.i
+.PHONY : src/Utility.i
 
 # target to preprocess a source file
-main.cpp.i:
-	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/main.cpp.i
-.PHONY : main.cpp.i
+src/Utility.cpp.i:
+	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/Utility.cpp.i
+.PHONY : src/Utility.cpp.i
 
-main.s: main.cpp.s
+src/Utility.s: src/Utility.cpp.s
 
-.PHONY : main.s
+.PHONY : src/Utility.s
 
 # target to generate assembly for a file
-main.cpp.s:
-	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/main.cpp.s
-.PHONY : main.cpp.s
+src/Utility.cpp.s:
+	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/Utility.cpp.s
+.PHONY : src/Utility.cpp.s
 
 # Help Target
 help:
@@ -428,39 +374,33 @@ help:
 	@echo ... Ex1
 	@echo ... edit_cache
 	@echo ... rebuild_cache
-	@echo ... Balancer.obj
-	@echo ... Balancer.i
-	@echo ... Balancer.s
-	@echo ... CargoShip.obj
-	@echo ... CargoShip.i
-	@echo ... CargoShip.s
-	@echo ... Container.obj
-	@echo ... Container.i
-	@echo ... Container.s
-	@echo ... Crane.obj
-	@echo ... Crane.i
-	@echo ... Crane.s
-	@echo ... Floor.obj
-	@echo ... Floor.i
-	@echo ... Floor.s
-	@echo ... Instruction.obj
-	@echo ... Instruction.i
-	@echo ... Instruction.s
-	@echo ... NaiveCargoShip.obj
-	@echo ... NaiveCargoShip.i
-	@echo ... NaiveCargoShip.s
-	@echo ... Port.obj
-	@echo ... Port.i
-	@echo ... Port.s
-	@echo ... StowageAlgorithm.obj
-	@echo ... StowageAlgorithm.i
-	@echo ... StowageAlgorithm.s
-	@echo ... Utility.obj
-	@echo ... Utility.i
-	@echo ... Utility.s
-	@echo ... main.obj
-	@echo ... main.i
-	@echo ... main.s
+	@echo ... src/Balancer.obj
+	@echo ... src/Balancer.i
+	@echo ... src/Balancer.s
+	@echo ... src/CargoShip.obj
+	@echo ... src/CargoShip.i
+	@echo ... src/CargoShip.s
+	@echo ... src/Container.obj
+	@echo ... src/Container.i
+	@echo ... src/Container.s
+	@echo ... src/Crane.obj
+	@echo ... src/Crane.i
+	@echo ... src/Crane.s
+	@echo ... src/Floor.obj
+	@echo ... src/Floor.i
+	@echo ... src/Floor.s
+	@echo ... src/Instruction.obj
+	@echo ... src/Instruction.i
+	@echo ... src/Instruction.s
+	@echo ... src/Port.obj
+	@echo ... src/Port.i
+	@echo ... src/Port.s
+	@echo ... src/StowageAlgorithm.obj
+	@echo ... src/StowageAlgorithm.i
+	@echo ... src/StowageAlgorithm.s
+	@echo ... src/Utility.obj
+	@echo ... src/Utility.i
+	@echo ... src/Utility.s
 .PHONY : help
 
 
