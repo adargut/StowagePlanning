@@ -5,6 +5,7 @@
 #ifndef EX1_STOWAGEALGORITHM_H
 #define EX1_STOWAGEALGORITHM_H
 
+#include "Utility.h"
 
 class StowageAlgorithm { // TODO implement me
     const Plan& plan;
@@ -14,9 +15,8 @@ class StowageAlgorithm { // TODO implement me
     int current_port_idx;
 public:
     StowageAlgorithm(const Plan& _plan, const Route& _route, const Balancer& _balancer);
-    const Plan& getShipPlan() const;
     const Instructions& getInstructionsForCargo(const Containers& containers_to_load) const;
+    const Plan& getShipPlan() const;
 };
-
 
 #endif //EX1_STOWAGEALGORITHM_H
