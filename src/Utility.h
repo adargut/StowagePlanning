@@ -19,7 +19,7 @@ typedef typename std::map<int, std::pair<Container, Position>> ContainerMap;
 typedef typename std::vector<std::vector<std::vector<int>>> Plan;
 typedef typename std::vector <Instruction> Instructions;
 typedef typename std::tuple <int, int, int> Position;
-typedef typename std::vector<Container> Containers;
+typedef typename std::vector <Container> Containers;
 typedef typename std::vector <std::string> Route;
 
 // Utility functions

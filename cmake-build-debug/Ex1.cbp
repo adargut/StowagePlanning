@@ -86,28 +86,10 @@
 		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/src/Balancer.h">
 			<Option target="Ex1"/>
 		</Unit>
-		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/src/CargoShip.cpp">
-			<Option target="Ex1"/>
-		</Unit>
-		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/src/CargoShip.h">
-			<Option target="Ex1"/>
-		</Unit>
 		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/src/Container.cpp">
 			<Option target="Ex1"/>
 		</Unit>
 		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/src/Container.h">
-			<Option target="Ex1"/>
-		</Unit>
-		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/src/Crane.cpp">
-			<Option target="Ex1"/>
-		</Unit>
-		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/src/Crane.h">
-			<Option target="Ex1"/>
-		</Unit>
-		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/src/Floor.cpp">
-			<Option target="Ex1"/>
-		</Unit>
-		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/src/Floor.h">
 			<Option target="Ex1"/>
 		</Unit>
 		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/src/Instruction.cpp">
@@ -120,6 +102,12 @@
 			<Option target="Ex1"/>
 		</Unit>
 		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/src/Port.h">
+			<Option target="Ex1"/>
+		</Unit>
+		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/src/Ship.cpp">
+			<Option target="Ex1"/>
+		</Unit>
+		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/src/Ship.h">
 			<Option target="Ex1"/>
 		</Unit>
 		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/src/StowageAlgorithm.cpp">

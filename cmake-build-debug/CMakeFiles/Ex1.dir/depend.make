@@ -3,77 +3,63 @@
 
 CMakeFiles/Ex1.dir/src/Balancer.cpp.obj: ../src/Balancer.cpp
 CMakeFiles/Ex1.dir/src/Balancer.cpp.obj: ../src/Balancer.h
-CMakeFiles/Ex1.dir/src/Balancer.cpp.obj: ../src/CargoShip.h
 CMakeFiles/Ex1.dir/src/Balancer.cpp.obj: ../src/Container.h
-CMakeFiles/Ex1.dir/src/Balancer.cpp.obj: ../src/Floor.h
 CMakeFiles/Ex1.dir/src/Balancer.cpp.obj: ../src/Instruction.h
 CMakeFiles/Ex1.dir/src/Balancer.cpp.obj: ../src/Port.h
+CMakeFiles/Ex1.dir/src/Balancer.cpp.obj: ../src/Ship.h
 CMakeFiles/Ex1.dir/src/Balancer.cpp.obj: ../src/StowageAlgorithm.h
 CMakeFiles/Ex1.dir/src/Balancer.cpp.obj: ../src/Utility.h
 
-CMakeFiles/Ex1.dir/src/CargoShip.cpp.obj: ../src/Balancer.h
-CMakeFiles/Ex1.dir/src/CargoShip.cpp.obj: ../src/CargoShip.cpp
-CMakeFiles/Ex1.dir/src/CargoShip.cpp.obj: ../src/CargoShip.h
-CMakeFiles/Ex1.dir/src/CargoShip.cpp.obj: ../src/Container.h
-CMakeFiles/Ex1.dir/src/CargoShip.cpp.obj: ../src/Floor.h
-CMakeFiles/Ex1.dir/src/CargoShip.cpp.obj: ../src/Instruction.h
-CMakeFiles/Ex1.dir/src/CargoShip.cpp.obj: ../src/Port.h
-CMakeFiles/Ex1.dir/src/CargoShip.cpp.obj: ../src/StowageAlgorithm.h
-CMakeFiles/Ex1.dir/src/CargoShip.cpp.obj: ../src/Utility.h
-
 CMakeFiles/Ex1.dir/src/Container.cpp.obj: ../src/Balancer.h
-CMakeFiles/Ex1.dir/src/Container.cpp.obj: ../src/CargoShip.h
 CMakeFiles/Ex1.dir/src/Container.cpp.obj: ../src/Container.cpp
 CMakeFiles/Ex1.dir/src/Container.cpp.obj: ../src/Container.h
-CMakeFiles/Ex1.dir/src/Container.cpp.obj: ../src/Floor.h
 CMakeFiles/Ex1.dir/src/Container.cpp.obj: ../src/Instruction.h
 CMakeFiles/Ex1.dir/src/Container.cpp.obj: ../src/Port.h
+CMakeFiles/Ex1.dir/src/Container.cpp.obj: ../src/Ship.h
 CMakeFiles/Ex1.dir/src/Container.cpp.obj: ../src/StowageAlgorithm.h
 CMakeFiles/Ex1.dir/src/Container.cpp.obj: ../src/Utility.h
 
-CMakeFiles/Ex1.dir/src/Crane.cpp.obj: ../src/Balancer.h
-CMakeFiles/Ex1.dir/src/Crane.cpp.obj: ../src/CargoShip.h
-CMakeFiles/Ex1.dir/src/Crane.cpp.obj: ../src/Container.h
-CMakeFiles/Ex1.dir/src/Crane.cpp.obj: ../src/Crane.cpp
-CMakeFiles/Ex1.dir/src/Crane.cpp.obj: ../src/Crane.h
-CMakeFiles/Ex1.dir/src/Crane.cpp.obj: ../src/Floor.h
-CMakeFiles/Ex1.dir/src/Crane.cpp.obj: ../src/Instruction.h
-CMakeFiles/Ex1.dir/src/Crane.cpp.obj: ../src/Port.h
-CMakeFiles/Ex1.dir/src/Crane.cpp.obj: ../src/StowageAlgorithm.h
-CMakeFiles/Ex1.dir/src/Crane.cpp.obj: ../src/Utility.h
-
-CMakeFiles/Ex1.dir/src/Floor.cpp.obj: ../src/Balancer.h
-CMakeFiles/Ex1.dir/src/Floor.cpp.obj: ../src/CargoShip.h
-CMakeFiles/Ex1.dir/src/Floor.cpp.obj: ../src/Container.h
-CMakeFiles/Ex1.dir/src/Floor.cpp.obj: ../src/Floor.cpp
-CMakeFiles/Ex1.dir/src/Floor.cpp.obj: ../src/Floor.h
-CMakeFiles/Ex1.dir/src/Floor.cpp.obj: ../src/Instruction.h
-CMakeFiles/Ex1.dir/src/Floor.cpp.obj: ../src/Port.h
-CMakeFiles/Ex1.dir/src/Floor.cpp.obj: ../src/StowageAlgorithm.h
-CMakeFiles/Ex1.dir/src/Floor.cpp.obj: ../src/Utility.h
-
+CMakeFiles/Ex1.dir/src/Instruction.cpp.obj: ../src/Balancer.h
+CMakeFiles/Ex1.dir/src/Instruction.cpp.obj: ../src/Container.h
 CMakeFiles/Ex1.dir/src/Instruction.cpp.obj: ../src/Instruction.cpp
 CMakeFiles/Ex1.dir/src/Instruction.cpp.obj: ../src/Instruction.h
+CMakeFiles/Ex1.dir/src/Instruction.cpp.obj: ../src/Port.h
+CMakeFiles/Ex1.dir/src/Instruction.cpp.obj: ../src/Ship.h
+CMakeFiles/Ex1.dir/src/Instruction.cpp.obj: ../src/StowageAlgorithm.h
+CMakeFiles/Ex1.dir/src/Instruction.cpp.obj: ../src/Utility.h
 
 CMakeFiles/Ex1.dir/src/Port.cpp.obj: ../src/Balancer.h
-CMakeFiles/Ex1.dir/src/Port.cpp.obj: ../src/CargoShip.h
 CMakeFiles/Ex1.dir/src/Port.cpp.obj: ../src/Container.h
-CMakeFiles/Ex1.dir/src/Port.cpp.obj: ../src/Floor.h
 CMakeFiles/Ex1.dir/src/Port.cpp.obj: ../src/Instruction.h
 CMakeFiles/Ex1.dir/src/Port.cpp.obj: ../src/Port.cpp
 CMakeFiles/Ex1.dir/src/Port.cpp.obj: ../src/Port.h
+CMakeFiles/Ex1.dir/src/Port.cpp.obj: ../src/Ship.h
 CMakeFiles/Ex1.dir/src/Port.cpp.obj: ../src/StowageAlgorithm.h
 CMakeFiles/Ex1.dir/src/Port.cpp.obj: ../src/Utility.h
 
+CMakeFiles/Ex1.dir/src/Ship.cpp.obj: ../src/Balancer.h
+CMakeFiles/Ex1.dir/src/Ship.cpp.obj: ../src/Container.h
+CMakeFiles/Ex1.dir/src/Ship.cpp.obj: ../src/Instruction.h
+CMakeFiles/Ex1.dir/src/Ship.cpp.obj: ../src/Port.h
+CMakeFiles/Ex1.dir/src/Ship.cpp.obj: ../src/Ship.cpp
+CMakeFiles/Ex1.dir/src/Ship.cpp.obj: ../src/Ship.h
+CMakeFiles/Ex1.dir/src/Ship.cpp.obj: ../src/StowageAlgorithm.h
+CMakeFiles/Ex1.dir/src/Ship.cpp.obj: ../src/Utility.h
+
+CMakeFiles/Ex1.dir/src/StowageAlgorithm.cpp.obj: ../src/Balancer.h
+CMakeFiles/Ex1.dir/src/StowageAlgorithm.cpp.obj: ../src/Container.h
+CMakeFiles/Ex1.dir/src/StowageAlgorithm.cpp.obj: ../src/Instruction.h
+CMakeFiles/Ex1.dir/src/StowageAlgorithm.cpp.obj: ../src/Port.h
+CMakeFiles/Ex1.dir/src/StowageAlgorithm.cpp.obj: ../src/Ship.h
 CMakeFiles/Ex1.dir/src/StowageAlgorithm.cpp.obj: ../src/StowageAlgorithm.cpp
 CMakeFiles/Ex1.dir/src/StowageAlgorithm.cpp.obj: ../src/StowageAlgorithm.h
+CMakeFiles/Ex1.dir/src/StowageAlgorithm.cpp.obj: ../src/Utility.h
 
 CMakeFiles/Ex1.dir/src/Utility.cpp.obj: ../src/Balancer.h
-CMakeFiles/Ex1.dir/src/Utility.cpp.obj: ../src/CargoShip.h
 CMakeFiles/Ex1.dir/src/Utility.cpp.obj: ../src/Container.h
-CMakeFiles/Ex1.dir/src/Utility.cpp.obj: ../src/Floor.h
 CMakeFiles/Ex1.dir/src/Utility.cpp.obj: ../src/Instruction.h
 CMakeFiles/Ex1.dir/src/Utility.cpp.obj: ../src/Port.h
+CMakeFiles/Ex1.dir/src/Utility.cpp.obj: ../src/Ship.h
 CMakeFiles/Ex1.dir/src/Utility.cpp.obj: ../src/StowageAlgorithm.h
 CMakeFiles/Ex1.dir/src/Utility.cpp.obj: ../src/Utility.cpp
 CMakeFiles/Ex1.dir/src/Utility.cpp.obj: ../src/Utility.h

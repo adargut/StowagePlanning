@@ -149,33 +149,6 @@ src/Balancer.cpp.s:
 	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/Balancer.cpp.s
 .PHONY : src/Balancer.cpp.s
 
-src/CargoShip.obj: src/CargoShip.cpp.obj
-
-.PHONY : src/CargoShip.obj
-
-# target to build an object file
-src/CargoShip.cpp.obj:
-	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/CargoShip.cpp.obj
-.PHONY : src/CargoShip.cpp.obj
-
-src/CargoShip.i: src/CargoShip.cpp.i
-
-.PHONY : src/CargoShip.i
-
-# target to preprocess a source file
-src/CargoShip.cpp.i:
-	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/CargoShip.cpp.i
-.PHONY : src/CargoShip.cpp.i
-
-src/CargoShip.s: src/CargoShip.cpp.s
-
-.PHONY : src/CargoShip.s
-
-# target to generate assembly for a file
-src/CargoShip.cpp.s:
-	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/CargoShip.cpp.s
-.PHONY : src/CargoShip.cpp.s
-
 src/Container.obj: src/Container.cpp.obj
 
 .PHONY : src/Container.obj
@@ -202,60 +175,6 @@ src/Container.s: src/Container.cpp.s
 src/Container.cpp.s:
 	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/Container.cpp.s
 .PHONY : src/Container.cpp.s
-
-src/Crane.obj: src/Crane.cpp.obj
-
-.PHONY : src/Crane.obj
-
-# target to build an object file
-src/Crane.cpp.obj:
-	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/Crane.cpp.obj
-.PHONY : src/Crane.cpp.obj
-
-src/Crane.i: src/Crane.cpp.i
-
-.PHONY : src/Crane.i
-
-# target to preprocess a source file
-src/Crane.cpp.i:
-	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/Crane.cpp.i
-.PHONY : src/Crane.cpp.i
-
-src/Crane.s: src/Crane.cpp.s
-
-.PHONY : src/Crane.s
-
-# target to generate assembly for a file
-src/Crane.cpp.s:
-	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/Crane.cpp.s
-.PHONY : src/Crane.cpp.s
-
-src/Floor.obj: src/Floor.cpp.obj
-
-.PHONY : src/Floor.obj
-
-# target to build an object file
-src/Floor.cpp.obj:
-	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/Floor.cpp.obj
-.PHONY : src/Floor.cpp.obj
-
-src/Floor.i: src/Floor.cpp.i
-
-.PHONY : src/Floor.i
-
-# target to preprocess a source file
-src/Floor.cpp.i:
-	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/Floor.cpp.i
-.PHONY : src/Floor.cpp.i
-
-src/Floor.s: src/Floor.cpp.s
-
-.PHONY : src/Floor.s
-
-# target to generate assembly for a file
-src/Floor.cpp.s:
-	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/Floor.cpp.s
-.PHONY : src/Floor.cpp.s
 
 src/Instruction.obj: src/Instruction.cpp.obj
 
@@ -310,6 +229,33 @@ src/Port.s: src/Port.cpp.s
 src/Port.cpp.s:
 	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/Port.cpp.s
 .PHONY : src/Port.cpp.s
+
+src/Ship.obj: src/Ship.cpp.obj
+
+.PHONY : src/Ship.obj
+
+# target to build an object file
+src/Ship.cpp.obj:
+	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/Ship.cpp.obj
+.PHONY : src/Ship.cpp.obj
+
+src/Ship.i: src/Ship.cpp.i
+
+.PHONY : src/Ship.i
+
+# target to preprocess a source file
+src/Ship.cpp.i:
+	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/Ship.cpp.i
+.PHONY : src/Ship.cpp.i
+
+src/Ship.s: src/Ship.cpp.s
+
+.PHONY : src/Ship.s
+
+# target to generate assembly for a file
+src/Ship.cpp.s:
+	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/Ship.cpp.s
+.PHONY : src/Ship.cpp.s
 
 src/StowageAlgorithm.obj: src/StowageAlgorithm.cpp.obj
 
@@ -404,24 +350,18 @@ help:
 	@echo ... src/Balancer.obj
 	@echo ... src/Balancer.i
 	@echo ... src/Balancer.s
-	@echo ... src/CargoShip.obj
-	@echo ... src/CargoShip.i
-	@echo ... src/CargoShip.s
 	@echo ... src/Container.obj
 	@echo ... src/Container.i
 	@echo ... src/Container.s
-	@echo ... src/Crane.obj
-	@echo ... src/Crane.i
-	@echo ... src/Crane.s
-	@echo ... src/Floor.obj
-	@echo ... src/Floor.i
-	@echo ... src/Floor.s
 	@echo ... src/Instruction.obj
 	@echo ... src/Instruction.i
 	@echo ... src/Instruction.s
 	@echo ... src/Port.obj
 	@echo ... src/Port.i
 	@echo ... src/Port.s
+	@echo ... src/Ship.obj
+	@echo ... src/Ship.i
+	@echo ... src/Ship.s
 	@echo ... src/StowageAlgorithm.obj
 	@echo ... src/StowageAlgorithm.i
 	@echo ... src/StowageAlgorithm.s
