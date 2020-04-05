@@ -10,7 +10,7 @@
 #include <string>
 #include <vector>
 #include "Port.h"
-#include "Balancer.h"
+#include "WeightBalanceCalculator.h"
 #include "Container.h"
 #include "Instruction.h"
 #include "Utility.h"
@@ -18,17 +18,22 @@
 class Ship {
 private:
     const int id;
-    const Route route;
-    const Balancer* balancer; // TODO make concrete balancer
+    Route route;
+    WeightBalanceCalculator* calculator; // TODO make concrete balancer
     Plan plan;
     ContainerMap containers;
     int current_port_idx;
 public:
-    Ship (int _id, const Plan& _plan, const Route& _route, Balancer* _balancer);
+    Ship (int _id);
+    bool readShipPlan(const std::string& path);
+    bool readShipRoute(const std::string& path);
+    void setWeightBalanceCalculator(WeightBalanceCalculator* _calculator);
     const Plan& getPlan() const;
-    int getId() const;
-    bool loadContainer(int floor_idx, int row, int col, Container container_to_load);
-    bool unloadContainer(int floor_idx, int row, int col);
+    const Route& getRoute() const;
+    //int getId() const;
+    bool loadContainer(int floor, int row, int col, const Container * const container_to_load);
+    const Container* const unloadContainer(int floor, int row, int col);
+    ~Ship(); // TODO: free calculator
 };
 
 #endif //EX1_SHIP_H

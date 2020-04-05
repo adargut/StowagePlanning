@@ -17,7 +17,7 @@ private:
 public:
     Port(const std::string& code, const Containers& _containers);
     Container unloadContainer(const Container& container);
-    bool loadContainer(const Container& container); //TODO is this needed?
+    bool loadContainer(const Container& container);
 };
 
 #endif //EX1_PORT_H

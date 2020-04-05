@@ -5,21 +5,33 @@
 #ifndef EX1_UTILITY_H
 #define EX1_UTILITY_H
 
+class Container;
+class Instruction;
+class Ship;
+class Port;
+class StowageAlgorithm;
+
 #include <vector>
 #include <map>
+
+
 #include <unordered_map>
 #include <string>
-#include "Instruction.h"
-#include "Port.h"
-#include "Ship.h"
-#include "StowageAlgorithm.h"
+//#include "Instruction.h"
+//#include "Port.h"
+//#include "Ship.h"
+//#include "StowageAlgorithm.h"
+//#include "Container.h"
 
 // Typedef declarations
-typedef typename std::map<int, std::pair<Container, Position>> ContainerMap;
+
+
+typedef typename std::ifstream ifstream;
 typedef typename std::vector<std::vector<std::vector<int>>> Plan;
 typedef typename std::vector <Instruction> Instructions;
 typedef typename std::tuple <int, int, int> Position;
-typedef typename std::vector <Container> Containers;
+typedef typename std::map<int, std::pair<const Container * const, Position>> ContainerMap;
+typedef typename std::vector <const Container * > Containers;
 typedef typename std::vector <std::string> Route;
 
 // Utility functions
