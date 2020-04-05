@@ -14,14 +14,16 @@ class WeightBalanceCalculator {
 protected:
     const Plan& ship_plan;
 public:
-    WeightBalanceCalculator(const Plan& ship_plan);
+    explicit WeightBalanceCalculator(const Plan& ship_plan);
     virtual int checkBalance(const Instructions& instructions, const std::vector<int>& weights) = 0;
+    virtual ~WeightBalanceCalculator() = 0;
 };
 
 class NaiveWeightBalanceCalculator: public WeightBalanceCalculator {
 public:
-    NaiveWeightBalanceCalculator(const Plan &ship_plan);
+    explicit NaiveWeightBalanceCalculator(const Plan &ship_plan);
     int checkBalance(const Instructions &instructions, const std::vector<int> &weights) override;
+    ~NaiveWeightBalanceCalculator();
 };
 
 #endif //EX1_WEIGHTBALANCECALCULATOR_H

@@ -122,33 +122,6 @@ Ex1/fast:
 	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/build
 .PHONY : Ex1/fast
 
-src/Balancer.obj: src/Balancer.cpp.obj
-
-.PHONY : src/Balancer.obj
-
-# target to build an object file
-src/Balancer.cpp.obj:
-	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/Balancer.cpp.obj
-.PHONY : src/Balancer.cpp.obj
-
-src/Balancer.i: src/Balancer.cpp.i
-
-.PHONY : src/Balancer.i
-
-# target to preprocess a source file
-src/Balancer.cpp.i:
-	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/Balancer.cpp.i
-.PHONY : src/Balancer.cpp.i
-
-src/Balancer.s: src/Balancer.cpp.s
-
-.PHONY : src/Balancer.s
-
-# target to generate assembly for a file
-src/Balancer.cpp.s:
-	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/Balancer.cpp.s
-.PHONY : src/Balancer.cpp.s
-
 src/Container.obj: src/Container.cpp.obj
 
 .PHONY : src/Container.obj
@@ -311,6 +284,33 @@ src/Utility.cpp.s:
 	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/Utility.cpp.s
 .PHONY : src/Utility.cpp.s
 
+src/WeightBalanceCalculator.obj: src/WeightBalanceCalculator.cpp.obj
+
+.PHONY : src/WeightBalanceCalculator.obj
+
+# target to build an object file
+src/WeightBalanceCalculator.cpp.obj:
+	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/WeightBalanceCalculator.cpp.obj
+.PHONY : src/WeightBalanceCalculator.cpp.obj
+
+src/WeightBalanceCalculator.i: src/WeightBalanceCalculator.cpp.i
+
+.PHONY : src/WeightBalanceCalculator.i
+
+# target to preprocess a source file
+src/WeightBalanceCalculator.cpp.i:
+	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/WeightBalanceCalculator.cpp.i
+.PHONY : src/WeightBalanceCalculator.cpp.i
+
+src/WeightBalanceCalculator.s: src/WeightBalanceCalculator.cpp.s
+
+.PHONY : src/WeightBalanceCalculator.s
+
+# target to generate assembly for a file
+src/WeightBalanceCalculator.cpp.s:
+	$(MAKE) -f CMakeFiles\Ex1.dir\build.make CMakeFiles/Ex1.dir/src/WeightBalanceCalculator.cpp.s
+.PHONY : src/WeightBalanceCalculator.cpp.s
+
 src/main.obj: src/main.cpp.obj
 
 .PHONY : src/main.obj
@@ -347,9 +347,6 @@ help:
 	@echo ... Ex1
 	@echo ... edit_cache
 	@echo ... rebuild_cache
-	@echo ... src/Balancer.obj
-	@echo ... src/Balancer.i
-	@echo ... src/Balancer.s
 	@echo ... src/Container.obj
 	@echo ... src/Container.i
 	@echo ... src/Container.s
@@ -368,6 +365,9 @@ help:
 	@echo ... src/Utility.obj
 	@echo ... src/Utility.i
 	@echo ... src/Utility.s
+	@echo ... src/WeightBalanceCalculator.obj
+	@echo ... src/WeightBalanceCalculator.i
+	@echo ... src/WeightBalanceCalculator.s
 	@echo ... src/main.obj
 	@echo ... src/main.i
 	@echo ... src/main.s

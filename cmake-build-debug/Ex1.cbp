@@ -80,12 +80,6 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/src/Balancer.cpp">
-			<Option target="Ex1"/>
-		</Unit>
-		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/src/Balancer.h">
-			<Option target="Ex1"/>
-		</Unit>
 		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/src/Container.cpp">
 			<Option target="Ex1"/>
 		</Unit>
@@ -120,6 +114,12 @@
 			<Option target="Ex1"/>
 		</Unit>
 		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/src/Utility.h">
+			<Option target="Ex1"/>
+		</Unit>
+		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/src/WeightBalanceCalculator.cpp">
+			<Option target="Ex1"/>
+		</Unit>
+		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/src/WeightBalanceCalculator.h">
 			<Option target="Ex1"/>
 		</Unit>
 		<Unit filename="C:/Users/Adar/CLionProjects/Ex1/src/main.cpp">

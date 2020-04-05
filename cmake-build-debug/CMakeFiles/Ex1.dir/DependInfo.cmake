@@ -4,13 +4,13 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "C:/Users/Adar/CLionProjects/Ex1/src/Balancer.cpp" "C:/Users/Adar/CLionProjects/Ex1/cmake-build-debug/CMakeFiles/Ex1.dir/src/Balancer.cpp.obj"
   "C:/Users/Adar/CLionProjects/Ex1/src/Container.cpp" "C:/Users/Adar/CLionProjects/Ex1/cmake-build-debug/CMakeFiles/Ex1.dir/src/Container.cpp.obj"
   "C:/Users/Adar/CLionProjects/Ex1/src/Instruction.cpp" "C:/Users/Adar/CLionProjects/Ex1/cmake-build-debug/CMakeFiles/Ex1.dir/src/Instruction.cpp.obj"
   "C:/Users/Adar/CLionProjects/Ex1/src/Port.cpp" "C:/Users/Adar/CLionProjects/Ex1/cmake-build-debug/CMakeFiles/Ex1.dir/src/Port.cpp.obj"
   "C:/Users/Adar/CLionProjects/Ex1/src/Ship.cpp" "C:/Users/Adar/CLionProjects/Ex1/cmake-build-debug/CMakeFiles/Ex1.dir/src/Ship.cpp.obj"
   "C:/Users/Adar/CLionProjects/Ex1/src/StowageAlgorithm.cpp" "C:/Users/Adar/CLionProjects/Ex1/cmake-build-debug/CMakeFiles/Ex1.dir/src/StowageAlgorithm.cpp.obj"
   "C:/Users/Adar/CLionProjects/Ex1/src/Utility.cpp" "C:/Users/Adar/CLionProjects/Ex1/cmake-build-debug/CMakeFiles/Ex1.dir/src/Utility.cpp.obj"
+  "C:/Users/Adar/CLionProjects/Ex1/src/WeightBalanceCalculator.cpp" "C:/Users/Adar/CLionProjects/Ex1/cmake-build-debug/CMakeFiles/Ex1.dir/src/WeightBalanceCalculator.cpp.obj"
   "C:/Users/Adar/CLionProjects/Ex1/src/main.cpp" "C:/Users/Adar/CLionProjects/Ex1/cmake-build-debug/CMakeFiles/Ex1.dir/src/main.cpp.obj"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")

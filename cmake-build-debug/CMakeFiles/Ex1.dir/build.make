@@ -108,18 +108,18 @@ CMakeFiles/Ex1.dir/src/Container.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Ex1.dir/src/Container.cpp.s"
 	C:\mingw\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\Adar\CLionProjects\Ex1\src\Container.cpp -o CMakeFiles\Ex1.dir\src\Container.cpp.s
 
-CMakeFiles/Ex1.dir/src/Balancer.cpp.obj: CMakeFiles/Ex1.dir/flags.make
-CMakeFiles/Ex1.dir/src/Balancer.cpp.obj: ../src/Balancer.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Adar\CLionProjects\Ex1\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/Ex1.dir/src/Balancer.cpp.obj"
-	C:\mingw\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\Ex1.dir\src\Balancer.cpp.obj -c C:\Users\Adar\CLionProjects\Ex1\src\Balancer.cpp
+CMakeFiles/Ex1.dir/src/WeightBalanceCalculator.cpp.obj: CMakeFiles/Ex1.dir/flags.make
+CMakeFiles/Ex1.dir/src/WeightBalanceCalculator.cpp.obj: ../src/WeightBalanceCalculator.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Adar\CLionProjects\Ex1\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/Ex1.dir/src/WeightBalanceCalculator.cpp.obj"
+	C:\mingw\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\Ex1.dir\src\WeightBalanceCalculator.cpp.obj -c C:\Users\Adar\CLionProjects\Ex1\src\WeightBalanceCalculator.cpp
 
-CMakeFiles/Ex1.dir/src/Balancer.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Ex1.dir/src/Balancer.cpp.i"
-	C:\mingw\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Adar\CLionProjects\Ex1\src\Balancer.cpp > CMakeFiles\Ex1.dir\src\Balancer.cpp.i
+CMakeFiles/Ex1.dir/src/WeightBalanceCalculator.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Ex1.dir/src/WeightBalanceCalculator.cpp.i"
+	C:\mingw\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Adar\CLionProjects\Ex1\src\WeightBalanceCalculator.cpp > CMakeFiles\Ex1.dir\src\WeightBalanceCalculator.cpp.i
 
-CMakeFiles/Ex1.dir/src/Balancer.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Ex1.dir/src/Balancer.cpp.s"
-	C:\mingw\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\Adar\CLionProjects\Ex1\src\Balancer.cpp -o CMakeFiles\Ex1.dir\src\Balancer.cpp.s
+CMakeFiles/Ex1.dir/src/WeightBalanceCalculator.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Ex1.dir/src/WeightBalanceCalculator.cpp.s"
+	C:\mingw\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\Adar\CLionProjects\Ex1\src\WeightBalanceCalculator.cpp -o CMakeFiles\Ex1.dir\src\WeightBalanceCalculator.cpp.s
 
 CMakeFiles/Ex1.dir/src/Instruction.cpp.obj: CMakeFiles/Ex1.dir/flags.make
 CMakeFiles/Ex1.dir/src/Instruction.cpp.obj: ../src/Instruction.cpp
@@ -166,7 +166,7 @@ Ex1_OBJECTS = \
 "CMakeFiles/Ex1.dir/src/Ship.cpp.obj" \
 "CMakeFiles/Ex1.dir/src/Port.cpp.obj" \
 "CMakeFiles/Ex1.dir/src/Container.cpp.obj" \
-"CMakeFiles/Ex1.dir/src/Balancer.cpp.obj" \
+"CMakeFiles/Ex1.dir/src/WeightBalanceCalculator.cpp.obj" \
 "CMakeFiles/Ex1.dir/src/Instruction.cpp.obj" \
 "CMakeFiles/Ex1.dir/src/Utility.cpp.obj" \
 "CMakeFiles/Ex1.dir/src/StowageAlgorithm.cpp.obj"
@@ -178,7 +178,7 @@ Ex1.exe: CMakeFiles/Ex1.dir/src/main.cpp.obj
 Ex1.exe: CMakeFiles/Ex1.dir/src/Ship.cpp.obj
 Ex1.exe: CMakeFiles/Ex1.dir/src/Port.cpp.obj
 Ex1.exe: CMakeFiles/Ex1.dir/src/Container.cpp.obj
-Ex1.exe: CMakeFiles/Ex1.dir/src/Balancer.cpp.obj
+Ex1.exe: CMakeFiles/Ex1.dir/src/WeightBalanceCalculator.cpp.obj
 Ex1.exe: CMakeFiles/Ex1.dir/src/Instruction.cpp.obj
 Ex1.exe: CMakeFiles/Ex1.dir/src/Utility.cpp.obj
 Ex1.exe: CMakeFiles/Ex1.dir/src/StowageAlgorithm.cpp.obj
