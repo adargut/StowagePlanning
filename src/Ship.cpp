@@ -22,7 +22,7 @@ bool Ship::readShipPlan(const std::string &path) //TODO: check input is valid
         }
         ss >> x >> y >> z;
         for (size_t i = 0; i < z; i++) {
-            plan[z][x][y] = -1;
+            updatePlan(z, x, y, -1);
         }
     }
     in.close();
@@ -57,7 +57,7 @@ const Route &Ship::getRoute() const {
 bool Ship::loadContainer(int floor, int row, int col, const Container *const container_to_load) {
     if (plan[floor][row][col] != 0 || containers.count(id)) return false; // Position is occupied or container in ship
     int id = container_to_load->getId();
-    updateContainerMap(floor, row, col, id, container_to_load);
+    updateContainerMap(floor, row, col, container_to_load->getId(), container_to_load);
     updatePlan(floor, row, col, id);
     return true;
 }
