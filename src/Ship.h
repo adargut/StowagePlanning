@@ -23,7 +23,7 @@ private:
     ContainerMap containers;
     WeightBalanceCalculator* calculator; // TODO make concrete balancer
     int current_port_idx;
-    void updatePlan(int floor, int row, int col, int id);
+    void updatePlan(int floor, int row, int col, int val);
     void updateContainerMap(int floor, int row, int col, int id,  const Container *const container);
     void updateContainerMap(int floor, int row, int col);
 public:
