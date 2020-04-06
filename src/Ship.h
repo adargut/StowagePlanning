@@ -19,12 +19,15 @@ class Ship {
 private:
     const int id;
     Route route;
-    WeightBalanceCalculator* calculator; // TODO make concrete balancer
     Plan plan;
     ContainerMap containers;
+    WeightBalanceCalculator* calculator; // TODO make concrete balancer
     int current_port_idx;
+    void updatePlan(int floor, int row, int col, int id);
+    void updateContainerMap(int floor, int row, int col, int id,  const Container *const container);
+    void updateContainerMap(int floor, int row, int col);
 public:
-    Ship (int _id);
+    explicit Ship (int _id);
     bool readShipPlan(const std::string& path);
     bool readShipRoute(const std::string& path);
     void setWeightBalanceCalculator(WeightBalanceCalculator* _calculator);

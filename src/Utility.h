@@ -5,27 +5,19 @@
 #ifndef EX1_UTILITY_H
 #define EX1_UTILITY_H
 
+#include <vector>
+#include <map>
+#include <unordered_map>
+#include <string>
+
+// Forward declarations
 class Container;
 class Instruction;
 class Ship;
 class Port;
 class StowageAlgorithm;
 
-#include <vector>
-#include <map>
-
-
-#include <unordered_map>
-#include <string>
-//#include "Instruction.h"
-//#include "Port.h"
-//#include "Ship.h"
-//#include "StowageAlgorithm.h"
-//#include "Container.h"
-
 // Typedef declarations
-
-
 typedef typename std::ifstream ifstream;
 typedef typename std::vector<std::vector<std::vector<int>>> Plan;
 typedef typename std::vector <Instruction> Instructions;
