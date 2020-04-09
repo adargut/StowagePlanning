@@ -33,10 +33,9 @@ public:
     void setWeightBalanceCalculator(WeightBalanceCalculator* _calculator);
     const Plan& getPlan() const;
     const Route& getRoute() const;
-    //int getId() const;
     bool loadContainer(int floor, int row, int col, const Container * const container_to_load);
     const Container* const unloadContainer(int floor, int row, int col);
-    ~Ship(); // TODO: free calculator
+    ~Ship();
 };
 
 #endif //EX1_SHIP_H

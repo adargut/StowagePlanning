@@ -58,6 +58,20 @@ C:/Users/Adar/CLionProjects/Ex1/src/Instruction.h
 Utility.h
 C:/Users/Adar/CLionProjects/Ex1/src/Utility.h
 
+C:/Users/Adar/CLionProjects/Ex1/src/StowageAlgorithm.cpp
+StowageAlgorithm.h
+C:/Users/Adar/CLionProjects/Ex1/src/StowageAlgorithm.h
+fstream
+-
+iostream
+-
+
+C:/Users/Adar/CLionProjects/Ex1/src/StowageAlgorithm.h
+Utility.h
+C:/Users/Adar/CLionProjects/Ex1/src/Utility.h
+WeightBalanceCalculator.h
+C:/Users/Adar/CLionProjects/Ex1/src/WeightBalanceCalculator.h
+
 C:/Users/Adar/CLionProjects/Ex1/src/Utility.h
 vector
 -
@@ -67,6 +81,10 @@ unordered_map
 -
 string
 -
+
+C:/Users/Adar/CLionProjects/Ex1/src/WeightBalanceCalculator.cpp
+WeightBalanceCalculator.h
+C:/Users/Adar/CLionProjects/Ex1/src/WeightBalanceCalculator.h
 
 C:/Users/Adar/CLionProjects/Ex1/src/WeightBalanceCalculator.h
 vector

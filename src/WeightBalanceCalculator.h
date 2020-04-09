@@ -12,18 +12,29 @@
 
 class WeightBalanceCalculator {
 protected:
-    const Plan& ship_plan;
+//    const Plan& ship_plan;
 public:
-    explicit WeightBalanceCalculator(const Plan& ship_plan);
-    virtual int checkBalance(const Instructions& instructions, const std::vector<int>& weights) = 0;
-    virtual ~WeightBalanceCalculator() = 0;
+    enum BalanceStatus {
+    Approved,
+    X_IMBALANCED,
+    Y_IMBALANCED,
+    X_Y_IMBALANCED
+    };
+    virtual BalanceStatus tryOperation(const Instruction& instruction, int weight, const Plan &plan) = 0;
+    virtual std::pair<int, BalanceStatus> tryOperations(const Instructions &instructions,
+                                                        const std::vector<int> &weights, const Plan &plan) = 0;
+    virtual ~WeightBalanceCalculator() = default;
 };
 
-class NaiveWeightBalanceCalculator: public WeightBalanceCalculator {
+class NaiveWeightBalanceCalculator : public WeightBalanceCalculator {
 public:
-    explicit NaiveWeightBalanceCalculator(const Plan &ship_plan);
-    int checkBalance(const Instructions &instructions, const std::vector<int> &weights) override;
-    ~NaiveWeightBalanceCalculator() override; //TODO he said whenever adding new desturctor, need to overload operators?
+    NaiveWeightBalanceCalculator() = default;
+    // Try a single operation
+    BalanceStatus tryOperation(const Instruction& instruction, int weight, const Plan &plan) override;
+    // Try a set of operations
+    std::pair<int, BalanceStatus> tryOperations(const Instructions &instructions,
+                                                const std::vector<int> &weights, const Plan &plan) override;
+    ~NaiveWeightBalanceCalculator() override = default;
 };
 
 #endif //EX1_WEIGHTBALANCECALCULATOR_H

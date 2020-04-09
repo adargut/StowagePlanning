@@ -28,6 +28,6 @@ typedef typename std::vector <std::string> Route;
 
 // Utility functions
 bool performInstructions(Ship& ship, Port& port, Instructions& instructions);
-bool performSimulation(Ship& ship, Route ports, StowageAlgorithm algorithm);
+//bool performSimulation(Ship& ship, Route ports, StowageAlgorithm& algorithm);
 
 #endif //EX1_UTILITY_H
