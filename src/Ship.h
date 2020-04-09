@@ -17,24 +17,20 @@
 
 class Ship {
 private:
-    const int id;
     Route route;
     Plan plan;
     ContainerMap containers;
     WeightBalanceCalculator* calculator; // TODO make concrete balancer
-    int current_port_idx;
-    void updatePlan(int floor, int row, int col, int val);
-    void updateContainerMap(int floor, int row, int col, int id,  const Container *const container);
-    void updateContainerMap(int floor, int row, int col);
+    int current_port_idx = 0;
 public:
-    explicit Ship (int _id);
-    bool readShipPlan(const std::string& path);
-    bool readShipRoute(const std::string& path);
-    void setWeightBalanceCalculator(WeightBalanceCalculator* _calculator);
+    explicit Ship (const Plan& _plan, const Route& _route, WeightBalanceCalculator* _calculator);
     const Plan& getPlan() const;
     const Route& getRoute() const;
+    void updatePlan(int floor, int row, int col, int val);
+    void insertContainerMap(int floor, int row, int col, int id, const Container *const container);
+    void eraseContainerMap(int floor, int row, int col);
     bool loadContainer(int floor, int row, int col, const Container * const container_to_load);
-    const Container* const unloadContainer(int floor, int row, int col);
+    const Container* unloadContainer(int floor, int row, int col);
     ~Ship();
 };
 

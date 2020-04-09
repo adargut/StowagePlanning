@@ -6,6 +6,10 @@
 
 #IncludeRegexTransform: 
 
+C:/Users/Adar/CLionProjects/Ex1/src/Container.cpp
+Container.h
+C:/Users/Adar/CLionProjects/Ex1/src/Container.h
+
 C:/Users/Adar/CLionProjects/Ex1/src/Container.h
 vector
 -
@@ -14,9 +18,17 @@ string
 Utility.h
 C:/Users/Adar/CLionProjects/Ex1/src/Utility.h
 
+C:/Users/Adar/CLionProjects/Ex1/src/Instruction.cpp
+Instruction.h
+C:/Users/Adar/CLionProjects/Ex1/src/Instruction.h
+
 C:/Users/Adar/CLionProjects/Ex1/src/Instruction.h
 Utility.h
 C:/Users/Adar/CLionProjects/Ex1/src/Utility.h
+
+C:/Users/Adar/CLionProjects/Ex1/src/Port.cpp
+Port.h
+C:/Users/Adar/CLionProjects/Ex1/src/Port.h
 
 C:/Users/Adar/CLionProjects/Ex1/src/Port.h
 string
@@ -31,12 +43,6 @@ C:/Users/Adar/CLionProjects/Ex1/src/Utility.h
 C:/Users/Adar/CLionProjects/Ex1/src/Ship.cpp
 Ship.h
 C:/Users/Adar/CLionProjects/Ex1/src/Ship.h
-fstream
--
-iostream
--
-sstream
--
 
 C:/Users/Adar/CLionProjects/Ex1/src/Ship.h
 iostream
@@ -69,8 +75,14 @@ iostream
 C:/Users/Adar/CLionProjects/Ex1/src/StowageAlgorithm.h
 Utility.h
 C:/Users/Adar/CLionProjects/Ex1/src/Utility.h
+Ship.h
+C:/Users/Adar/CLionProjects/Ex1/src/Ship.h
 WeightBalanceCalculator.h
 C:/Users/Adar/CLionProjects/Ex1/src/WeightBalanceCalculator.h
+
+C:/Users/Adar/CLionProjects/Ex1/src/Utility.cpp
+Utility.h
+C:/Users/Adar/CLionProjects/Ex1/src/Utility.h
 
 C:/Users/Adar/CLionProjects/Ex1/src/Utility.h
 vector
@@ -80,6 +92,12 @@ map
 unordered_map
 -
 string
+-
+fstream
+-
+iostream
+-
+sstream
 -
 
 C:/Users/Adar/CLionProjects/Ex1/src/WeightBalanceCalculator.cpp

@@ -1,48 +1,8 @@
 #include "Ship.h"
-#include <fstream>
-#include <iostream>
-#include <sstream>
 
-Ship::Ship(int _id) : id(_id) {}
-
-bool Ship::readShipPlan(const std::string &path) //TODO: check input is valid
-{
-    ifstream in(path);
-    std::string line;
-    if (!in.is_open()) return false; //TODO: add error message
-    bool first_line = true;
-    int x, y, z;
-
-    while (in >> line) {
-        std::stringstream ss(line);
-        if (first_line) {
-            first_line = false;
-            ss >> z >> x >> y;
-            plan = std::vector(z, std::vector<std::vector<int>>(x, std::vector<int>(y, 0)));
-        }
-        ss >> x >> y >> z;
-        for (size_t i = 0; i < z; i++) {
-            updatePlan(z, x, y, -1);
-        }
-    }
-    in.close();
-    return true;
-}
-
-bool Ship::readShipRoute(const std::string &path) //TODO: check input is valid
-{
-    ifstream in(path);
-    std::string line;
-    if (!in.is_open()) return false; //TODO: add error message
-
-    while (in >> line) {
-        route.push_back(line);
-    }
-    in.close();
-    return true;
-}
-
-void Ship::setWeightBalanceCalculator(WeightBalanceCalculator *_calculator) {
+Ship::Ship(const Plan &_plan, const Route &_route, WeightBalanceCalculator* _calculator) {
+    plan = _plan;
+    route = _route;
     calculator = _calculator;
 }
 
@@ -54,37 +14,37 @@ const Route &Ship::getRoute() const {
     return route;
 }
 
-bool Ship::loadContainer(int floor, int row, int col, const Container *const container_to_load) {
-    if (plan[floor][row][col] != 0 || containers.count(id)) return false; // Position is occupied or container in ship
-    int id = container_to_load->getId();
-    updateContainerMap(floor, row, col, container_to_load->getId(), container_to_load);
-    updatePlan(floor, row, col, id);
-    return true;
-}
-
-const Container *const Ship::unloadContainer(int floor, int row, int col) {
-    // TODO make this return error so we know why it failed
-    if (plan[floor][row][col] <= 0) return nullptr; // Position is free or illegal
-    const Container *const res = containers[plan[floor][row][col]].first;
-    updateContainerMap(floor, row, col);
-    updatePlan(floor, row, col, 0);
-    return res;
-}
-
 void Ship::updatePlan(int floor, int row, int col, int val) {
     plan[floor][row][col] = val;
 }
 
 // Insert container to map
-void Ship::updateContainerMap(int floor, int row, int col, int id, const Container *const container) {
+void Ship::insertContainerMap(int floor, int row, int col, int id, const Container *const container) {
     std::pair<const Container *const, Position> p(container, Position(floor, row, col));
     ContainerMap::value_type item(id, p);
     containers.insert(item); //TODO:: maybe emplace instead
 }
 
 // Remove container from map
-void Ship::updateContainerMap(int floor, int row, int col) {
+void Ship::eraseContainerMap(int floor, int row, int col) {
     containers.erase(plan[floor][row][col]);
+}
+
+bool Ship::loadContainer(int floor, int row, int col, const Container *const container_to_load) {
+    int id = container_to_load->getId();
+    if (plan[floor][row][col] != 0 || containers.count(id)) return false; // Position is occupied or container in ship
+    insertContainerMap(floor, row, col, container_to_load->getId(), container_to_load);
+    updatePlan(floor, row, col, id);
+    return true;
+}
+
+const Container *Ship::unloadContainer(int floor, int row, int col) {
+    // TODO make this return error so we know why it failed
+    if (plan[floor][row][col] <= 0) return nullptr; // Position is free or illegal
+    const Container *const res = containers[plan[floor][row][col]].first;
+    eraseContainerMap(floor, row, col);
+    updatePlan(floor, row, col, 0);
+    return res;
 }
 
 Ship::~Ship() {

@@ -6,20 +6,20 @@
 #define EX1_STOWAGEALGORITHM_H
 
 #include "Utility.h"
+#include "Ship.h"
 #include "WeightBalanceCalculator.h"
 
 class StowageAlgorithm { // TODO implement me
 public:
-//    StowageAlgorithm(const Ship& _ship);
-    virtual const Instructions& getInstructionsForCargo(const Containers& containers_to_load) const = 0;
+    virtual Instructions getInstructionsForCargo(const Containers& containers_to_load) = 0;
 };
 
 class NaiveStowageAlgorithm : public StowageAlgorithm {
 private:
     Ship* ship;
 public:
-    NaiveStowageAlgorithm(const Plan& _plan, const Port& _port, const WeightBalanceCalculator& _calculator);
-    const Instructions& getInstructionsForCargo(const Containers& containers_to_load) const override;
+    NaiveStowageAlgorithm(const Plan& _plan, const Route& _route, WeightBalanceCalculator* _calculator);
+    Instructions getInstructionsForCargo(const Containers &containers_to_load) override;
 };
 
 class RandomStowageAlgorithm : public StowageAlgorithm {

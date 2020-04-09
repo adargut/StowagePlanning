@@ -22,7 +22,10 @@ CMakeFiles/Ex1.dir/src/Ship.cpp.obj: ../src/Ship.h
 CMakeFiles/Ex1.dir/src/Ship.cpp.obj: ../src/Utility.h
 CMakeFiles/Ex1.dir/src/Ship.cpp.obj: ../src/WeightBalanceCalculator.h
 
+CMakeFiles/Ex1.dir/src/StowageAlgorithm.cpp.obj: ../src/Container.h
 CMakeFiles/Ex1.dir/src/StowageAlgorithm.cpp.obj: ../src/Instruction.h
+CMakeFiles/Ex1.dir/src/StowageAlgorithm.cpp.obj: ../src/Port.h
+CMakeFiles/Ex1.dir/src/StowageAlgorithm.cpp.obj: ../src/Ship.h
 CMakeFiles/Ex1.dir/src/StowageAlgorithm.cpp.obj: ../src/StowageAlgorithm.cpp
 CMakeFiles/Ex1.dir/src/StowageAlgorithm.cpp.obj: ../src/StowageAlgorithm.h
 CMakeFiles/Ex1.dir/src/StowageAlgorithm.cpp.obj: ../src/Utility.h

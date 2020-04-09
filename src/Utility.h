@@ -9,6 +9,9 @@
 #include <map>
 #include <unordered_map>
 #include <string>
+#include <fstream>
+#include <iostream>
+#include <sstream>
 
 // Forward declarations
 class Container;
@@ -27,6 +30,8 @@ typedef typename std::vector <const Container * > Containers;
 typedef typename std::vector <std::string> Route;
 
 // Utility functions
+bool readShipPlan(const std::string& path);
+bool readShipRoute(const std::string& path);
 bool performInstructions(Ship& ship, Port& port, Instructions& instructions);
 //bool performSimulation(Ship& ship, Route ports, StowageAlgorithm& algorithm);
 

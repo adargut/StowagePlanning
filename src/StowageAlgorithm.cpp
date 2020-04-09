@@ -6,11 +6,15 @@
 #include <fstream>
 #include <iostream>
 
-//NaiveStowageAlgorithm::NaiveStowageAlgorithm(const Plan &_plan, const Port &_port,
-//                                             const WeightBalanceCalculator &_calculator) {
-//
-//}
+NaiveStowageAlgorithm::NaiveStowageAlgorithm(const Plan& _plan, const Route& _route,
+                                             WeightBalanceCalculator* _calculator) {
+    ship = new Ship(_plan, _route, _calculator);
+}
+
+Instructions NaiveStowageAlgorithm::getInstructionsForCargo(const Containers &containers_to_load) {
+    return Instructions();
+}
 
 //const Instructions &NaiveStowageAlgorithm::getInstructionsForCargo(const Containers &containers_to_load) const {
-//    return NULL;
+//    return <#initializer#>;
 //}
