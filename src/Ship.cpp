@@ -14,6 +14,14 @@ const Route &Ship::getRoute() const {
     return route;
 }
 
+int Ship::getPortIndex() const {
+    return current_port_idx;
+}
+
+const ContainerMap &Ship::getContainerMap() const {
+    return containers;
+}
+
 void Ship::updatePlan(int floor, int row, int col, int val) {
     plan[floor][row][col] = val;
 }

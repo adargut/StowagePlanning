@@ -7,17 +7,22 @@
 
 #include <string>
 #include <vector>
-#include "Container.h"
+#include <utility>
+#include <algorithm>
 #include "Utility.h"
+#include "Container.h"
 
 class Port {
+public:
+    // TODO move me to utility
+    typedef typename std::unordered_set<const Container*, hashContainer> PortContainers;
 private:
     const std::string code;
-    Containers containers;
+    PortContainers containers;
 public:
-    Port(const std::string& code, const Containers& _containers);
-    Container unloadContainer(const Container& container);
-    bool loadContainer(const Container& container);
+    Port(std::string  _code, const ContainersVector& _containers);
+    bool unloadContainer(const Container* container);
+    bool loadContainer(const Container* container);
 };
 
 #endif //EX1_PORT_H

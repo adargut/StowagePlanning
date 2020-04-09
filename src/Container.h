@@ -7,8 +7,8 @@
 
 #include <vector>
 #include <string>
+#include <utility>
 #include "Utility.h"
-
 
 class Container {
 private:
@@ -16,11 +16,16 @@ private:
     const int weight;
     const int id;
 public:
-    Container(int _weight, const std::string& _port_code, int _id);
+    Container(int _weight, std::string  _port_code, int _id);
     const std::string& getPortCode() const;
     int getWeight() const;
     int getId() const;
 };
 
+struct hashContainer {
+    std::size_t operator()(const Container* _container) const {
+        return std::hash<int>()(_container->getId());
+    }
+};
 
 #endif //EX1_CONTAINER_H

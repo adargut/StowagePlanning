@@ -26,12 +26,16 @@ public:
     explicit Ship (const Plan& _plan, const Route& _route, WeightBalanceCalculator* _calculator);
     const Plan& getPlan() const;
     const Route& getRoute() const;
-    void updatePlan(int floor, int row, int col, int val);
-    void insertContainerMap(int floor, int row, int col, int id, const Container *const container);
-    void eraseContainerMap(int floor, int row, int col);
+    int getPortIndex() const;
+    const ContainerMap& getContainerMap() const;
+    // TODO change this to not require floor
     bool loadContainer(int floor, int row, int col, const Container * const container_to_load);
     const Container* unloadContainer(int floor, int row, int col);
     ~Ship();
+private:
+    void updatePlan(int floor, int row, int col, int val);
+    void insertContainerMap(int floor, int row, int col, int id, const Container *const container);
+    void eraseContainerMap(int floor, int row, int col);
 };
 
 #endif //EX1_SHIP_H
