@@ -15,7 +15,7 @@
 class Port {
 public:
     // TODO move me to utility
-    typedef typename std::unordered_set<const Container*, hashContainer> PortContainers;
+    typedef typename std::unordered_set<const Container*, HashContainer> PortContainers;
 private:
     const std::string code;
     PortContainers containers;

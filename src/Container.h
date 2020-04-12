@@ -22,7 +22,7 @@ public:
     int getId() const;
 };
 
-struct hashContainer {
+struct HashContainer {
     std::size_t operator()(const Container* _container) const {
         return std::hash<int>()(_container->getId());
     }

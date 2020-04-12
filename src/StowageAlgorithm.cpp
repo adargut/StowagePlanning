@@ -9,10 +9,16 @@ NaiveStowageAlgorithm::NaiveStowageAlgorithm(const Plan& _plan, const Route& _ro
 
 // TODO break this into sub functions
 Instructions NaiveStowageAlgorithm::getInstructionsForCargo(const ContainersVector &containers_to_load) {
+    DistanceToDestinationComparator distance_to_destination(ship->getPortIndex(), ship->getRoute());
     Instructions result;
     Instructions tmp_instructions;
     std::vector<int> containers_to_unload;
     ContainersVector containers_to_return;
+    // We want to load the containers closest to their destination first
+    ContainersVector sorted_containers_to_load(containers_to_load.begin(), containers_to_load.end());
+    std::sort(sorted_containers_to_load.begin(), sorted_containers_to_load.end(), distance_to_destination);
+    WeightBalanceCalculator* calculator = ship->getCalculator();
+
     int port_idx = ship->getPortIndex();
     const ContainerMap& ship_map = ship->getContainerMap();
     const Plan& ship_plan = ship->getPlan();
@@ -28,6 +34,8 @@ Instructions NaiveStowageAlgorithm::getInstructionsForCargo(const ContainersVect
     }
 
     for (auto& container_id : containers_to_unload) {
+        tmp_instructions.clear();
+        bool success_flag = true;
         // TODO implement rollback/backup mechanism
         auto container_pos = ship_map.find(container_id)->second.second;
         // TODO make this size_t? for all ints in project??
@@ -36,41 +44,76 @@ Instructions NaiveStowageAlgorithm::getInstructionsForCargo(const ContainersVect
         int y = container_pos[2];
 
         for (int z_above = ship->getPlan().size() - 1; z_above > z; z_above--) {
-            int position_above = ship_plan[z_above][x][y];
+            int container_above_id = ship_plan[z_above][x][y];
 
-            if (position_above > 0) { // Position of a container above container to be unloaded
-                containers_to_return.push_back(ship_map[position_above]);
-                ship->unloadContainer(position_above[0], position_above[1], position_above[2]);
-                tmp_instructions.push_back(Instruction(Instruction::Unload, position_above, z_above, x, y));
+            if (container_above_id > 0) { // ID of a container above container to be unloaded
+                Instruction ins = Instruction(Instruction::Unload, container_above_id, z_above, x, y);
+                Container const * container_above = ship_map.find(container_above_id)->second.first;
+                if(calculator->tryOperation(ins, container_above->getWeight() ,ship_plan)
+                   == WeightBalanceCalculator::Approved)
+                {
+                    containers_to_return.push_back(container_above);
+                    ship->unloadContainer(x, y);
+                    tmp_instructions.push_back(ins);
+                }
+                else
+                {
+                    success_flag = false;
+                    break;
+                }
             }
         }
-        // TODO check weight balancer before
-        ship->unloadContainer(z, x, y); // Unload container originally intended for unloading
-        tmp_instructions.push_back(Instruction(Instruction::Unload, container_id, z, x, y));
+
+        if(success_flag)
+        {
+            // TODO check weight balancer before
+            Instruction ins = Instruction(Instruction::Unload, container_id, z, x, y);
+            if(calculator->tryOperation(ins, ship_map.find(container_id)->second.first->getWeight() ,ship_plan)
+               == WeightBalanceCalculator::Approved)
+            {
+                ship->unloadContainer(x, y); // Unload container originally intended for unloading
+                tmp_instructions.push_back(ins);
+            } else
+            {
+                success_flag = false;
+            }
+        }
+
 
         // Load all containers above container popped back into the ship
         for (int i = containers_to_return.size() - 1; i >= 0; i--) {
             const Container* container_to_return = containers_to_return[i];
             int new_z = z + containers_to_return.size() - i; // New z for reloading the unloaded container
-            ship->loadContainer(new_z, x, y, container_to_return);
+            ship->loadContainer(x, y, container_to_return);
             tmp_instructions.push_back(Instruction(Instruction::Load, container_to_return->getId(), new_z, x, y));
         }
 
-        for (Instruction instruction : tmp_instructions) {
-            result.push_back(instruction);
+        if(success_flag)
+        {
+            for (Instruction instruction : tmp_instructions) {
+                result.push_back(instruction);
+            }
         }
+        else result.push_back(Instruction(Instruction::Reject, container_id, z, x, y));
     }
 
     int x = 0, y = 0, z = 0;
     // Containers that need to be loaded from port
-    for (auto container_to_load : containers_to_load) {
+    for (auto container_to_load : sorted_containers_to_load) {
         for (int z = 0; z < ship_plan.size(); z++) { // TODO optimize this n^3 loop
             for (int x = 0; x < ship_plan[0].size(); x++) {
                 for (int y = 0; y < ship_plan[0][0].size(); y++) {
                     if (ship_plan[z][x][y] == 0) {
-                        // TODO check calculator
-                        ship->loadContainer(z, x, y, container_to_load);
-                        result.push_back(Instruction(Instruction::Load, container_to_load->getId(), z, x, y));
+                        Instruction ins = Instruction(Instruction::Load, container_to_load->getId(), z, x, y);
+                        if(calculator->tryOperation(ins, container_to_load->getWeight() ,ship_plan)
+                                                    == WeightBalanceCalculator::Approved)
+                        {
+                            ship->loadContainer(x, y, container_to_load);
+                            result.push_back(ins);
+                        } else
+                        {
+                            result.push_back(Instruction(Instruction::Reject, container_to_load->getId(), z, x, y));
+                        }
                     }
                 }
             }

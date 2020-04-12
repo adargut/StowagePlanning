@@ -20,17 +20,20 @@ private:
     Route route;
     Plan plan;
     ContainerMap containers;
-    WeightBalanceCalculator* calculator; // TODO make concrete balancer
+    // TODO make concrete balancer
+    WeightBalanceCalculator* calculator;
     int current_port_idx = 0;
 public:
     explicit Ship (const Plan& _plan, const Route& _route, WeightBalanceCalculator* _calculator);
     const Plan& getPlan() const;
     const Route& getRoute() const;
-    int getPortIndex() const;
+    const int& getPortIndex() const;
     const ContainerMap& getContainerMap() const;
-    // TODO change this to not require floor
-    bool loadContainer(int floor, int row, int col, const Container * const container_to_load);
-    const Container* unloadContainer(int floor, int row, int col);
+    WeightBalanceCalculator *getCalculator() const;
+    // Load the container to the lowest available floor where this position is unoccupied
+    bool loadContainer(int row, int col, const Container * const container_to_load);
+    // Unload the top container in this position
+    const Container * const unloadContainer(int row, int col);
     ~Ship();
 private:
     void updatePlan(int floor, int row, int col, int val);
