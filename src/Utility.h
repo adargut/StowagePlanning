@@ -13,6 +13,7 @@
 #include <iostream>
 #include <sstream>
 #include <unordered_set>
+#include <unordered_map>
 
 // Forward declarations
 class Container;
@@ -29,7 +30,7 @@ typedef typename std::ifstream ifstream;
 typedef typename std::vector<std::vector<std::vector<int>>> Plan;
 typedef typename std::vector<Instruction> Instructions;
 typedef typename std::array<int, 3> Position;
-typedef typename std::map<int, std::pair<const Container* const, Position>> ContainerMap;
+typedef typename std::unordered_map<int, std::pair<const Container* const, Position>> ContainerMap;
 typedef typename std::vector<const Container*> ContainersVector;
 typedef typename std::vector<std::string> Route;
 typedef typename std::vector<Port> Ports;

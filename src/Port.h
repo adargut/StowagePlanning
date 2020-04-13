@@ -15,17 +15,19 @@
 class Port {
 public:
     // TODO move me to utility
-    typedef typename std::unordered_set<const Container*, HashContainer> PortContainers;
+    // TODO change to unordered map, with key = id
+    typedef typename std::unordered_map<int, const Container*> PortContainers;
 private:
     const std::string code;
     PortContainers containers;
     ContainersVector containers_to_load;
 public:
-    const ContainersVector &getContainersToLoad() const;
-
-public:
     Port(std::string  _code, const ContainersVector& _containers);
-    bool unloadContainer(const Container* container);
+    const std::string &getCode() const;
+    const PortContainers &getContainers() const;
+    const ContainersVector &getContainersToLoad() const;
+    // TODO change to work with keys (id)
+    const Container* unloadContainer(int container_id);
     bool loadContainer(const Container* container);
 };
 
