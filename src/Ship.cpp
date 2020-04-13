@@ -6,11 +6,11 @@ Ship::Ship(const Plan &_plan, const Route &_route, WeightBalanceCalculator* _cal
     calculator = _calculator;
 }
 
-const Plan& Ship::getPlan() const {
+const Plan &Ship::getPlan() const {
     return plan;
 }
 
-const Route& Ship::getRoute() const {
+const Route &Ship::getRoute() const {
     return route;
 }
 
@@ -18,7 +18,7 @@ const int& Ship::getPortIndex() const {
     return current_port_idx;
 }
 
-const ContainerMap& Ship::getContainerMap() const {
+const ContainerMap &Ship::getContainerMap() const {
     return containers;
 }
 
@@ -28,8 +28,7 @@ void Ship::updatePlan(int floor, int row, int col, int val) {
 
 // Insert container to map
 void Ship::insertContainerMap(int floor, int row, int col, int id, const Container *const container) {
-    Position pos = {floor, row, col};
-    std::pair<const Container *const, Position> p(container, pos);
+    std::pair<const Container *const, Position> p(container, Position{floor, row, col});
     ContainerMap::value_type item(id, p);
     containers.insert(item); //TODO:: maybe emplace instead
 }
@@ -39,35 +38,34 @@ void Ship::eraseContainerMap(int floor, int row, int col) {
     containers.erase(plan[floor][row][col]);
 }
 
-bool Ship::loadContainer(int row, int col, const Container * const container_to_load) {
+bool Ship::loadContainer(int floor, int row, int col, const Container *const container_to_load) {
+    //TODO check floor, row and col are in valid range
     int id = container_to_load->getId();
-    if (containers.count(id)) return false; // Position is occupied or container in ship
-    for (int floor = 0; floor < plan.size(); ++floor)
+    if (plan[floor][row][col] != 0 || containers.count(id)) return false; // Position is occupied or container in ship
+    if(floor!= 0)
     {
-        if(plan[floor][row][col] == 0)
-        {
-            insertContainerMap(floor, row, col, container_to_load->getId(), container_to_load);
-            updatePlan(floor, row, col, id);
-            return true;
-        }
+        if(plan[floor-1][row][col] == 0) return false; //Trying to place container "in the air"
     }
-
-    return false;
+    if(floor != plan.size()-1)
+    {
+        if(plan[floor+1][row][col] != 0) return false; //Trying to place container below an existing one
+    }
+    insertContainerMap(floor, row, col, container_to_load->getId(), container_to_load);
+    updatePlan(floor, row, col, id);
+    return true;
 }
 
-const Container * const Ship::unloadContainer(int row, int col) {
+const Container * const Ship::unloadContainer(int floor, int row, int col) {
     // TODO make this return error so we know why it failed
-    for (int floor = plan.size()-1; floor >= 0 ; --floor) {
-        if(plan[floor][row][col] > 0)
-        {
-            const Container *const res = containers[plan[floor][row][col]].first;
-            eraseContainerMap(floor, row, col);
-            updatePlan(floor, row, col, 0);
-            return res;
-        }
+    if (plan[floor][row][col] <= 0) return nullptr; // Position is free or illegal
+    if(floor != plan.size()-1)
+    {
+        if(plan[floor+1][row][col] != 0) return nullptr; // There's a container above the container to unload
     }
-    return nullptr; // No container in this position
-
+    const Container *const res = containers[plan[floor][row][col]].first;
+    eraseContainerMap(floor, row, col);
+    updatePlan(floor, row, col, 0);
+    return res;
 }
 
 Ship::~Ship() {
@@ -76,4 +74,8 @@ Ship::~Ship() {
 
 WeightBalanceCalculator *Ship::getCalculator() const {
     return calculator;
+}
+
+void Ship::advanceCurrentPortIdx() {
+    current_port_idx++;
 }

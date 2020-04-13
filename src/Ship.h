@@ -31,9 +31,10 @@ public:
     const ContainerMap& getContainerMap() const;
     WeightBalanceCalculator *getCalculator() const;
     // Load the container to the lowest available floor where this position is unoccupied
-    bool loadContainer(int row, int col, const Container * const container_to_load);
+    bool loadContainer(int floor, int row, int col, const Container * const container_to_load);
     // Unload the top container in this position
-    const Container * const unloadContainer(int row, int col);
+    const Container * const unloadContainer(int floor, int row, int col);
+    void advanceCurrentPortIdx();
     ~Ship();
 private:
     void updatePlan(int floor, int row, int col, int val);

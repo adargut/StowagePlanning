@@ -19,6 +19,10 @@ public:
 private:
     const std::string code;
     PortContainers containers;
+    ContainersVector containers_to_load;
+public:
+    const ContainersVector &getContainersToLoad() const;
+
 public:
     Port(std::string  _code, const ContainersVector& _containers);
     bool unloadContainer(const Container* container);
