@@ -34,7 +34,7 @@ namespace Utility {
             if (first_line) {
                 first_line = false;
                 ss >> z >> x >> y;
-                plan = std::vector(z, std::vector<std::vector<int>>(x, std::vector<int>(y, 0)));
+                plan = std::vector<std::vector<std::vector<int>>>(z, std::vector<std::vector<int>>(x, std::vector<int>(y, 0)));
             }
             ss >> x >> y >> z;
             for (size_t i = 0; i < z; i++) {
