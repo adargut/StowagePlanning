@@ -179,6 +179,8 @@ namespace Utility {
         for (auto &port : ports) {
             route.push_back(port.getCode());
         }
+        //TODO Return value?
+        return true;
     }
 
     DistanceToDestinationComparator::DistanceToDestinationComparator(const int &currentPortIdx, const Route &route)

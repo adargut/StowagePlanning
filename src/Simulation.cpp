@@ -138,11 +138,11 @@ bool Simulation::run_simulation()
 
         ship.advanceCurrentPortIdx();
         // Save instructions for port to a file
-        Utility::savePortInstructions(port.getCode(), instructions); // TODO change arguments here..
+        //Utility::savePortInstructions(port.getCode(), instructions); // TODO change arguments here..
     }
-    // Save errors and number of operations to a file
-    Utility::saveSimulationErrors("somepath.txt", errors);
-    Utility::saveSimulationResult("respath.txt", number_of_operations);
+    //TODO Save errors and number of operations to a file
+    //Utility::saveSimulationErrors("somepath.txt", errors);
+    //Utility::saveSimulationResult("respath.txt", number_of_operations);
 
     //TODO return value?
     return false;
