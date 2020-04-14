@@ -1,1 +1,13 @@
 .idea/
+/cmake-build-debug/
+/cmake-build-debug/CMakeFiles/
+/cmake-build-debug/Ex1.cbp
+/cmake-build-debug/Ex1.exe
+/cmake-build-debug/Makefile
+/cmake-build-default/
+/cmake-build-default/CMakeFiles/
+/cmake-build-default/cmake_install.cmake
+/cmake-build-default/CMakeCache.txt
+/cmake-build-default/Ex1.cbp
+/cmake-build-default/Ex1.exe
+/cmake-build-default/Makefile
