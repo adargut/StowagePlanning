@@ -3,6 +3,7 @@
 
 CMakeFiles/Ex1.dir/src/AlgorithmError.cpp.obj: ../src/AlgorithmError.cpp
 CMakeFiles/Ex1.dir/src/AlgorithmError.cpp.obj: ../src/AlgorithmError.h
+CMakeFiles/Ex1.dir/src/AlgorithmError.cpp.obj: ../src/Utility.h
 
 CMakeFiles/Ex1.dir/src/Container.cpp.obj: ../src/Container.cpp
 CMakeFiles/Ex1.dir/src/Container.cpp.obj: ../src/Container.h
@@ -28,6 +29,7 @@ CMakeFiles/Ex1.dir/src/Ship.cpp.obj: ../src/Ship.h
 CMakeFiles/Ex1.dir/src/Ship.cpp.obj: ../src/Utility.h
 CMakeFiles/Ex1.dir/src/Ship.cpp.obj: ../src/WeightBalanceCalculator.h
 
+CMakeFiles/Ex1.dir/src/Simulation.cpp.obj: ../src/AlgorithmError.h
 CMakeFiles/Ex1.dir/src/Simulation.cpp.obj: ../src/Container.h
 CMakeFiles/Ex1.dir/src/Simulation.cpp.obj: ../src/Instruction.h
 CMakeFiles/Ex1.dir/src/Simulation.cpp.obj: ../src/Port.h
@@ -50,6 +52,7 @@ CMakeFiles/Ex1.dir/src/StowageAlgorithm.cpp.obj: ../src/WeightBalanceCalculator.
 CMakeFiles/Ex1.dir/src/Utility.cpp.obj: ../src/Container.h
 CMakeFiles/Ex1.dir/src/Utility.cpp.obj: ../src/Error.h
 CMakeFiles/Ex1.dir/src/Utility.cpp.obj: ../src/Instruction.h
+CMakeFiles/Ex1.dir/src/Utility.cpp.obj: ../src/Port.h
 CMakeFiles/Ex1.dir/src/Utility.cpp.obj: ../src/Utility.cpp
 CMakeFiles/Ex1.dir/src/Utility.cpp.obj: ../src/Utility.h
 
