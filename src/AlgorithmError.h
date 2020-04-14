@@ -7,6 +7,7 @@
 
 
 class AlgorithmError {
+public:
     enum Type { IgnoredContainer, InvalidCommand, InvalidCraneOperation };
 private:
     Type type;

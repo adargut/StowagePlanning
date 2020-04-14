@@ -35,6 +35,7 @@ public:
     // Unload the top container in this position
     const Container * const unloadContainer(int floor, int row, int col);
     void advanceCurrentPortIdx();
+    bool is_ship_full();
     ~Ship();
 private:
     void updatePlan(int floor, int row, int col, int val);

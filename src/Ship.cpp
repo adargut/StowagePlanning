@@ -57,6 +57,7 @@ bool Ship::loadContainer(int floor, int row, int col, const Container *const con
 
 const Container * const Ship::unloadContainer(int floor, int row, int col) {
     // TODO make this return error so we know why it failed
+    // TODO is it not [floor][col][row] ?
     if (plan[floor][row][col] <= 0) return nullptr; // Position is free or illegal
     if(floor != plan.size()-1)
     {
@@ -78,4 +79,16 @@ WeightBalanceCalculator *Ship::getCalculator() const {
 
 void Ship::advanceCurrentPortIdx() {
     current_port_idx++;
+}
+
+bool Ship::is_ship_full()
+{
+    for (int z = 0; z < plan.size(); z++) {
+        for (int x = 0; x < plan[0].size(); x++) {
+            for (int y = 0; y < plan[0][0].size(); y++) {
+                if(plan[z][x][y] == 0) return false;
+            }
+        }
+    }
+    return true;
 }
