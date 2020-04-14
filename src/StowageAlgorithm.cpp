@@ -93,3 +93,7 @@ void NaiveStowageAlgorithm::reset(const Plan &_plan, const Route &_route, Weight
 NaiveStowageAlgorithm::~NaiveStowageAlgorithm() {
     if(ship != nullptr) delete(ship);
 }
+
+const std::string& StowageAlgorithm::getAlgorithmName() const {
+    return algorithm_name;
+}

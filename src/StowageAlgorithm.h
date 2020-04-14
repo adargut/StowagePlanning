@@ -11,6 +11,12 @@
 #include "Instruction.h"
 
 class StowageAlgorithm { // TODO implement me
+private:
+public:
+    const std::string &getAlgorithmName() const;
+
+private:
+    const std::string algorithm_name;
 public:
     virtual Instructions getInstructionsForCargo(const ContainersVector& containers_to_load) = 0;
     virtual void reset(const Plan& _plan, const Route& _route, WeightBalanceCalculator* _calculator) = 0;

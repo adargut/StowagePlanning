@@ -23,6 +23,8 @@ public:
     int getFloor() const;
     int getRow() const;
     int getCol() const;
+    static std::string opToString(Operation oper);
+    static std::string instructionsToString(const Instructions& instructions);
 };
 
 #endif //EX1_INSTRUCTION_H

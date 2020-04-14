@@ -22,3 +22,25 @@ int Instruction::getRow() const {
 int Instruction::getCol() const {
     return col;
 }
+
+std::string Instruction::opToString(Instruction::Operation op) {
+    switch(op) {
+        case Load:
+            return "Load";
+        case Unload:
+            return "Unload";
+        case Reject:
+            return "Reject";
+    }
+    return "";
+}
+
+std::string Instruction::instructionsToString(const Instructions &instructions) {
+    std::string result;
+
+    for (Instruction instruction : instructions) {
+        result.append(instruction.opToString(instruction.getOp())); // New instruction to write
+        result.append(" "); // Put space to separate instructions
+    }
+    return result;
+}

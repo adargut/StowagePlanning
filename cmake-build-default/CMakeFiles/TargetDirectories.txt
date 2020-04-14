@@ -1,0 +1,3 @@
+C:/Users/Adar/CLionProjects/Ex1/cmake-build-default/CMakeFiles/Ex1.dir
+C:/Users/Adar/CLionProjects/Ex1/cmake-build-default/CMakeFiles/edit_cache.dir
+C:/Users/Adar/CLionProjects/Ex1/cmake-build-default/CMakeFiles/rebuild_cache.dir

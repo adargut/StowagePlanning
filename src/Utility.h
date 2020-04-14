@@ -4,6 +4,8 @@
 */
 #ifndef EX1_UTILITY_H
 #define EX1_UTILITY_H
+#define CSV_PREFIX ".csv"
+#define CSV_SEPERATOR ","
 
 #include <vector>
 #include <map>
@@ -23,9 +25,11 @@ class StowageAlgorithm;
 class HashContainer;
 class DistanceToDestinationComparator;
 class AlgorithmError;
+class Error;
 
 // Typedef declarations
 typedef typename std::ifstream ifstream;
+typedef typename std::ofstream ofstream;
 typedef typename std::vector<std::vector<std::vector<int>>> Plan;
 typedef typename std::vector<Instruction> Instructions;
 typedef typename std::array<int, 3> Position;
@@ -45,9 +49,11 @@ namespace Utility
     // Populates <ports> with the ports in route - the name of a file describing a port is the same as the port's code
     bool readPorts(Route& route, Ports& ports); //TODO implement me
     // Save the instructions description in a file named <path>
-    bool SavePortInstructions(const std::string& path, const Instructions& instructions);
-    bool SaveSimulationResult(const std::string& path, int result);
-    bool SaveSimulationErrors(const std::string& path, const AlgorithmErrors& errors);
+    bool savePortInstructions(const Instructions& instructions, const std::string& algorithm_name,
+            const std::string& port_code);
+    bool saveSimulationResult(int result, const std::string& algorithm_name, const std::string& port_code);
+    bool saveSimulationErrors(const std::string& path, const AlgorithmErrors& errors);
+    bool fileAlreadyExists (std::string const& filename);
     // Sorts containers based on distance to destination
     class DistanceToDestinationComparator
     {
@@ -60,6 +66,5 @@ namespace Utility
         bool operator()(const Container* c1, const Container* c2);
     };
 }
-
 
 #endif //EX1_UTILITY_H
