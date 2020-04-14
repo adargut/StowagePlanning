@@ -10,8 +10,7 @@ bool isRangeValid(const Plan& plan, Instruction& instruction)
 {
     if(instruction.getFloor() < 0 || instruction.getFloor() >= plan.size()) return false;
     if(instruction.getRow() < 0 || instruction.getFloor() >= plan[0].size()) return false;
-    if(instruction.getCol() < 0 || instruction.getFloor() >= plan[0][0].size()) return false;
-    return true;
+    return !(instruction.getCol() < 0 || instruction.getFloor() >= plan[0][0].size());
 }
 
 bool isDestinationReachable(const Ship& ship, const Container * container)
@@ -132,19 +131,18 @@ bool Simulation::run_simulation()
         }
 
         // Check that each got rejected properly by the algorithm
-        for (auto& container: port.getContainers())
-        {
-            if(std::find(rejected.begin(), rejected.end(), container.second->getId()) == rejected.end())
+        for (auto &container: port.getContainers()) {
+            if (std::find(rejected.begin(), rejected.end(), container.second->getId()) == rejected.end())
                 errors.push_back(AlgorithmError(AlgorithmError::IgnoredContainer));
         }
 
         ship.advanceCurrentPortIdx();
         // Save instructions for port to a file
-        Utility::SavePortInstructions(port.getCode(), instructions);
+        Utility::savePortInstructions(port.getCode(), instructions); // TODO change arguments here..
     }
     // Save errors and number of operations to a file
-    Utility::SaveSimulationErrors("somepath.txt", errors);
-    Utility::SaveSimulationResult("respath.txt", number_of_operations);
+    Utility::saveSimulationErrors("somepath.txt", errors);
+    Utility::saveSimulationResult("respath.txt", number_of_operations);
 
     //TODO return value?
     return false;
