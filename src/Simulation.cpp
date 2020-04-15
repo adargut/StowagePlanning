@@ -21,9 +21,11 @@ bool isDestinationReachable(const Ship& ship, const Container * container)
     return false;
 }
 
-Simulation::Simulation(const Ports& _ports, const Plan& _plan, const Route& _route,
-                       WeightBalanceCalculator* _calculator, StowageAlgorithm* _algorithm)
-                       : ship(_plan, _route, _calculator), algorithm(_algorithm), ports(_ports) {}
+Simulation::Simulation(const Ports &_ports, const Plan &_plan, const Route &_route,
+                       WeightBalanceCalculator *_calculator,
+                       StowageAlgorithm *_algorithm, std::string  _travel_name)
+                       : ship(_plan, _route, _calculator), algorithm(_algorithm), ports(_ports),
+                       travel_name(std::move(_travel_name)) {}
 
 bool Simulation::run_simulation()
 {
@@ -72,7 +74,7 @@ bool Simulation::run_simulation()
                     // No such container on port
                     if (container == nullptr) errors.push_back(AlgorithmError(AlgorithmError::InvalidCommand));
                     // Failed to load container to ship
-                    if(!ship.loadContainer(instruction.getFloor(), instruction.getRow(), instruction.getCol(), container))
+                    else if(!ship.loadContainer(instruction.getFloor(), instruction.getRow(), instruction.getCol(), container))
                     {
                         if(ship.getContainerMap().count(instruction.getContainerId()))
                             // ... because the container is already on the ship
@@ -108,6 +110,8 @@ bool Simulation::run_simulation()
             }
         }
 
+
+
         // Check containers left on the port are only those that were originally on the port
         for (auto& container : port.getContainers())
         {
@@ -138,11 +142,13 @@ bool Simulation::run_simulation()
 
         ship.advanceCurrentPortIdx();
         // Save instructions for port to a file
-        //Utility::savePortInstructions(port.getCode(), instructions); // TODO change arguments here..
+        Utility::savePortInstructions(instructions, algorithm->getAlgorithmName() ,port.getCode());
     }
     //TODO Save errors and number of operations to a file
-    //Utility::saveSimulationErrors("somepath.txt", errors);
-    //Utility::saveSimulationResult("respath.txt", number_of_operations);
+    std::string error_string = AlgorithmError::errorsToString(errors);
+    std::string result_string = std::to_string(number_of_operations);
+    Utility::saveSimulation(result_string, algorithm->getAlgorithmName(), travel_name, SIMULATION_FILE);
+    Utility::saveSimulation(error_string, algorithm->getAlgorithmName(), travel_name, SIMULATION_ERRORS);
 
     //TODO return value?
     return false;

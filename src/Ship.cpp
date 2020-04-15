@@ -84,9 +84,9 @@ void Ship::advanceCurrentPortIdx() {
 bool Ship::is_ship_full()
 {
     for (int z = 0; z < plan.size(); z++) {
-        for (int x = 0; x < plan[0].size(); x++) {
-            for (int y = 0; y < plan[0][0].size(); y++) {
-                if(plan[z][x][y] == 0) return false;
+        for (int y = 0; y < plan[0].size(); y++) {
+            for (int x = 0; x < plan[0][0].size(); x++) {
+                if(plan[z][y][x] == 0) return false;
             }
         }
     }

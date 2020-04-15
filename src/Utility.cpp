@@ -29,16 +29,20 @@ namespace Utility {
         bool first_line = true;
         int x, y, z;
 
-        while (in >> line) {
+        while (std::getline(in, line)) {
             std::stringstream ss(line);
-            if (first_line) {
+            if (first_line)
+            {
                 first_line = false;
-                ss >> z >> x >> y;
-                plan = std::vector<std::vector<std::vector<int>>>(z, std::vector<std::vector<int>>(x, std::vector<int>(y, 0)));
+                ss >> z >> y >> x;
+                plan = std::vector<std::vector<std::vector<int>>>(z, std::vector<std::vector<int>>(y, std::vector<int>(x, 0)));
             }
-            ss >> x >> y >> z;
-            for (size_t i = 0; i < z; i++) {
-                plan[z][x][y] = -1;
+            else
+            {
+                ss >> z >> y >> x;
+                for (size_t i = 0; i < z; i++) {
+                    plan[i][y][x] = -1;
+                }
             }
         }
         in.close();
@@ -51,14 +55,14 @@ namespace Utility {
         std::string line;
         if (!in.is_open()) return false; //TODO: add error message
 
-        while (in >> line) {
+        while (std::getline(in, line)) {
             route.push_back(line);
         }
         in.close();
         return true;
     }
 
-    bool SavePortInstructions(const Instructions &instructions, const std::string &algorithm_name,
+    bool savePortInstructions(const Instructions &instructions, const std::string &algorithm_name,
                               const std::string &port_code)
     {
         if (port_code.empty() || algorithm_name.empty() || instructions.empty()) return false; // Input validation
@@ -73,21 +77,35 @@ namespace Utility {
                 return false;
             }
             // Write header to new instructions file
-            old_file >> curr_line;
+            std::getline(old_file, curr_line);
             new_file << curr_line << std::endl;
             curr_line.clear();
-            // Write algorithms row to new file
-            old_file >> curr_line;
-            curr_line.append(CSV_SEPERATOR);
-            curr_line.append(algorithm_name);
-            new_file << curr_line << std::endl;
-            curr_line.clear();
-            // Write new set of instructions
-            old_file >> curr_line;
-            curr_line.append(CSV_SEPERATOR);
-            curr_line.append(Instruction::instructionsToString(instructions));
+            // Find right line with algorithm name
+            bool found_line = false;
+            while (std::getline(old_file, curr_line)) {
+                if (split(curr_line, CSV_SEPERATOR[0])[0] == algorithm_name) {
+                    found_line = true;
+                    break;
+                }
+                new_file << curr_line << std::endl;
+            }
+            if (found_line) { // Algorithm line already in csv file, so just write new result to that line
+                curr_line.append(Instruction::instructionsToString(instructions));
+                new_file << curr_line << std::endl;
+                while (std::getline(old_file, curr_line)) { // Write rest of the lines below line of algorithm found
+                    new_file << curr_line << std::endl;
+                }
+            } else { // Algorithm not found, need to make new line corresponding to that algorithm
+                curr_line.clear();
+                curr_line.append(algorithm_name);
+                // Write new set to instructions
+                curr_line.append(CSV_SEPERATOR);
+                curr_line.append(Instruction::instructionsToString(instructions));
+                new_file << curr_line << std::endl;
+            }
             // Switch old file with new file
             old_file.close();
+            new_file.close();
             remove(filename.c_str());
             rename("tmp.txt", filename.c_str());
         }
@@ -113,7 +131,8 @@ namespace Utility {
     }
 
     bool saveSimulation(const std::string &string_to_write, const std::string &algorithm_name,
-                        const std::string &travel_name, const std::string &filename) {
+                        const std::string &travel_name, const std::string &filename)
+    {
         std::string curr_line;
         if (fileAlreadyExists(filename)) { // Simulation file created already
             ifstream old_file(filename);
@@ -124,12 +143,12 @@ namespace Utility {
             }
 
             // Write new travel to header of csv file
-            old_file >> curr_line;
+            std::getline(old_file, curr_line);
             curr_line.append(travel_name);
             curr_line.clear();
             // Find right line with algorithm name
             bool found_line = false;
-            while (old_file >> curr_line) {
+            while (std::getline(old_file, curr_line)) {
                 if (split(curr_line, CSV_SEPERATOR[0])[0] == algorithm_name) {
                     found_line = true;
                     break;
@@ -139,7 +158,7 @@ namespace Utility {
             if (found_line) { // Algorithm line already in csv file, so just write new result to that line
                 curr_line.append(string_to_write);
                 new_file << curr_line << std::endl;
-                while (old_file >> curr_line) { // Write rest of the lines below line of algorithm found
+                while (std::getline(old_file, curr_line)) { // Write rest of the lines below line of algorithm found
                     new_file << curr_line << std::endl;
                 }
             } else { // Algorithm not found, need to make new line corresponding to that algorithm
@@ -150,6 +169,7 @@ namespace Utility {
                 new_file << curr_line << std::endl;
             }
             old_file.close();
+            new_file.close();
             remove(filename.c_str());
             rename("tmp.txt", filename.c_str());
         } else { // No simulation file exists, need to create it
@@ -176,10 +196,26 @@ namespace Utility {
     }
 
     bool readPorts(Route &route, Ports &ports) {
-        for (auto &port : ports) {
-            route.push_back(port.getCode());
+        std::string curr_line;
+        int curr_id;
+        int curr_weight;
+        std::string curr_destination;
+
+        for (auto &port_code : route) {
+            ifstream in(port_code + CARGO_SUFFIX);
+            if (!in.is_open()) return false; //TODO: add error message
+
+            ContainersVector containers;
+            while (std::getline(in, curr_line)) {
+                std::stringstream ss(curr_line);
+                ss >> curr_id >> curr_weight >> curr_destination;
+                auto container = new Container(curr_weight, curr_destination, curr_id);
+                // TODO:: free the container objects somewhere
+                containers.push_back(container);
+            }
+            Port port(port_code, containers);
+            ports.push_back(port);
         }
-        //TODO Return value?
         return true;
     }
 

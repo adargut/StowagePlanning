@@ -20,6 +20,7 @@
 #define CSV_SEPERATOR ","
 #define SIMULATION_FILE "simulation_results.csv"
 #define SIMULATION_ERRORS "simulation_errors.csv"
+#define CARGO_SUFFIX ".cargo_data"
 
 // Forward declarations
 class Container;

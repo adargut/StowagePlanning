@@ -12,8 +12,10 @@ private:
     Ship ship;
     Ports ports;
     StowageAlgorithm* algorithm;
-    Simulation(const Ports& _ports, const Plan& _plan, const Route& _route,
-            WeightBalanceCalculator* _calculator, StowageAlgorithm* _algorithm);
+    const std::string travel_name;
+public:
+    Simulation(const Ports &_ports, const Plan &_plan, const Route &_route, WeightBalanceCalculator *_calculator,
+               StowageAlgorithm *_algorithm, std::string  _travel_name);
     bool run_simulation();
 };
 

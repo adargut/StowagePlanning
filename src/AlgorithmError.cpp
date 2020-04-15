@@ -18,7 +18,7 @@ std::string AlgorithmError::errorToString(AlgorithmError::Type type) {
     return "";
 }
 
-std::string errorsToString(const AlgorithmErrors &errors) {
+std::string AlgorithmError::errorsToString(const AlgorithmErrors &errors) {
     std::string result;
 
     for (auto &error : errors) {

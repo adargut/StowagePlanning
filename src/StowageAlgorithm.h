@@ -11,12 +11,12 @@
 #include "Instruction.h"
 
 class StowageAlgorithm { // TODO implement me
-private:
-    const std::string algorithm_name;
+protected:
+    std::string algorithm_name;
 public:
     virtual Instructions getInstructionsForCargo(const ContainersVector &containers_to_load) = 0;
 
-    const std::string &getAlgorithmName() const;
+    const std::string& getAlgorithmName() const;
 
     virtual void reset(const Plan &_plan, const Route &_route, WeightBalanceCalculator *_calculator) = 0;
     virtual ~StowageAlgorithm() = default;
@@ -26,7 +26,7 @@ class NaiveStowageAlgorithm : public StowageAlgorithm {
 private:
     Ship *ship = nullptr;
 public:
-    // TODO reset instead of constructor
+    NaiveStowageAlgorithm();
     void reset(const Plan &_plan, const Route &_route, WeightBalanceCalculator *_calculator) override;
 
     Instructions getInstructionsForCargo(const ContainersVector &containers_to_load) override;
@@ -39,8 +39,11 @@ private:
                                      Instructions &result);
 
     // Utility function for getInstructions for cargo: load containers currently at port into ship
-    void getInstructionsForLoading(const Plan &ship_plan, Instructions &result,
-                                   ContainersVector sorted_containers_to_load);
+    void getInstructionsForLoading(const Plan& ship_plan, Instructions &result,
+                                   ContainersVector& sorted_containers_to_load);
+
+    void getInstructionForLoadingContainer(const Plan& ship_plan, Instructions &result,
+                                           const Container* const container_to_load);
 };
 
 class RandomStowageAlgorithm : public StowageAlgorithm {
