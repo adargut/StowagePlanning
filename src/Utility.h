@@ -80,10 +80,9 @@ namespace Utility {
         const int &current_port_idx;
         const Route &route;
 
-        int distance_to_destination(const Container *container);
-
     public:
         DistanceToDestinationComparator(const int &_current_port_idx, const Route &_route);
+        int distance_to_destination(const Container *container);
         bool operator()(const Container* c1, const Container* c2);
     };
 }

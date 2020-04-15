@@ -227,11 +227,12 @@ namespace Utility {
     }
 
     int DistanceToDestinationComparator::distance_to_destination(const Container *container) {
-        int i = current_port_idx;
+        int i = current_port_idx+1;
         for (; i < route.size(); i++) {
             if (route[i] == (container->getPortCode())) return (i - current_port_idx);
         }
-        return std::numeric_limits<int>::infinity(); // Infinite
+        //TODO std::numeric_limits<int>::infinity() is 0?? Should maybe use double anyway...
+        return INT_MAX; // Infinite
     }
 }
 

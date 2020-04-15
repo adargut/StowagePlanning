@@ -69,6 +69,15 @@ void NaiveStowageAlgorithm::getInstructionsForUnloading(const ContainerMap &ship
 
 void NaiveStowageAlgorithm::getInstructionForLoadingContainer(const Plan &ship_plan, Instructions &result,
                                                               const Container *const container_to_load) {
+    bool destination_in_route = false;
+    for (int i = ship->getPortIndex()+1; i < ship->getRoute().size(); ++i) {
+        if(container_to_load->getPortCode() == ship->getRoute()[i]) destination_in_route = true;
+    }
+    if(!destination_in_route)
+    {
+        result.push_back(Instruction(Instruction::Reject, container_to_load->getId(), -1, -1, -1));
+        return;
+    }
     for (int z = 0; z < ship_plan.size(); z++) { // TODO optimize this n^3 loop
         for (int y = 0; y < ship_plan[0].size(); y++) {
             for (int x = 0; x < ship_plan[0][0].size(); x++) {

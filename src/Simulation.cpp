@@ -37,7 +37,7 @@ bool Simulation::run_simulation()
         std::vector<int> rejected; // Vector to keep track of rejected container id's for this port
         Port::PortContainers original_containers(port.getContainers());
         Instructions instructions = algorithm->getInstructionsForCargo(port.getContainersToLoad());
-        number_of_operations+=instructions.size();
+        number_of_operations+=instructions.size(); //TODO: should not count rejects?
         for (auto& instruction : instructions)
         {
             //handle Unload operation
@@ -102,21 +102,34 @@ bool Simulation::run_simulation()
                 }
                 // Rejecting container that was not meant to be loaded
                 if(!in_containers_to_load) errors.push_back(AlgorithmError(AlgorithmError::InvalidCommand));
-                else
-                {
-                    if(!ship.is_ship_full()) errors.push_back(AlgorithmError(AlgorithmError::IgnoredContainer));
-                    rejected.push_back(instruction.getContainerId());
-                }
+                else rejected.push_back(instruction.getContainerId());
             }
         }
 
+        // Post all operations for this port:
 
+        // Check that no container destined for this port was forgotten on the ship
+        for(auto& container : ship.getContainerMap())
+        {
+            if(container.second.first->getPortCode() == port.getCode())
+                errors.push_back(AlgorithmError(AlgorithmError::IgnoredContainer));
+        }
 
-        // Check containers left on the port are only those that were originally on the port
+        // Check containers left on the port are only those destined for that port, or were originally on the port
         for (auto& container : port.getContainers())
         {
-            if(std::find(original_containers.begin(), original_containers.end(), container) == original_containers.end())
-                errors.push_back(AlgorithmError(AlgorithmError::IgnoredContainer));
+            if(container.second->getPortCode() != port.getCode())
+            {
+                if(std::find(original_containers.begin(), original_containers.end(), container) == original_containers.end())
+                    errors.push_back(AlgorithmError(AlgorithmError::IgnoredContainer));
+            }
+        }
+
+        Port::PortContainers unloaded_containers;
+        for(auto& container : port.getContainers())
+        {
+            if(std::find(original_containers.begin(), original_containers.end(), container) != original_containers.end())
+                unloaded_containers.insert(container);
         }
 
         // Check that we rejected only the containers with the latest destinations
@@ -124,21 +137,32 @@ bool Simulation::run_simulation()
         Cmp distance_to_destination(ship.getPortIndex(), ship.getRoute());
         ContainersVector sorted_containers_to_load(port.getContainersToLoad().begin(), port.getContainersToLoad().end());
         std::sort(sorted_containers_to_load.begin(), sorted_containers_to_load.end(), distance_to_destination);
-        int minimum_idx = port.getContainersToLoad().size() - port.getContainers().size();
-        for (auto& container : port.getContainers())
+        int minimum_idx = port.getContainersToLoad().size() - unloaded_containers.size();
+        if(minimum_idx < sorted_containers_to_load.size())
         {
-            int j = -1;
-            for (int i = 0; i < sorted_containers_to_load.size(); ++i) {
-                if(sorted_containers_to_load[i] == container.second) j = i;
+            int minimum_distance = distance_to_destination.distance_to_destination(sorted_containers_to_load[minimum_idx]);
+            for (auto& container : unloaded_containers)
+            {
+                int distance = distance_to_destination.distance_to_destination(sorted_containers_to_load[minimum_idx]);
+                if(distance < minimum_distance)
+                {
+                    errors.push_back(AlgorithmError(AlgorithmError::IgnoredContainer));
+                }
             }
-            if(j < minimum_idx) errors.push_back(AlgorithmError(AlgorithmError::IgnoredContainer));
         }
 
         // Check that each got rejected properly by the algorithm
-        for (auto &container: port.getContainers()) {
+        for (auto &container: unloaded_containers) {
             if (std::find(rejected.begin(), rejected.end(), container.second->getId()) == rejected.end())
                 errors.push_back(AlgorithmError(AlgorithmError::IgnoredContainer));
         }
+
+        //TODO check there's no more room on the ship for unloaded containers that should be loaded
+//        else
+//        {
+//            if(!ship.is_ship_full()) errors.push_back(AlgorithmError(AlgorithmError::IgnoredContainer));
+//            rejected.push_back(instruction.getContainerId());
+//        }
 
         ship.advanceCurrentPortIdx();
         // Save instructions for port to a file
