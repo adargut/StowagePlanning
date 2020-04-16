@@ -1,15 +1,18 @@
 #include "WeightBalanceCalculator.h"
+#include "Utility.h"
 
 WeightBalanceCalculator::BalanceStatus
 NaiveWeightBalanceCalculator::tryOperation(const Instruction &instruction, int weight, const Plan &plan) {
     return Approved;
 }
 
-std::pair<int, WeightBalanceCalculator::BalanceStatus> // TODO style me better
-NaiveWeightBalanceCalculator::tryOperations(const Instructions &instructions, const std::vector<int> &weights,
-                                            const Plan &plan) {
+std::pair<int, WeightBalanceCalculator::BalanceStatus> NaiveWeightBalanceCalculator::tryOperations(
+        const Instructions &instructions,
+        const std::vector<int> &weights,
+        const Plan &plan) {
     if (instructions.size() != weights.size()) {
-        // TODO return error
+        Error::throwSizeError();
+        return std::make_pair(-1, Approved);
     }
     for (int i = 0; i < instructions.size(); i++) {
         BalanceStatus status = tryOperation(instructions[i], weights[i], plan);

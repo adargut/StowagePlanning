@@ -1,3 +1,8 @@
+/**
+    AlgorithmError.h
+    An error that occurred during the run of the algorithm, output to simulation errors
+*/
+
 #ifndef EX1_ALGORITHMERROR_H
 #define EX1_ALGORITHMERROR_H
 
@@ -20,6 +25,5 @@ public:
 
     static std::string errorsToString(const AlgorithmErrors &errors);
 };
-
 
 #endif //EX1_ALGORITHMERROR_H

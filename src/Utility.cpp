@@ -3,6 +3,8 @@
 #include "Instruction.h"
 #include "Error.h"
 #include "Port.h"
+#include "StowageAlgorithm.h"
+#include "Simulation.h"
 
 namespace Utility {
     bool fileAlreadyExists(const std::string &filename) {
@@ -63,10 +65,10 @@ namespace Utility {
     }
 
     bool savePortInstructions(const Instructions &instructions, const std::string &algorithm_name,
-                              const std::string &port_code)
+                              const std::string &port_code, const std::string &travel_name)
     {
         if (port_code.empty() || algorithm_name.empty() || instructions.empty()) return false; // Input validation
-        const std::string filename = port_code + CSV_PREFIX;
+        const std::string filename = port_code + CSV_SUFFIX;
         std::string curr_line;
 
         if (fileAlreadyExists(filename)) { // File for port exists, need to overwrite
@@ -78,6 +80,11 @@ namespace Utility {
             }
             // Write header to new instructions file
             std::getline(old_file, curr_line);
+            new_file << curr_line << std::endl;
+            curr_line.clear();
+            std::getline(old_file, curr_line);
+            curr_line.append(CSV_SEPERATOR);
+            curr_line.append(travel_name);
             new_file << curr_line << std::endl;
             curr_line.clear();
             // Find right line with algorithm name
@@ -99,7 +106,6 @@ namespace Utility {
                 curr_line.clear();
                 curr_line.append(algorithm_name);
                 // Write new set to instructions
-                curr_line.append(CSV_SEPERATOR);
                 curr_line.append(Instruction::instructionsToString(instructions));
                 new_file << curr_line << std::endl;
             }
@@ -116,23 +122,28 @@ namespace Utility {
                 Error::throwErrorOpeningFile();
                 return false;
             }
+
             // Write header to new file instructions
             curr_line = "Port Instructions for port " + port_code;
             new_file << curr_line << std::endl;
-            // Write algorithm line to new file
-            curr_line = "Algorithm " + algorithm_name;
+            curr_line.clear();
+            curr_line.append("Algorithm name");
+            curr_line.append(CSV_SEPERATOR);
+            curr_line.append(travel_name);
             new_file << curr_line << std::endl;
-            // Write set of instructions to new file
-            curr_line = Instruction::instructionsToString(instructions);
+            // Write algorithm line to new file
+            curr_line = algorithm_name + Instruction::instructionsToString(instructions);
             new_file << curr_line << std::endl;
             new_file.close();
         }
         return true;
     }
 
-    bool saveSimulation(const std::string &string_to_write, const std::string &algorithm_name,
-                        const std::string &travel_name, const std::string &filename)
-    {
+    bool saveSimulation(std::string &string_to_write, const std::string &algorithm_name,
+                        const std::string &travel_name, const std::string &filename) {
+        if (string_to_write.empty() && filename == SIMULATION_ERRORS) { // No errors happened in algorithm run
+            string_to_write = DEFAULT_ERROR;
+        }
         std::string curr_line;
         if (fileAlreadyExists(filename)) { // Simulation file created already
             ifstream old_file(filename);
@@ -144,10 +155,16 @@ namespace Utility {
 
             // Write new travel to header of csv file
             std::getline(old_file, curr_line);
-            curr_line.append(travel_name);
+            curr_line.append("\n");
+            new_file << curr_line;
             curr_line.clear();
+            std::getline(old_file, curr_line);
+            curr_line.append(CSV_SEPERATOR + travel_name);
+            curr_line.append("\n");
+            new_file << curr_line;
             // Find right line with algorithm name
             bool found_line = false;
+
             while (std::getline(old_file, curr_line)) {
                 if (split(curr_line, CSV_SEPERATOR[0])[0] == algorithm_name) {
                     found_line = true;
@@ -156,7 +173,7 @@ namespace Utility {
                 new_file << curr_line << std::endl;
             }
             if (found_line) { // Algorithm line already in csv file, so just write new result to that line
-                curr_line.append(string_to_write);
+                curr_line.append(CSV_SEPERATOR + string_to_write);
                 new_file << curr_line << std::endl;
                 while (std::getline(old_file, curr_line)) { // Write rest of the lines below line of algorithm found
                     new_file << curr_line << std::endl;
@@ -179,9 +196,14 @@ namespace Utility {
                 Error::throwErrorOpeningFile();
                 return false;
             }
+
             // Write header of simulation file
-            if (filename == SIMULATION_FILE) curr_line.append("SIMULATION RESULTS");
-            else curr_line.append("SIMULATION ERRORS");
+            if (filename == SIMULATION_FILE) curr_line.append("Simulation results");
+            else curr_line.append("Simulation errors");
+            curr_line.append("\n");
+            new_file << curr_line;
+            curr_line.clear();
+            curr_line.append("Algorithm name");
             curr_line.append(CSV_SEPERATOR);
             curr_line.append(travel_name);
             new_file << curr_line << std::endl;
@@ -203,7 +225,10 @@ namespace Utility {
 
         for (auto &port_code : route) {
             ifstream in(port_code + CARGO_SUFFIX);
-            if (!in.is_open()) return false; //TODO: add error message
+            if (!in.is_open()) {
+                Error::throwErrorOpeningFile();
+                return false;
+            }
 
             ContainersVector containers;
             while (std::getline(in, curr_line)) {
@@ -219,6 +244,29 @@ namespace Utility {
         return true;
     }
 
+    bool start(const std::string &travel_name) {
+        Plan plan;
+        Route route;
+        Ports ports;
+        if (!Utility::readShipPlan(PLAN_FILE, plan)) {
+            Error::throwErrorReadingInput();
+            return false;
+        }
+        if (!Utility::readShipRoute(ROUTE_FILE, route)) {
+            Error::throwErrorReadingInput();
+            return false;
+        }
+        if (!Utility::readPorts(route, ports)) {
+            Error::throwErrorReadingInput();
+            return false;
+        };
+        StowageAlgorithm *algorithm = new NaiveStowageAlgorithm(); // TODO delete this somewhere??
+        WeightBalanceCalculator *calculator = new NaiveWeightBalanceCalculator();
+        Simulation simulation(ports, plan, route, calculator, algorithm, travel_name);
+        simulation.run_simulation();
+        return true;
+    }
+
     DistanceToDestinationComparator::DistanceToDestinationComparator(const int &currentPortIdx, const Route &route)
             : current_port_idx(currentPortIdx), route(route) {}
 
@@ -227,8 +275,7 @@ namespace Utility {
     }
 
     int DistanceToDestinationComparator::distance_to_destination(const Container *container) {
-        int i = current_port_idx+1;
-        for (; i < route.size(); i++) {
+        for (int i = current_port_idx + 1; i < route.size(); i++) {
             if (route[i] == (container->getPortCode())) return (i - current_port_idx);
         }
         //TODO std::numeric_limits<int>::infinity() is 0?? Should maybe use double anyway...

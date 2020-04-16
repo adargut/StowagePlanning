@@ -2,17 +2,15 @@
     WeightBalanceCalculator.h
     Weight balance calculator that checks the balance an instruction set
 */
+
 #ifndef EX1_WEIGHTBALANCECALCULATOR_H
 #define EX1_WEIGHTBALANCECALCULATOR_H
-#define BALANCED (-1)
 
 #include <vector>
 #include "Instruction.h"
 #include "Utility.h"
 
 class WeightBalanceCalculator {
-protected:
-//    const Plan& ship_plan;
 public:
     enum BalanceStatus {
     Approved,
