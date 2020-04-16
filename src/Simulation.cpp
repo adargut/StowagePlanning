@@ -157,12 +157,10 @@ bool Simulation::run_simulation()
                 errors.push_back(AlgorithmError(AlgorithmError::IgnoredContainer));
         }
 
-        //TODO check there's no more room on the ship for unloaded containers that should be loaded
-//        else
-//        {
-//            if(!ship.is_ship_full()) errors.push_back(AlgorithmError(AlgorithmError::IgnoredContainer));
-//            rejected.push_back(instruction.getContainerId());
-//        }
+        // Check there's no more room on the ship for unloaded containers that should be loaded
+        for (auto& container : unloaded_containers)
+            if(distance_to_destination.distance_to_destination(container.second) < INT_MAX && !ship.is_ship_full())
+                errors.push_back(AlgorithmError(AlgorithmError::IgnoredContainer));
 
         ship.advanceCurrentPortIdx();
         // Save instructions for port to a file
