@@ -2,6 +2,7 @@
     StowageAlgorithm.h
     Algorithmic logic of stowage
 */
+
 #ifndef EX1_STOWAGEALGORITHM_H
 #define EX1_STOWAGEALGORITHM_H
 
@@ -19,6 +20,7 @@ public:
     const std::string& getAlgorithmName() const;
 
     virtual void reset(const Plan &_plan, const Route &_route, WeightBalanceCalculator *_calculator) = 0;
+
     virtual ~StowageAlgorithm() = default;
 };
 
@@ -27,6 +29,7 @@ private:
     Ship *ship = nullptr;
 public:
     NaiveStowageAlgorithm();
+
     void reset(const Plan &_plan, const Route &_route, WeightBalanceCalculator *_calculator) override;
 
     Instructions getInstructionsForCargo(const ContainersVector &containers_to_load) override;
@@ -47,7 +50,7 @@ private:
 };
 
 class RandomStowageAlgorithm : public StowageAlgorithm {
-    //
+    // TODO implement random algorithm in Ex2
 };
 
 #endif //EX1_STOWAGEALGORITHM_H

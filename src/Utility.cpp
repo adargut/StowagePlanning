@@ -23,27 +23,53 @@ namespace Utility {
         return result;
     }
 
-    bool readShipPlan(const std::string &path, Plan &plan) //TODO: check input is valid
-    {
+    bool isNumber(const std::string &s) {
+        return !s.empty() && std::all_of(s.begin(), s.end(), ::isdigit);
+    }
+
+    bool readShipPlan(const std::string &path, Plan &plan) {
         ifstream in(path);
         std::string line;
-        if (!in.is_open()) return false; //TODO: add error message
+        if (!in.is_open()) {
+            Error::throwErrorOpeningFile();
+            return false;
+        }
         bool first_line = true;
+        int dim_z = 0, dim_y = 0, dim_x = 0;
         int x, y, z;
 
         while (std::getline(in, line)) {
+            std::vector<std::string> validator = split(line, ' '); // For input validation
+            if (validator.size() != 3) {
+                Error::throwErrorReadingInput();
+                return false;
+            }
             std::stringstream ss(line);
-            if (first_line)
-            {
+            if (!isNumber(validator[0]) || !isNumber(validator[1]) || !isNumber(validator[2])) {
+                Error::throwIncorrectFormatError();
+                return false;
+            }
+
+            ss >> z >> y >> x;
+            if (first_line) {
                 first_line = false;
-                ss >> z >> y >> x;
+                dim_z = z;
+                dim_y = y;
+                dim_x = x;
+
+                if (dim_x < 1 || dim_y < 1 || dim_z < 1) {
+                    Error::throwSizeError();
+                    return false;
+                }
                 plan = std::vector<std::vector<std::vector<std::string>>>
                         (z, std::vector<std::vector<std::string>>
-                        (y, std::vector<std::string>(x, FREE_POS)));
-            }
-            else
+                                (y, std::vector<std::string>(x, FREE_POS)));
+            } else // Not the first line
             {
-                ss >> z >> y >> x;
+                if (x > dim_x - 1 || y > dim_y - 1 || z > dim_z || x < 0 || y < 0 || z < 1) {
+                    Error::throwArrayBoundsError();
+                    return false;
+                }
                 for (size_t i = 0; i < z; i++) {
                     plan[i][y][x] = ILLEGAL_POS;
                 }
@@ -53,17 +79,19 @@ namespace Utility {
         return true;
     }
 
-    bool readShipRoute(const std::string &path, Route& route) //TODO: check input is valid
-    {
+    bool readShipRoute(const std::string &path, Route &route) {
         ifstream in(path);
         std::string line;
-        if (!in.is_open())
-        {
+        if (!in.is_open()) {
             Error::throwErrorOpeningFile();
             return false;
         }
-
         while (std::getline(in, line)) {
+            std::vector<std::string> validator = split(line, ' '); // For input validation
+            if (validator.size() != 1) {
+                Error::throwIncorrectFormatError();
+                return false;
+            }
             route.push_back(line);
         }
         in.close();
@@ -79,7 +107,7 @@ namespace Utility {
 
         if (fileAlreadyExists(filename)) { // File for port exists, need to overwrite
             ifstream old_file(filename);
-            ofstream new_file("tmp.txt");
+            ofstream new_file(TMP_FILE);
             if (!old_file || !new_file) {
                 Error::throwErrorOpeningFile();
                 return false;
@@ -119,7 +147,7 @@ namespace Utility {
             old_file.close();
             new_file.close();
             remove(filename.c_str());
-            rename("tmp.txt", filename.c_str());
+            rename(TMP_FILE, filename.c_str());
         }
         else { // File doesn't exist, need to create it
             ofstream new_file;
@@ -153,7 +181,7 @@ namespace Utility {
         std::string curr_line;
         if (fileAlreadyExists(filename)) { // Simulation file created already
             ifstream old_file(filename);
-            ofstream new_file("tmp.txt");
+            ofstream new_file(TMP_FILE);
             if (!old_file || !new_file) {
                 Error::throwErrorOpeningFile();
                 return false;
@@ -194,7 +222,7 @@ namespace Utility {
             old_file.close();
             new_file.close();
             remove(filename.c_str());
-            rename("tmp.txt", filename.c_str());
+            rename(TMP_FILE, filename.c_str());
         } else { // No simulation file exists, need to create it
             ofstream new_file;
             new_file.open(filename);
