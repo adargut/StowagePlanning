@@ -1,17 +1,21 @@
 #include "Error.h"
 
-void Error::throwErrorOpeningFile() { // TODO fill me with many errors and put them where they should be..
-    std::cout << "Error: cannot open file at" << __builtin_FUNCTION() << std::endl;
+void Error::throwErrorOpeningFile(const char *str) {
+    std::cout << "Error: cannot open file at " << str << std::endl;
 }
 
-void Error::throwSizeError() {
-    std::cout << "Error: non-matching vector sizes at" << __builtin_FUNCTION() << std::endl;
+void Error::throwSizeError(const char *str) {
+    std::cout << "Error: bad sizes at " << str << std::endl;
 }
 
-void Error::throwArrayBoundsError() {
-    std::cout << "Error: out of array bounds at" << __builtin_FUNCTION() << std::endl;
+void Error::throwArrayBoundsError(const char *str) {
+    std::cout << "Error: out of array bounds at " << str << std::endl;
 }
 
-void Error::throwErrorReadingInput() {
-    std::cout << "Error: reading input failed at" << __builtin_FUNCTION() << std::endl;
+void Error::throwErrorReadingInput(const char *str) {
+    std::cout << "Error: reading input failed at " << str << std::endl;
+}
+
+void Error::throwIncorrectFormatError(const char *str) {
+    std::cout << "Error: bad format given at " << str << std::endl;
 }

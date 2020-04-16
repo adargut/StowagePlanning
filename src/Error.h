@@ -10,13 +10,15 @@
 
 class Error {
 public:
-    static void throwErrorOpeningFile();
+    static void throwErrorOpeningFile(const char *str = __builtin_FUNCTION());
 
-    static void throwErrorReadingInput();
+    static void throwErrorReadingInput(const char *str = __builtin_FUNCTION());
 
-    static void throwArrayBoundsError();
+    static void throwArrayBoundsError(const char *str = __builtin_FUNCTION());
 
-    static void throwSizeError();
+    static void throwIncorrectFormatError(const char *str = __builtin_FUNCTION());
+
+    static void throwSizeError(const char *str = __builtin_FUNCTION());
 };
 
 

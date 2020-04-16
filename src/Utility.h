@@ -1,6 +1,6 @@
 /**
     Utility.h
-    Additional utility functions and typedef declarations
+    Additional utility functions, macros and typedef declarations
 */
 
 #ifndef EX1_UTILITY_H
@@ -15,12 +15,14 @@
 #include <sstream>
 #include <unordered_set>
 #include <unordered_map>
+#include <algorithm>
 #include "Error.h"
 
 // Macros
 #define CSV_SUFFIX ".csv"
 #define CARGO_SUFFIX ".cargo_data"
 #define CSV_SEPERATOR ","
+#define TMP_FILE "tmp.txt"
 #define SIMULATION_FILE "simulation_results.csv"
 #define SIMULATION_ERRORS "simulation_errors.csv"
 #define DEFAULT_ERROR "No Errors for this Travel"
@@ -60,7 +62,10 @@ typedef typename std::vector<AlgorithmError> AlgorithmErrors;
 
 // General purpose functions
 bool fileAlreadyExists(std::string const &filename);
+
 std::vector<std::string> split(const std::string &s, char delim);
+
+bool isNumber(const std::string &s);
 
 namespace Utility {
     // Populates <plan> based on description in the file named <path>
