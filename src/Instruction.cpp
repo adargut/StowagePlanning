@@ -36,11 +36,14 @@ std::string Instruction::opToString(Instruction::Operation op) {
 }
 
 std::string Instruction::instructionsToString(const Instructions &instructions) {
-    std::string result;
+    std::string result = CSV_SEPERATOR;
 
-    for (Instruction instruction : instructions) {
+    for (size_t i = 0; i < instructions.size() - 1; i++) {
+        Instruction instruction = instructions[i];
         result.append(instruction.opToString(instruction.getOp())); // New instruction to write
         result.append(" "); // Put space to separate instructions
     }
+    Instruction last_instruction = instructions[instructions.size() - 1];
+    result.append(last_instruction.opToString(last_instruction.getOp()));
     return result;
 }

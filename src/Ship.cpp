@@ -30,7 +30,7 @@ void Ship::updatePlan(int floor, int row, int col, int val) {
 void Ship::insertContainerMap(int floor, int row, int col, int id, const Container *const container) {
     std::pair<const Container *const, Position> p(container, Position{floor, row, col});
     ContainerMap::value_type item(id, p);
-    containers.insert(item); //TODO:: maybe emplace instead
+    containers.insert(item);
 }
 
 // Remove container from map
@@ -39,16 +39,17 @@ void Ship::eraseContainerMap(int floor, int row, int col) {
 }
 
 bool Ship::loadContainer(int floor, int row, int col, const Container *const container_to_load) {
-    //TODO check floor, row and col are in valid range
+    if (floor < 0 || row < 0 || col < 0 || floor > plan.size() || row > plan[0].size() || col > plan[0][0].size()) {
+        Error::throwArrayBoundsError();
+        return false;
+    }
     int id = container_to_load->getId();
     if (plan[floor][row][col] != 0 || containers.count(id)) return false; // Position is occupied or container in ship
-    if(floor!= 0)
-    {
-        if(plan[floor-1][row][col] == 0) return false; //Trying to place container "in the air"
+    if (floor != 0) {
+        if (plan[floor - 1][row][col] == 0) return false; //Trying to place container "in the air"
     }
-    if(floor != plan.size()-1)
-    {
-        if(plan[floor+1][row][col] != 0) return false; //Trying to place container below an existing one
+    if (floor != plan.size() - 1) {
+        if (plan[floor + 1][row][col] != 0) return false; //Trying to place container below an existing one
     }
     insertContainerMap(floor, row, col, container_to_load->getId(), container_to_load);
     updatePlan(floor, row, col, id);
@@ -56,12 +57,13 @@ bool Ship::loadContainer(int floor, int row, int col, const Container *const con
 }
 
 const Container * const Ship::unloadContainer(int floor, int row, int col) {
-    // TODO make this return error so we know why it failed
-    // TODO is it not [floor][col][row] ?
+    if (floor < 0 || row < 0 || col < 0 || floor > plan.size() || row > plan[0].size() || col > plan[0][0].size()) {
+        Error::throwArrayBoundsError();
+        return nullptr;
+    }
     if (plan[floor][row][col] <= 0) return nullptr; // Position is free or illegal
-    if(floor != plan.size()-1)
-    {
-        if(plan[floor+1][row][col] != 0) return nullptr; // There's a container above the container to unload
+    if (floor != plan.size() - 1) {
+        if (plan[floor + 1][row][col] != 0) return nullptr; // There's a container above the container to unload
     }
     const Container *const res = containers[plan[floor][row][col]].first;
     eraseContainerMap(floor, row, col);
