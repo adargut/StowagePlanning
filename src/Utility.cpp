@@ -37,13 +37,15 @@ namespace Utility {
             {
                 first_line = false;
                 ss >> z >> y >> x;
-                plan = std::vector<std::vector<std::vector<int>>>(z, std::vector<std::vector<int>>(y, std::vector<int>(x, 0)));
+                plan = std::vector<std::vector<std::vector<std::string>>>
+                        (z, std::vector<std::vector<std::string>>
+                        (y, std::vector<std::string>(x, FREE_POS)));
             }
             else
             {
                 ss >> z >> y >> x;
                 for (size_t i = 0; i < z; i++) {
-                    plan[i][y][x] = -1;
+                    plan[i][y][x] = ILLEGAL_POS;
                 }
             }
         }
@@ -55,7 +57,11 @@ namespace Utility {
     {
         ifstream in(path);
         std::string line;
-        if (!in.is_open()) return false; //TODO: add error message
+        if (!in.is_open())
+        {
+            Error::throwErrorOpeningFile();
+            return false;
+        }
 
         while (std::getline(in, line)) {
             route.push_back(line);
@@ -219,7 +225,7 @@ namespace Utility {
 
     bool readPorts(Route &route, Ports &ports) {
         std::string curr_line;
-        int curr_id;
+        std::string curr_id;
         int curr_weight;
         std::string curr_destination;
 
@@ -235,13 +241,21 @@ namespace Utility {
                 std::stringstream ss(curr_line);
                 ss >> curr_id >> curr_weight >> curr_destination;
                 auto container = new Container(curr_weight, curr_destination, curr_id);
-                // TODO:: free the container objects somewhere
                 containers.push_back(container);
             }
             Port port(port_code, containers);
             ports.push_back(port);
         }
         return true;
+    }
+
+    static void delete_containers(Ports& ports)
+    {
+        for (auto& port : ports)
+        {
+            for (auto& container : port.getContainersToLoad())
+                delete container;
+        }
     }
 
     bool start(const std::string &travel_name) {
@@ -260,10 +274,13 @@ namespace Utility {
             Error::throwErrorReadingInput();
             return false;
         };
-        StowageAlgorithm *algorithm = new NaiveStowageAlgorithm(); // TODO delete this somewhere??
+        StowageAlgorithm *algorithm = new NaiveStowageAlgorithm();
         WeightBalanceCalculator *calculator = new NaiveWeightBalanceCalculator();
         Simulation simulation(ports, plan, route, calculator, algorithm, travel_name);
         simulation.run_simulation();
+        delete algorithm;
+        delete calculator;
+        delete_containers(ports);
         return true;
     }
 
@@ -278,7 +295,6 @@ namespace Utility {
         for (int i = current_port_idx + 1; i < route.size(); i++) {
             if (route[i] == (container->getPortCode())) return (i - current_port_idx);
         }
-        //TODO std::numeric_limits<int>::infinity() is 0?? Should maybe use double anyway...
         return INT_MAX; // Infinite
     }
 }

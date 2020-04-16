@@ -9,15 +9,15 @@ containers_to_load(_containers)
     }
 };
 
-const Container* Port::unloadContainer(int container_id)
+Container* Port::unloadContainer(const std::string& container_id)
 {
     if (containers.count(container_id) == 0) return nullptr;
-    const Container* res = containers[container_id];
+    Container* res = containers[container_id];
     containers.erase(container_id);
     return res;
 }
 
-bool Port::loadContainer(const Container* container) {
+bool Port::loadContainer(Container* container) {
     if (containers.count(container->getId()) > 0) return false;
     PortContainers::value_type item(container->getId(), container);
     containers.insert(item);

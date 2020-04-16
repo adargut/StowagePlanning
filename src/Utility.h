@@ -26,7 +26,8 @@
 #define DEFAULT_ERROR "No Errors for this Travel"
 #define PLAN_FILE "Plan"
 #define ROUTE_FILE "Route"
-
+#define FREE_POS "free"
+#define ILLEGAL_POS "illegal"
 
 // Forward declarations
 class Container;
@@ -48,11 +49,11 @@ class Error;
 // Typedef declarations
 typedef typename std::ifstream ifstream;
 typedef typename std::ofstream ofstream;
-typedef typename std::vector<std::vector<std::vector<int>>> Plan;
+typedef typename std::vector<std::vector<std::vector<std::string>>> Plan;
 typedef typename std::vector<Instruction> Instructions;
 typedef typename std::array<int, 3> Position;
-typedef typename std::unordered_map<int, std::pair<const Container *const, Position>> ContainerMap;
-typedef typename std::vector<const Container *> ContainersVector;
+typedef typename std::unordered_map<std::string, std::pair<Container *, Position>> ContainerMap;
+typedef typename std::vector<Container *> ContainersVector;
 typedef typename std::vector<std::string> Route;
 typedef typename std::vector<Port> Ports;
 typedef typename std::vector<AlgorithmError> AlgorithmErrors;

@@ -15,17 +15,17 @@ class Container {
 private:
     const std::string port_code;
     const int weight;
-    const int id;
+    const std::string id;
 public:
-    Container(int _weight, std::string  _port_code, int _id);
+    Container(int _weight, std::string  _port_code, std::string _id);
     const std::string& getPortCode() const;
     int getWeight() const;
-    int getId() const;
+    const std::string& getId() const;
 };
 
 struct HashContainer {
     std::size_t operator()(const Container* _container) const {
-        return std::hash<int>()(_container->getId());
+        return std::hash<std::string>()(_container->getId());
     }
 };
 

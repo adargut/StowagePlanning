@@ -3,14 +3,14 @@
 #include <utility>
 #include "AlgorithmError.h"
 
-//TODO move me
-bool isRangeValid(const Plan &plan, Instruction &instruction) {
+
+static bool isRangeValid(const Plan &plan, Instruction &instruction) {
     if (instruction.getFloor() < 0 || instruction.getFloor() >= plan.size()) return false;
     if (instruction.getRow() < 0 || instruction.getFloor() >= plan[0].size()) return false;
     return !(instruction.getCol() < 0 || instruction.getFloor() >= plan[0][0].size());
 }
 
-bool isDestinationReachable(const Ship &ship, const Container *container)
+static bool isDestinationReachable(const Ship &ship, const Container *container)
 {
     for (int i = ship.getPortIndex()+1; i < ship.getRoute().size(); i++) {
         if(ship.getRoute()[i] == container->getPortCode()) return true;
@@ -24,14 +24,14 @@ Simulation::Simulation(Ports _ports, const Plan &_plan, const Route &_route,
         : ship(_plan, _route, _calculator), algorithm(_algorithm), ports(std::move(_ports)),
           travel_name(std::move(_travel_name)) {}
 
-bool Simulation::run_simulation()
+void Simulation::run_simulation()
 {
     AlgorithmErrors errors;
     algorithm->reset(ship.getPlan(), ship.getRoute(), ship.getCalculator());
     int number_of_operations = 0;
     for (auto& port : ports)
     {
-        std::vector<int> rejected; // Vector to keep track of rejected container id's for this port
+        std::vector<std::string> rejected; // Vector to keep track of rejected container id's for this port
         Port::PortContainers original_containers(port.getContainers());
         Instructions instructions = algorithm->getInstructionsForCargo(port.getContainersToLoad());
         number_of_operations+=instructions.size(); //TODO: should not count rejects?
@@ -43,7 +43,7 @@ bool Simulation::run_simulation()
                 if (!isRangeValid(ship.getPlan(), instruction)) {
                     errors.push_back(AlgorithmError(AlgorithmError::InvalidCommand));
                 } else {
-                    const Container *container = ship.unloadContainer(instruction.getFloor(),
+                    Container *container = ship.unloadContainer(instruction.getFloor(),
                                                                       instruction.getRow(), instruction.getCol());
                     // Failed unloading from ship
                     if (container == nullptr)
@@ -68,7 +68,7 @@ bool Simulation::run_simulation()
                 }
                 else
                 {
-                    const Container * container = port.unloadContainer(instruction.getContainerId());
+                    Container * container = port.unloadContainer(instruction.getContainerId());
                     // No such container on port
                     if (container == nullptr) errors.push_back(AlgorithmError(AlgorithmError::InvalidCommand));
                         // Failed to load container to ship
@@ -160,12 +160,9 @@ bool Simulation::run_simulation()
         Utility::savePortInstructions(instructions, algorithm->getAlgorithmName(),
                                       port.getCode(), travel_name);
     }
-    //TODO Save errors and number of operations to a file
+    // Save errors and number of operations to a file
     std::string error_string = AlgorithmError::errorsToString(errors);
     std::string result_string = std::to_string(number_of_operations);
     Utility::saveSimulation(result_string, algorithm->getAlgorithmName(), travel_name, SIMULATION_FILE);
     Utility::saveSimulation(error_string, algorithm->getAlgorithmName(), travel_name, SIMULATION_ERRORS);
-
-    //TODO return value?
-    return false;
 }

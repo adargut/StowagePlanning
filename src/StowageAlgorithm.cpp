@@ -19,10 +19,11 @@ NaiveStowageAlgorithm::NaiveStowageAlgorithm() {
 }
 
 void NaiveStowageAlgorithm::getInstructionsForUnloading(const ContainerMap &ship_map,
-                                                        std::vector<int> containers_to_unload, const Plan &ship_plan,
+                                                        const Plan &ship_plan,
                                                         Instructions &result) {
     Instructions tmp_instructions;
     ContainersVector containers_to_return;
+    std::vector<std::string> containers_to_unload;
 
     for (auto &container_on_ship : ship_map) {
         std::string port_code = ship->getRoute()[ship->getPortIndex()];
@@ -43,9 +44,9 @@ void NaiveStowageAlgorithm::getInstructionsForUnloading(const ContainerMap &ship
         int x = container_pos[2];
 
         for (int z_above = ship->getPlan().size() - 1; z_above > z; z_above--) {
-            int container_above_id = ship_plan[z_above][y][x];
-
-            if (container_above_id > 0) { // Position of a container above container to be unloaded
+            std::string container_above_id = ship_plan[z_above][y][x];
+            // Position of a container above container to be unloaded
+            if (container_above_id != FREE_POS && container_above_id != ILLEGAL_POS) {
                 containers_to_return.push_back(ship_map.find(container_above_id)->second.first);
                 ship->unloadContainer(z, y, x);
                 tmp_instructions.push_back(Instruction(Instruction::Unload, container_above_id, z_above, y, x));
@@ -57,7 +58,7 @@ void NaiveStowageAlgorithm::getInstructionsForUnloading(const ContainerMap &ship
 
         // Load all containers above container popped back into the ship
         for (int i = containers_to_return.size() - 1; i >= 0; i--) {
-            const Container* container_to_return = containers_to_return[i];
+            Container* container_to_return = containers_to_return[i];
             int new_z = z + containers_to_return.size() - i; // New z for reloading the unloaded container
             ship->loadContainer(new_z, y, x, container_to_return);
             tmp_instructions.push_back(Instruction(Instruction::Load, container_to_return->getId(), new_z, y, x));
@@ -70,7 +71,7 @@ void NaiveStowageAlgorithm::getInstructionsForUnloading(const ContainerMap &ship
 }
 
 void NaiveStowageAlgorithm::getInstructionForLoadingContainer(const Plan &ship_plan, Instructions &result,
-                                                              const Container *const container_to_load) {
+                                                              Container * container_to_load) {
     bool destination_in_route = false;
     for (int i = ship->getPortIndex() + 1; i < ship->getRoute().size(); ++i) {
         if (container_to_load->getPortCode() == ship->getRoute()[i]) destination_in_route = true;
@@ -83,9 +84,9 @@ void NaiveStowageAlgorithm::getInstructionForLoadingContainer(const Plan &ship_p
     for (int z = 0; z < ship_plan.size(); z++) { // TODO optimize this n^3 loop
         for (int y = 0; y < ship_plan[0].size(); y++) {
             for (int x = 0; x < ship_plan[0][0].size(); x++) {
-                if (ship_plan[z][y][x] == 0) {
+                if (ship_plan[z][y][x] == FREE_POS) {
                     // TODO check calculator
-                    // TODO check if container destination still in route (beyond the current port)
+                    // Check if container destination still in route (beyond the current port)
                     ship->loadContainer(z, y, x, container_to_load);
                     result.push_back(Instruction(Instruction::Load, container_to_load->getId(), z, y, x));
                     return;
@@ -109,7 +110,7 @@ Instructions NaiveStowageAlgorithm::getInstructionsForCargo(const ContainersVect
     Cmp distance_to_destination(ship->getPortIndex(), ship->getRoute());
     Instructions result;
     Instructions tmp_instructions;
-    std::vector<int> containers_to_unload;
+    std::vector<std::string> containers_to_unload;
     ContainersVector containers_to_return;
 
     // We want to load the containers closest to their destination first, so we sort them
@@ -121,7 +122,7 @@ Instructions NaiveStowageAlgorithm::getInstructionsForCargo(const ContainersVect
     const Plan &ship_plan = ship->getPlan();
 
     // Call helper functions, store their output in result
-    getInstructionsForUnloading(ship_map, containers_to_unload, ship_plan, result);
+    getInstructionsForUnloading(ship_map, ship_plan, result);
     getInstructionsForLoading(ship_plan, result, sorted_containers_to_load);
 
     ship->advanceCurrentPortIdx();

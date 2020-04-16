@@ -13,13 +13,13 @@ public:
     enum Operation { Load, Unload, Reject };
 private:
     const Operation op;
-    const int container_id;
+    const std::string container_id;
     const int floor;
     const int row;
     const int col;
 public:
-    Instruction(Operation _op, int _container_id, int _floor, int _row, int _col);
-    int getContainerId() const;
+    Instruction(Operation _op, const std::string& _container_id, int _floor, int _row, int _col);
+    const std::string& getContainerId() const;
     Operation getOp() const;
     int getFloor() const;
     int getRow() const;

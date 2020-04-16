@@ -19,7 +19,7 @@ public:
     Simulation(Ports _ports, const Plan &_plan, const Route &_route, WeightBalanceCalculator *_calculator,
                StowageAlgorithm *_algorithm, std::string _travel_name);
 
-    bool run_simulation();
+    void run_simulation();
 };
 
 

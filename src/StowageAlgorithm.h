@@ -10,7 +10,7 @@
 #include "WeightBalanceCalculator.h"
 #include "Instruction.h"
 
-class StowageAlgorithm { // TODO implement me
+class StowageAlgorithm {
 protected:
     std::string algorithm_name;
 public:
@@ -35,7 +35,7 @@ public:
 
 private:
     void getInstructionsForUnloading(const ContainerMap &ship_map,
-                                     std::vector<int> containers_to_unload, const Plan &ship_plan,
+                                     const Plan &ship_plan,
                                      Instructions &result);
 
     // Utility function for getInstructions for cargo: load containers currently at port into ship
@@ -43,7 +43,7 @@ private:
                                    ContainersVector& sorted_containers_to_load);
 
     void getInstructionForLoadingContainer(const Plan& ship_plan, Instructions &result,
-                                           const Container* const container_to_load);
+                                           Container* container_to_load);
 };
 
 class RandomStowageAlgorithm : public StowageAlgorithm {

@@ -15,9 +15,7 @@
 
 class Port {
 public:
-    // TODO move me to utility
-    // TODO change to unordered map, with key = id
-    typedef typename std::unordered_map<int, const Container*> PortContainers;
+    typedef typename std::unordered_map<std::string, Container*> PortContainers;
 private:
     const std::string code;
     PortContainers containers;
@@ -28,8 +26,8 @@ public:
     const PortContainers &getContainers() const;
     const ContainersVector &getContainersToLoad() const;
     // TODO change to work with keys (id)
-    const Container* unloadContainer(int container_id);
-    bool loadContainer(const Container* container);
+    Container* unloadContainer(const std::string& container_id);
+    bool loadContainer(Container* container);
 };
 
 #endif //EX1_PORT_H

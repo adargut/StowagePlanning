@@ -32,15 +32,14 @@ public:
     const ContainerMap& getContainerMap() const;
     WeightBalanceCalculator *getCalculator() const;
     // Load the container to the lowest available floor where this position is unoccupied
-    bool loadContainer(int floor, int row, int col, const Container * const container_to_load);
+    bool loadContainer(int floor, int row, int col, Container * container_to_load);
     // Unload the top container in this position
-    const Container * const unloadContainer(int floor, int row, int col);
+    Container * unloadContainer(int floor, int row, int col);
     void advanceCurrentPortIdx();
     bool is_ship_full();
-    ~Ship();
 private:
-    void updatePlan(int floor, int row, int col, int val);
-    void insertContainerMap(int floor, int row, int col, int id, const Container *const container);
+    void updatePlan(int floor, int row, int col, const std::string& val);
+    void insertContainerMap(int floor, int row, int col, const std::string& id, Container * container);
     void eraseContainerMap(int floor, int row, int col);
 };
 
