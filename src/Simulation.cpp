@@ -3,15 +3,13 @@
 #include <utility>
 #include "AlgorithmError.h"
 
-
 static bool isRangeValid(const Plan &plan, Instruction &instruction) {
     if (instruction.getFloor() < 0 || instruction.getFloor() >= plan.size()) return false;
     if (instruction.getRow() < 0 || instruction.getFloor() >= plan[0].size()) return false;
     return !(instruction.getCol() < 0 || instruction.getFloor() >= plan[0][0].size());
 }
 
-static bool isDestinationReachable(const Ship &ship, const Container *container)
-{
+static bool isDestinationReachable(const Ship &ship, const Container *container) {
     for (int i = ship.getPortIndex()+1; i < ship.getRoute().size(); i++) {
         if(ship.getRoute()[i] == container->getPortCode()) return true;
     }
@@ -24,8 +22,7 @@ Simulation::Simulation(Ports _ports, const Plan &_plan, const Route &_route,
         : ship(_plan, _route, _calculator), algorithm(_algorithm), ports(std::move(_ports)),
           travel_name(std::move(_travel_name)) {}
 
-void Simulation::run_simulation()
-{
+void Simulation::run_simulation() {
     AlgorithmErrors errors;
     algorithm->reset(ship.getPlan(), ship.getRoute(), ship.getCalculator());
     int number_of_operations = 0;

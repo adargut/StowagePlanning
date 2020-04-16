@@ -25,7 +25,6 @@ public:
     const std::string &getCode() const;
     const PortContainers &getContainers() const;
     const ContainersVector &getContainersToLoad() const;
-    // TODO change to work with keys (id)
     Container* unloadContainer(const std::string& container_id);
     bool loadContainer(Container* container);
 };

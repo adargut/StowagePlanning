@@ -290,6 +290,7 @@ namespace Utility {
         Plan plan;
         Route route;
         Ports ports;
+
         if (!Utility::readShipPlan(PLAN_FILE, plan)) {
             Error::throwErrorReadingInput();
             return false;

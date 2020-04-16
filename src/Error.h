@@ -1,6 +1,7 @@
 /**
     Error.h
     Throwable errors that occur during the run of the program
+    __builtin_FUNCTION() allows us to detect the problematic function call
 */
 
 #ifndef EX1_ERROR_H
@@ -20,6 +21,5 @@ public:
 
     static void throwSizeError(const char *str = __builtin_FUNCTION());
 };
-
 
 #endif //EX1_ERROR_H
