@@ -76,9 +76,18 @@ void NaiveStowageAlgorithm::getInstructionForLoadingContainer(const Plan &ship_p
     for (int i = ship->getPortIndex() + 1; i < ship->getRoute().size(); ++i) {
         if (container_to_load->getPortCode() == ship->getRoute()[i]) destination_in_route = true;
     }
+
+    // Container destination unreachable
     if (!destination_in_route) {
         result.push_back(Instruction(Instruction::Reject,
                                      container_to_load->getId(), -1, -1, -1));
+        return;
+    }
+
+    // Container already on the ship
+    if(ship->getContainerMap().count(container_to_load->getId()))
+    {
+        result.push_back(Instruction(Instruction::Reject, container_to_load->getId(), -1, -1, -1));
         return;
     }
     for (int z = 0; z < ship_plan.size(); z++) { // TODO optimize this n^3 loop
