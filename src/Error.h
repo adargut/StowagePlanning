@@ -12,13 +12,9 @@
 class Error {
 public:
     static void throwErrorOpeningFile(const char *str = __builtin_FUNCTION());
-
     static void throwErrorReadingInput(const char *str = __builtin_FUNCTION());
-
     static void throwArrayBoundsError(const char *str = __builtin_FUNCTION());
-
     static void throwIncorrectFormatError(const char *str = __builtin_FUNCTION());
-
     static void throwSizeError(const char *str = __builtin_FUNCTION());
 };
 

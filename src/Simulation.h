@@ -8,6 +8,8 @@
 
 #include "Utility.h"
 #include "StowageAlgorithm.h"
+#include <utility>
+#include "AlgorithmError.h"
 
 class Simulation {
 private:

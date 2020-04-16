@@ -27,8 +27,13 @@ namespace Utility {
         return !s.empty() && std::all_of(s.begin(), s.end(), ::isdigit);
     }
 
-    bool readShipPlan(const std::string &path, Plan &plan) {
-        ifstream in(path);
+    bool readShipPlan(const std::string &travel_name, Plan &plan) {
+        std::string filename;
+        filename.append(travel_name);
+        filename.append(BACKSLASH);
+        filename.append(PLAN_FILE);
+        ifstream in(filename);
+
         std::string line;
         if (!in.is_open()) {
             Error::throwErrorOpeningFile();
@@ -79,13 +84,18 @@ namespace Utility {
         return true;
     }
 
-    bool readShipRoute(const std::string &path, Route &route) {
-        ifstream in(path);
-        std::string line;
+    bool readShipRoute(const std::string &travel_name, Route &route) {
+        std::string filename;
+        filename.append(travel_name);
+        filename.append(BACKSLASH);
+        filename.append(ROUTE_FILE);
+        ifstream in(filename);
         if (!in.is_open()) {
             Error::throwErrorOpeningFile();
             return false;
         }
+
+        std::string line;
         while (std::getline(in, line)) {
             std::vector<std::string> validator = split(line, ' '); // For input validation
             if (validator.size() != 1) {
@@ -251,14 +261,20 @@ namespace Utility {
         return true;
     }
 
-    bool readPorts(Route &route, Ports &ports) {
+    bool readPorts(const std::string &travel_name, Route &route, Ports &ports) {
         std::string curr_line;
         std::string curr_id;
         int curr_weight;
         std::string curr_destination;
 
         for (auto &port_code : route) {
-            ifstream in(port_code + CARGO_SUFFIX);
+            std::string filename;
+            filename.append(travel_name);
+            filename.append(BACKSLASH);
+            filename.append(port_code);
+            filename.append(CARGO_SUFFIX);
+
+            ifstream in(filename);
             if (!in.is_open()) {
                 Error::throwErrorOpeningFile();
                 return false;
@@ -291,15 +307,15 @@ namespace Utility {
         Route route;
         Ports ports;
 
-        if (!Utility::readShipPlan(PLAN_FILE, plan)) {
+        if (!Utility::readShipPlan(travel_name, plan)) {
             Error::throwErrorReadingInput();
             return false;
         }
-        if (!Utility::readShipRoute(ROUTE_FILE, route)) {
+        if (!Utility::readShipRoute(travel_name, route)) {
             Error::throwErrorReadingInput();
             return false;
         }
-        if (!Utility::readPorts(route, ports)) {
+        if (!Utility::readPorts(travel_name,route, ports)) {
             Error::throwErrorReadingInput();
             return false;
         };
