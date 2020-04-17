@@ -38,7 +38,6 @@ void NaiveStowageAlgorithm::getInstructionsForUnloading(const ContainerMap &ship
         tmp_instructions.clear();
         // TODO implement rollback/backup mechanism
         auto container_pos = ship_map.find(container_to_unload)->second.second;
-        // TODO make this size_t? for all ints in project??
         int z = container_pos[0];
         int y = container_pos[1];
         int x = container_pos[2];

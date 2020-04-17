@@ -1,34 +1,27 @@
 #include "Simulation.h"
 
-#include <utility>
-#include "AlgorithmError.h"
-
-
 static bool isRangeValid(const Plan &plan, const Instruction &instruction) {
     if (instruction.getFloor() < 0 || instruction.getFloor() >= plan.size()) return false;
     if (instruction.getRow() < 0 || instruction.getFloor() >= plan[0].size()) return false;
     return !(instruction.getCol() < 0 || instruction.getFloor() >= plan[0][0].size());
 }
 
-static bool isDestinationReachable(const Ship &ship, const Container *container)
-{
+static bool isDestinationReachable(const Ship &ship, const Container *container) {
     for (int i = ship.getPortIndex()+1; i < ship.getRoute().size(); i++) {
         if(ship.getRoute()[i] == container->getPortCode()) return true;
     }
     return false;
 }
 
-static int count_instructions(Instructions& instructions)
-{
+static int count_instructions(Instructions& instructions) {
     int counter = 0;
+
     for (auto& instruction : instructions)
         if(instruction.getOp() != Instruction::Reject) counter++;
     return counter;
 }
 
-static void handle_unload_operation(Port& port, Ship& ship, AlgorithmErrors& errors, const Instruction& instruction)
-{
-
+static void handle_unload_operation(Port& port, Ship& ship, AlgorithmErrors& errors, const Instruction& instruction) {
     if (!isRangeValid(ship.getPlan(), instruction)) {
         errors.push_back(AlgorithmError(AlgorithmError::InvalidCommand));
     }
@@ -49,8 +42,7 @@ static void handle_unload_operation(Port& port, Ship& ship, AlgorithmErrors& err
     }
 }
 
-static void handle_load_operation(Port& port, Ship& ship, AlgorithmErrors& errors, const Instruction& instruction)
-{
+static void handle_load_operation(Port& port, Ship& ship, AlgorithmErrors& errors, const Instruction& instruction) {
     if(!isRangeValid(ship.getPlan(), instruction))
     {
         errors.push_back(AlgorithmError(AlgorithmError::InvalidCommand));
@@ -77,9 +69,9 @@ static void handle_load_operation(Port& port, Ship& ship, AlgorithmErrors& error
 }
 
 static void handle_reject_operation(Port& port, Ship& ship, AlgorithmErrors& errors, const Instruction& instruction,
-        std::vector<std::string>& rejected)
-{
+                                    std::vector<std::string>& rejected) {
     bool in_containers_to_load = false;
+
     for(auto& container : port.getContainersToLoad())
     {
         if(container->getId() == instruction.getContainerId())
@@ -90,8 +82,7 @@ static void handle_reject_operation(Port& port, Ship& ship, AlgorithmErrors& err
     else rejected.push_back(instruction.getContainerId());
 }
 
-static void check_containers_forgotten_on_ship(Port& port, Ship& ship, AlgorithmErrors& errors)
-{
+static void check_containers_forgotten_on_ship(Port& port, Ship& ship, AlgorithmErrors& errors) {
     for (auto &container : ship.getContainerMap()) {
         if (container.second.first->getPortCode() == port.getCode())
             errors.push_back(AlgorithmError(AlgorithmError::IgnoredContainer));
@@ -99,8 +90,7 @@ static void check_containers_forgotten_on_ship(Port& port, Ship& ship, Algorithm
 }
 
 static void check_containers_left_on_port(Port& port, Ship& ship, AlgorithmErrors& errors,
-        Port::PortContainers& original_containers)
-{
+                                          Port::PortContainers& original_containers) {
     for (auto &container : port.getContainers()) {
         if (container.second->getPortCode() != port.getCode()) {
             if (std::find(original_containers.begin(),
@@ -111,8 +101,8 @@ static void check_containers_left_on_port(Port& port, Ship& ship, AlgorithmError
 }
 
 static void check_latest_destinations_rejected(Port& port, Ship& ship, AlgorithmErrors& errors,
-        Port::PortContainers& unloaded_containers, Utility::DistanceToDestinationComparator distance_to_dest)
-{
+                                               Port::PortContainers& unloaded_containers,
+                                               Utility::DistanceToDestinationComparator distance_to_dest) {
     ContainersVector sorted_containers_to_load(port.getContainersToLoad().begin(),
                                                port.getContainersToLoad().end());
     std::sort(sorted_containers_to_load.begin(), sorted_containers_to_load.end(), distance_to_dest);
@@ -130,8 +120,7 @@ static void check_latest_destinations_rejected(Port& port, Ship& ship, Algorithm
 }
 
 static void check_unloaded_rejected(Port& port, Ship& ship, AlgorithmErrors& errors,
-        Port::PortContainers& unloaded_containers, std::vector<std::string>& rejected)
-{
+                                    Port::PortContainers& unloaded_containers, std::vector<std::string>& rejected) {
     for (auto &container: unloaded_containers) {
         if (std::find(rejected.begin(), rejected.end(), container.second->getId()) == rejected.end())
             errors.push_back(AlgorithmError(AlgorithmError::IgnoredContainer));
@@ -139,8 +128,8 @@ static void check_unloaded_rejected(Port& port, Ship& ship, AlgorithmErrors& err
 }
 
 static void check_no_room_for_containers(Port& port, Ship& ship, AlgorithmErrors& errors,
-        Port::PortContainers& unloaded_containers, Utility::DistanceToDestinationComparator distance_to_dest)
-{
+                                         Port::PortContainers& unloaded_containers,
+                                         Utility::DistanceToDestinationComparator distance_to_dest) {
     for (auto& container : unloaded_containers)
         if(distance_to_dest.distance_to_destination(container.second) < INT_MAX && !ship.is_ship_full())
             errors.push_back(AlgorithmError(AlgorithmError::IgnoredContainer));
@@ -152,8 +141,7 @@ Simulation::Simulation(Ports _ports, const Plan &_plan, const Route &_route,
         : ship(_plan, _route, _calculator), algorithm(_algorithm), ports(std::move(_ports)),
           travel_name(std::move(_travel_name)) {}
 
-void Simulation::run_simulation()
-{
+void Simulation::run_simulation() {
     AlgorithmErrors errors;
     algorithm->reset(ship.getPlan(), ship.getRoute(), ship.getCalculator());
     int number_of_operations = 0;

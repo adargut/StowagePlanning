@@ -3,7 +3,7 @@
 
 WeightBalanceCalculator::BalanceStatus
 NaiveWeightBalanceCalculator::tryOperation(const Instruction &instruction, int weight, const Plan &plan) {
-    return Approved;
+    return Approved; // Naive for now
 }
 
 std::pair<int, WeightBalanceCalculator::BalanceStatus> NaiveWeightBalanceCalculator::tryOperations(

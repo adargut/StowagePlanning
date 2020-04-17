@@ -22,30 +22,24 @@
 #define CSV_SUFFIX ".csv"
 #define CARGO_SUFFIX ".cargo_data"
 #define CSV_SEPERATOR ","
+#define BACKSLASH "/"
 #define TMP_FILE "tmp.txt"
 #define SIMULATION_FILE "simulation_results.csv"
 #define SIMULATION_ERRORS "simulation_errors.csv"
 #define DEFAULT_ERROR "No Errors for this Travel"
 #define PLAN_FILE "Plan"
-#define ROUTE_FILE "Route"
+#define ROUTE_FILE "/Route"
 #define FREE_POS "free"
 #define ILLEGAL_POS "illegal"
 
 // Forward declarations
 class Container;
-
 class Instruction;
-
 class Ship;
-
 class Port;
-
 class StowageAlgorithm;
-
 class HashContainer;
-
 class AlgorithmError;
-
 class Error;
 
 // Typedef declarations
@@ -69,22 +63,17 @@ bool isNumber(const std::string &s);
 
 namespace Utility {
     // Populates <plan> based on description in the file named <path>
-    bool readShipPlan(const std::string &path, Plan &plan);
-
+    bool readShipPlan(const std::string &travel_name, Plan &plan);
     // Populates <route> based on description in the file named <path>
-    bool readShipRoute(const std::string &path, Route &route);
-
+    bool readShipRoute(const std::string &travel_name, Route &route);
     // Populates <ports> with the ports in route - the name of a file describing a port is the same as the port's code
-    bool readPorts(Route &route, Ports &ports);
-
+    bool readPorts(const std::string &travel_name, Route &route, Ports &ports);
     // Save the instructions description in a file named <port_code.csv>
     bool savePortInstructions(const Instructions &instructions, const std::string &algorithm_name,
                               const std::string &port_code, const std::string &travel_name);
-
     // Save simulations results/errors in <simulation_results.csv> or <simulation_errors.csv>
     bool saveSimulation(std::string &string_to_write, const std::string &algorithm_name,
                         const std::string &travel_name, const std::string &filename);
-
     // Run program
     bool start(const std::string &travel_name);
 
@@ -96,7 +85,6 @@ namespace Utility {
 
     public:
         DistanceToDestinationComparator(const int &_current_port_idx, const Route &_route);
-
         int distance_to_destination(const Container *container);
         bool operator()(const Container* c1, const Container* c2);
     };
