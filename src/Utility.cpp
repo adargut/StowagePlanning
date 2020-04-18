@@ -102,6 +102,10 @@ namespace Utility {
                 Error::throwIncorrectFormatError();
                 return false;
             }
+            if (line.size() != 5) {
+                Error::throwIncorrectFormatError();
+                return false;
+            }
             route.push_back(line);
         }
         in.close();
@@ -257,6 +261,7 @@ namespace Utility {
             curr_line.append(CSV_SEPERATOR);
             curr_line.append(string_to_write);
             new_file << curr_line << std::endl;
+            new_file.close();
         }
         return true;
     }
@@ -319,6 +324,7 @@ namespace Utility {
             Error::throwErrorReadingInput();
             return false;
         };
+
         StowageAlgorithm *algorithm = new NaiveStowageAlgorithm();
         WeightBalanceCalculator *calculator = new NaiveWeightBalanceCalculator();
         Simulation simulation(ports, plan, route, calculator, algorithm, travel_name);
@@ -333,10 +339,10 @@ namespace Utility {
             : current_port_idx(currentPortIdx), route(route) {}
 
     bool DistanceToDestinationComparator::operator()(const Container *c1, const Container *c2) {
-        return distance_to_destination(c1) < distance_to_destination(c2);
+        return distanceToDestination(c1) < distanceToDestination(c2);
     }
 
-    int DistanceToDestinationComparator::distance_to_destination(const Container *container) {
+    int DistanceToDestinationComparator::distanceToDestination(const Container *container) {
         for (int i = current_port_idx + 1; i < route.size(); i++) {
             if (route[i] == (container->getPortCode())) return (i - current_port_idx);
         }

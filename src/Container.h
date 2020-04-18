@@ -23,6 +23,7 @@ public:
     const std::string& getId() const;
 };
 
+// Functor for hashing containers based on id
 struct HashContainer {
     std::size_t operator()(const Container* _container) const {
         return std::hash<std::string>()(_container->getId());

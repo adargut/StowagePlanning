@@ -1,47 +1,30 @@
 #include "StowageAlgorithm.h"
 #include <iostream>
 
-void NaiveStowageAlgorithm::reset(const Plan &_plan, const Route &_route, WeightBalanceCalculator *_calculator) {
-    if (ship != nullptr) delete (ship);
-    ship = new Ship(_plan, _route, _calculator);
-}
-
-const std::string &StowageAlgorithm::getAlgorithmName() const {
-    return algorithm_name;
-}
-
-NaiveStowageAlgorithm::~NaiveStowageAlgorithm() {
-    if (ship != nullptr) delete (ship);
-}
-
-NaiveStowageAlgorithm::NaiveStowageAlgorithm() {
-    algorithm_name = "Naive Algorithm";
-}
-
-void NaiveStowageAlgorithm::getInstructionsForUnloading(const ContainerMap &ship_map,
-                                                        const Plan &ship_plan,
-                                                        Instructions &result) {
+// Utility functions used by getInstructionsForCargo
+static void getInstructionsForUnloading(Ship *ship,
+                                        Instructions &result) {
     Instructions tmp_instructions;
     ContainersVector containers_to_return;
     std::vector<std::string> containers_to_unload;
+    const Plan &ship_plan = ship->getPlan();
+    const ContainerMap &ship_map = ship->getContainerMap();
 
     for (auto &container_on_ship : ship_map) {
         std::string port_code = ship->getRoute()[ship->getPortIndex()];
         const Container *curr_container = container_on_ship.second.first;
-
         if (curr_container->getPortCode() == port_code) { // Container needs to be unloaded here
             containers_to_unload.push_back(curr_container->getId());
         }
     }
-
     for (auto &container_to_unload : containers_to_unload) {
         tmp_instructions.clear();
+        containers_to_return.clear();
         // TODO implement rollback/backup mechanism
         auto container_pos = ship_map.find(container_to_unload)->second.second;
         int z = container_pos[0];
         int y = container_pos[1];
         int x = container_pos[2];
-
         for (int z_above = ship->getPlan().size() - 1; z_above > z; z_above--) {
             std::string container_above_id = ship_plan[z_above][y][x];
             // Position of a container above container to be unloaded
@@ -62,15 +45,15 @@ void NaiveStowageAlgorithm::getInstructionsForUnloading(const ContainerMap &ship
             ship->loadContainer(new_z, y, x, container_to_return);
             tmp_instructions.push_back(Instruction(Instruction::Load, container_to_return->getId(), new_z, y, x));
         }
-
         for (Instruction instruction : tmp_instructions) {
             result.push_back(instruction);
         }
     }
 }
 
-void NaiveStowageAlgorithm::getInstructionForLoadingContainer(const Plan &ship_plan, Instructions &result,
-                                                              Container * container_to_load) {
+static void getInstructionForLoadingContainer(Ship *ship, Instructions &result,
+                                              Container * container_to_load) {
+    const Plan &ship_plan = ship->getPlan();
     bool destination_in_route = false;
     for (int i = ship->getPortIndex() + 1; i < ship->getRoute().size(); ++i) {
         if (container_to_load->getPortCode() == ship->getRoute()[i]) destination_in_route = true;
@@ -105,12 +88,29 @@ void NaiveStowageAlgorithm::getInstructionForLoadingContainer(const Plan &ship_p
     result.push_back(Instruction(Instruction::Reject, container_to_load->getId(), -1, -1, -1));
 }
 
-void NaiveStowageAlgorithm::getInstructionsForLoading(const Plan &ship_plan,
-                                                      Instructions &result,
-                                                      ContainersVector &sorted_containers_to_load) {
+static void getInstructionsForLoading(Ship *ship,
+                                      Instructions &result,
+                                      ContainersVector &sorted_containers_to_load) {
     for (auto container_to_load : sorted_containers_to_load) {
-        getInstructionForLoadingContainer(ship_plan, result, container_to_load);
+        getInstructionForLoadingContainer(ship, result, container_to_load);
     }
+}
+
+void NaiveStowageAlgorithm::reset(const Plan &_plan, const Route &_route, WeightBalanceCalculator *_calculator) {
+    if (ship != nullptr) delete (ship);
+    ship = new Ship(_plan, _route, _calculator);
+}
+
+const std::string &StowageAlgorithm::getAlgorithmName() const {
+    return algorithm_name;
+}
+
+NaiveStowageAlgorithm::~NaiveStowageAlgorithm() {
+    if (ship != nullptr) delete (ship);
+}
+
+NaiveStowageAlgorithm::NaiveStowageAlgorithm() {
+    algorithm_name = "Naive Algorithm";
 }
 
 Instructions NaiveStowageAlgorithm::getInstructionsForCargo(const ContainersVector &containers_to_load) {
@@ -130,8 +130,8 @@ Instructions NaiveStowageAlgorithm::getInstructionsForCargo(const ContainersVect
     const Plan &ship_plan = ship->getPlan();
 
     // Call helper functions, store their output in result
-    getInstructionsForUnloading(ship_map, ship_plan, result);
-    getInstructionsForLoading(ship_plan, result, sorted_containers_to_load);
+    getInstructionsForUnloading(ship, result);
+    getInstructionsForLoading(ship, result, sorted_containers_to_load);
 
     ship->advanceCurrentPortIdx();
     return result;

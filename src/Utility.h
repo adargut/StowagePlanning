@@ -19,6 +19,7 @@
 #include "Error.h"
 
 // Macros
+#define SUCCESS_INDEX -1
 #define CSV_SUFFIX ".csv"
 #define CARGO_SUFFIX ".cargo_data"
 #define CSV_SEPERATOR ","
@@ -43,6 +44,7 @@ class AlgorithmError;
 class Error;
 
 // Typedef declarations
+typedef typename std::unordered_map<std::string, Container*> PortContainers;
 typedef typename std::ifstream ifstream;
 typedef typename std::ofstream ofstream;
 typedef typename std::vector<std::vector<std::vector<std::string>>> Plan;
@@ -56,9 +58,7 @@ typedef typename std::vector<AlgorithmError> AlgorithmErrors;
 
 // General purpose functions
 bool fileAlreadyExists(std::string const &filename);
-
 std::vector<std::string> split(const std::string &s, char delim);
-
 bool isNumber(const std::string &s);
 
 namespace Utility {
@@ -82,10 +82,10 @@ namespace Utility {
     private:
         const int &current_port_idx;
         const Route &route;
-
     public:
         DistanceToDestinationComparator(const int &_current_port_idx, const Route &_route);
-        int distance_to_destination(const Container *container);
+        // Returns distance from container to destination based on current port index
+        int distanceToDestination(const Container *container);
         bool operator()(const Container* c1, const Container* c2);
     };
 }

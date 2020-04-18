@@ -1,9 +1,14 @@
 #include "AlgorithmError.h"
 
-AlgorithmError::AlgorithmError(AlgorithmError::Type _type) : type(_type) {}
+AlgorithmError::AlgorithmError(AlgorithmError::Type _type, Instruction _instruction) : type(_type),
+                                                                                       instruction(_instruction) {}
 
 AlgorithmError::Type AlgorithmError::getType() const {
     return type;
+}
+
+Instruction AlgorithmError::getInstruction() const {
+    return instruction;
 }
 
 std::string AlgorithmError::errorToString(AlgorithmError::Type type) {
@@ -24,6 +29,8 @@ std::string AlgorithmError::errorsToString(const AlgorithmErrors &errors) {
     for (auto &error : errors) {
         result.append(AlgorithmError::errorToString(error.getType())); // New error to write
         result.append(" "); // Put space to separate errors
+        Instruction::instructionToString(error.instruction, result); // Append erroneous instruction
+        if (error.instruction.getOp() != Instruction::None) result.append(" ");
     }
     return result;
 }

@@ -26,7 +26,7 @@ const ContainersVector& Port::getContainersToLoad() const {
     return containers_to_load;
 }
 
-const Port::PortContainers &Port::getContainers() const {
+const PortContainers &Port::getContainers() const {
     return containers;
 }
 

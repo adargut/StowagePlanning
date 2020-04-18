@@ -31,12 +31,13 @@ public:
     const int& getPortIndex() const;
     const ContainerMap& getContainerMap() const;
     WeightBalanceCalculator *getCalculator() const;
-    // Load the container to the lowest available floor where this position is unoccupied
+    /* Load the container to the lowest available floor where this position is unoccupied,
+     * return false if no position is available, and true otherwise */
     bool loadContainer(int floor, int row, int col, Container * container_to_load);
-    // Unload the top container in this position
+    // Unload the top container in this position, returns nullptr if none exists
     Container * unloadContainer(int floor, int row, int col);
     void advanceCurrentPortIdx();
-    bool is_ship_full();
+    bool isShipFull();
 private:
     void updatePlan(int floor, int row, int col, const std::string& val);
     void insertContainerMap(int floor, int row, int col, const std::string& id, Container * container);

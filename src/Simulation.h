@@ -20,9 +20,10 @@ private:
 public:
     Simulation(Ports _ports, const Plan &_plan, const Route &_route, WeightBalanceCalculator *_calculator,
                StowageAlgorithm *_algorithm, std::string _travel_name);
-
+    /* Runs the algorithm given in the constructor and checks its validity and efficiency, results are shown in
+     * simulation.results and errors in simulation.errors, individual port operations can be seen in their
+     * corresponding files with their names */
     void run_simulation();
 };
-
 
 #endif //EX1_SIMULATION_H

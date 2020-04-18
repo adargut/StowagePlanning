@@ -7,6 +7,7 @@
 #define EX1_ALGORITHMERROR_H
 
 #include "Utility.h"
+#include "Instruction.h"
 
 class AlgorithmError {
 public:
@@ -15,14 +16,12 @@ public:
     };
 private:
     Type type;
+    Instruction instruction;
 public:
     Type getType() const;
-
-public:
-    explicit AlgorithmError(Type _type);
-
+    Instruction getInstruction() const;
+    explicit AlgorithmError(Type _type, Instruction _instruction = Instruction());
     static std::string errorToString(Type type);
-
     static std::string errorsToString(const AlgorithmErrors &errors);
 };
 

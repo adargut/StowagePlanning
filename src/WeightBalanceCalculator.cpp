@@ -18,5 +18,5 @@ std::pair<int, WeightBalanceCalculator::BalanceStatus> NaiveWeightBalanceCalcula
         BalanceStatus status = tryOperation(instructions[i], weights[i], plan);
         if (status != Approved) return std::make_pair(i, status);
     }
-    return std::make_pair(-1, Approved);
+    return std::make_pair(SUCCESS_INDEX, Approved);
 }

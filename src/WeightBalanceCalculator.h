@@ -27,9 +27,10 @@ public:
 class NaiveWeightBalanceCalculator : public WeightBalanceCalculator {
 public:
     NaiveWeightBalanceCalculator() = default;
-    // Try a single operation
+    // Try a single operation, approves every operation for now
     BalanceStatus tryOperation(const Instruction& instruction, int weight, const Plan &plan) override;
-    // Try a set of operations
+    /* Try a set of operations, returns the first operation that failed in the set and reason for failure,
+       and (SUCCESS_INDEX, Approved) if none of the operations failed */
     std::pair<int, BalanceStatus> tryOperations(const Instructions &instructions,
                                                 const std::vector<int> &weights, const Plan &plan) override;
     ~NaiveWeightBalanceCalculator() override = default;

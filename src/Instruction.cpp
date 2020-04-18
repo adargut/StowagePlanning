@@ -35,31 +35,30 @@ std::string Instruction::opToString(Instruction::Operation op) {
     return "";
 }
 
+void Instruction::instructionToString(const Instruction &instruction, std::string &result) {
+    if (instruction.getOp() == None) { // Do not print empty instructions
+        return;
+    }
+    result.append(instruction.opToString(instruction.getOp())); // New instruction to write
+    result.append(" "); // Put space to separate instructions
+    result.append(instruction.getContainerId());
+    result.append(" ");
+    result.append(std::to_string(instruction.getFloor()));
+    result.append(" ");
+    result.append(std::to_string(instruction.getRow()));
+    result.append(" ");
+    result.append(std::to_string(instruction.getCol()));
+}
+
 std::string Instruction::instructionsToString(const Instructions &instructions) {
     std::string result = CSV_SEPERATOR;
 
     for (size_t i = 0; i < instructions.size() - 1; i++) {
         Instruction instruction = instructions[i];
-        result.append(instruction.opToString(instruction.getOp())); // New instruction to write
-        result.append(" "); // Put space to separate instructions
-        result.append(instruction.getContainerId());
-        result.append(" ");
-        result.append(std::to_string(instruction.getFloor()));
-        result.append(" ");
-        result.append(std::to_string(instruction.getRow()));
-        result.append(" ");
-        result.append(std::to_string(instruction.getCol()));
+        instructionToString(instruction, result);
         result.append(" ");
     }
     Instruction last_instruction = instructions[instructions.size() - 1];
-    result.append(last_instruction.opToString(last_instruction.getOp()));
-    result.append(" "); // Put space to separate instructions
-    result.append(last_instruction.getContainerId());
-    result.append(" ");
-    result.append(std::to_string(last_instruction.getFloor()));
-    result.append(" ");
-    result.append(std::to_string(last_instruction.getRow()));
-    result.append(" ");
-    result.append(std::to_string(last_instruction.getCol()));
+    instructionToString(last_instruction, result);
     return result;
 }
