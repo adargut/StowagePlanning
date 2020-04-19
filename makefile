@@ -1,32 +1,32 @@
 COMP = g++-8.3.0
-OBJS = src/main.o src/AlgorithmError.o src/Container.o src/Error.o src/Instruction.o src/Port.o src/Ship.o src/Simulation.o src/StowageAlgorithm.o src/Utility.o src/WeightBalanceCalculator.o
+OBJS = main.o AlgorithmError.o Container.o Error.o Instruction.o Port.o Ship.o Simulation.o StowageAlgorithm.o Utility.o WeightBalanceCalculator.o
 EXEC = ex1
 CPP_COMP_FLAG = -std=c++2a -Wall -Wextra -Werror -pedantic-errors -DNDEBUG
 CPP_LINK_FLAG = -lstdc++fs
 
 $(EXEC): $(OBJS)
 	$(COMP) $(OBJS) $(CPP_LINK_FLAG) -o $@
-src/AlgorithmError.o:
+AlgorithmError.o:
 	$(COMP) $(CPP_COMP_FLAG) -c src/AlgorithmError.cpp
-src/Container.o: 
+Container.o: 
 	$(COMP) $(CPP_COMP_FLAG) -c src/Container.cpp
-src/Error.o:
+Error.o:
 	$(COMP) $(CPP_COMP_FLAG) -c src/Error.cpp
-src/Instruction.o:
+Instruction.o:
 	$(COMP) $(CPP_COMP_FLAG) -c src/Instruction.cpp
-src/Port.o:
+Port.o:
 	$(COMP) $(CPP_COMP_FLAG) -c src/Port.cpp
-src/Ship.o:
+Ship.o:
 	$(COMP) $(CPP_COMP_FLAG) -c src/Ship.cpp
-src/Simulation.o:
+Simulation.o:
 	$(COMP) $(CPP_COMP_FLAG) -c src/Simulation.cpp
-src/StowageAlgorithm.o:
+StowageAlgorithm.o:
 	$(COMP) $(CPP_COMP_FLAG) -c src/StowageAlgorithm.cpp
-src/Utility.o:
+Utility.o:
 	$(COMP) $(CPP_COMP_FLAG) -c src/Utility.cpp
-src/WeightBalanceCalculator.o:
+WeightBalanceCalculator.o:
 	$(COMP) $(CPP_COMP_FLAG) -c src/WeightBalanceCalculator.cpp	
-src/main.o:
+main.o:
 	$(COMP) $(CPP_COMP_FLAG) -c src/main.cpp
 clean:
 	rm -f $(OBJS) $(EXEC)
