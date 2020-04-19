@@ -12,7 +12,8 @@ int main() {
 
         if (travel_name == "quit") break;
 
-        if (Utility::start(travel_name)) std::cout << "Simulation completed successfully, results are now available\n";
+        if (Utility::start(travel_name)) std::cout << "Simulation completed successfully, results are available"
+                                                      " once the program is terminated\n";
         else std::cout << "Simulation did not run successfully\n";
     }
     return EXIT_SUCCESS;

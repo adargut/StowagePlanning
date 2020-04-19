@@ -46,11 +46,9 @@ bool Ship::loadContainer(int floor, int row, int col, Container * container_to_l
     // Position is occupied or container in ship
     if (plan[floor][row][col] != FREE_POS || containers.count(id)) return false;
     if (floor != 0) {
-        std::cout << "air\n";
         if (plan[floor - 1][row][col] == FREE_POS) return false; // Trying to place container "in the air"
     }
     if (floor != plan.size() - 1) {
-        std::cout << "below\n";
         if (plan[floor + 1][row][col] != FREE_POS) return false; // Trying to place container below an existing one
     }
     insertContainerMap(floor, row, col, container_to_load->getId(), container_to_load);
