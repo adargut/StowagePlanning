@@ -16,6 +16,7 @@
 #include <unordered_set>
 #include <unordered_map>
 #include <algorithm>
+#include <climits>
 #include "Error.h"
 
 // Macros
