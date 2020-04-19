@@ -30,7 +30,7 @@ static void getInstructionsForUnloading(Ship *ship,
             // Position of a container above container to be unloaded
             if (container_above_id != FREE_POS && container_above_id != ILLEGAL_POS) {
                 containers_to_return.push_back(ship_map.find(container_above_id)->second.first);
-                ship->unloadContainer(z, y, x);
+                ship->unloadContainer(z_above, y, x);
                 tmp_instructions.push_back(Instruction(Instruction::Unload, container_above_id, z_above, y, x));
             }
         }
@@ -41,7 +41,7 @@ static void getInstructionsForUnloading(Ship *ship,
         // Load all containers above container popped back into the ship
         for (int i = containers_to_return.size() - 1; i >= 0; i--) {
             Container* container_to_return = containers_to_return[i];
-            int new_z = z + containers_to_return.size() - i; // New z for reloading the unloaded container
+            int new_z = z + containers_to_return.size() - i - 1; // New z for reloading the unloaded container
             ship->loadContainer(new_z, y, x, container_to_return);
             tmp_instructions.push_back(Instruction(Instruction::Load, container_to_return->getId(), new_z, y, x));
         }

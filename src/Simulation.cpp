@@ -7,7 +7,7 @@ static bool isRangeValid(const Plan &plan, const Instruction &instruction) {
 }
 
 static bool isDestinationReachable(const Ship &ship, const Container *container) {
-    for (int i = ship.getPortIndex()+1; i < ship.getRoute().size(); i++) {
+    for (int i = ship.getPortIndex(); i < ship.getRoute().size(); i++) {
         if(ship.getRoute()[i] == container->getPortCode()) return true;
     }
     return false;
@@ -32,7 +32,6 @@ static void handle_unload_operation(Port& port, Ship& ship, AlgorithmErrors& err
         if (container == nullptr) {
             errors.push_back(
                     AlgorithmError(AlgorithmError::InvalidCraneOperation, instruction));
-            std::cout << "1\n";
         }
             //container ID mismatch
         else if (container->getId() != instruction.getContainerId()) {
@@ -65,7 +64,6 @@ static void handle_load_operation(Port& port, Ship& ship, AlgorithmErrors& error
             else {
                 // because the position for loading is invalid
                 errors.push_back(AlgorithmError(AlgorithmError::InvalidCraneOperation, instruction));
-                std::cout << "2\n";
             }
         } else {
             // Check if trying to load container with unreachable destination
