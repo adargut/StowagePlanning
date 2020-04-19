@@ -6,7 +6,7 @@ containers_to_load(_containers) {
         PortContainers::value_type item(container->getId(), container);
         containers.insert(item);
     }
-};
+}
 
 Container* Port::unloadContainer(const std::string& container_id){
     if (containers.count(container_id) == 0) return nullptr;
