@@ -39,7 +39,8 @@ void Ship::eraseContainerMap(int floor, int row, int col) {
 }
 
 bool Ship::loadContainer(int floor, int row, int col, Container * container_to_load) {
-    if (floor < 0 || row < 0 || col < 0 || floor > plan.size() || row > plan[0].size() || col > plan[0][0].size()) {
+    if (floor < 0 || row < 0 || col < 0 || floor > int(plan.size()) || row > int(plan[0].size()) ||
+            col > int(plan[0][0].size())) {
         return false;
     }
     const std::string& id = container_to_load->getId();
@@ -48,7 +49,7 @@ bool Ship::loadContainer(int floor, int row, int col, Container * container_to_l
     if (floor != 0) {
         if (plan[floor - 1][row][col] == FREE_POS) return false; // Trying to place container "in the air"
     }
-    if (floor != plan.size() - 1) {
+    if (floor != int(plan.size() - 1)) {
         if (plan[floor + 1][row][col] != FREE_POS) return false; // Trying to place container below an existing one
     }
     insertContainerMap(floor, row, col, container_to_load->getId(), container_to_load);
@@ -57,12 +58,13 @@ bool Ship::loadContainer(int floor, int row, int col, Container * container_to_l
 }
 
 Container * Ship::unloadContainer(int floor, int row, int col) {
-    if (floor < 0 || row < 0 || col < 0 || floor > plan.size() || row > plan[0].size() || col > plan[0][0].size()) {
+    if (floor < 0 || row < 0 || col < 0 || floor > int(plan.size()) || row > int(plan[0].size()) ||
+            col > int(plan[0][0].size())) {
         return nullptr;
     }
     if (plan[floor][row][col] == FREE_POS ||
     plan[floor][row][col] == ILLEGAL_POS) return nullptr; // Position is free or illegal
-    if (floor != plan.size() - 1) {
+    if (floor != int(plan.size() - 1)) {
         if (plan[floor + 1][row][col] != FREE_POS) return nullptr; // There's a container above the container to unload
     }
     Container * res = containers[plan[floor][row][col]].first;
@@ -80,9 +82,9 @@ void Ship::advanceCurrentPortIdx() {
 }
 
 bool Ship::isShipFull() {
-    for (int z = 0; z < plan.size(); z++) {
-        for (int y = 0; y < plan[0].size(); y++) {
-            for (int x = 0; x < plan[0][0].size(); x++) {
+    for (int z = 0; z < int(plan.size()); z++) {
+        for (int y = 0; y < int(plan[0].size()); y++) {
+            for (int x = 0; x < int(plan[0][0].size()); x++) {
                 if(plan[z][y][x] == FREE_POS) return false;
             }
         }

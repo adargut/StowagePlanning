@@ -14,8 +14,8 @@
 class Simulation {
 private:
     Ship ship;
-    Ports ports;
     StowageAlgorithm *algorithm;
+    Ports ports;
     const std::string travel_name;
 public:
     Simulation(Ports _ports, const Plan &_plan, const Route &_route, WeightBalanceCalculator *_calculator,
@@ -23,7 +23,7 @@ public:
     /* Runs the algorithm given in the constructor and checks its validity and efficiency, results are shown in
      * simulation.results and errors in simulation.errors, individual port operations can be seen in their
      * corresponding files with their names */
-    void run_simulation();
+    void runSimulation();
 };
 
 #endif //EX1_SIMULATION_H

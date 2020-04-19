@@ -75,7 +75,7 @@ namespace Utility {
                     Error::throwArrayBoundsError();
                     return false;
                 }
-                for (size_t i = 0; i < z; i++) {
+                for (int i = 0; i < z; i++) {
                     plan[i][y][x] = ILLEGAL_POS;
                 }
             }
@@ -328,7 +328,7 @@ namespace Utility {
         StowageAlgorithm *algorithm = new NaiveStowageAlgorithm();
         WeightBalanceCalculator *calculator = new NaiveWeightBalanceCalculator();
         Simulation simulation(ports, plan, route, calculator, algorithm, travel_name);
-        simulation.run_simulation();
+        simulation.runSimulation();
         delete algorithm;
         delete calculator;
         delete_containers(ports);
@@ -343,7 +343,7 @@ namespace Utility {
     }
 
     int DistanceToDestinationComparator::distanceToDestination(const Container *container) {
-        for (int i = current_port_idx + 1; i < route.size(); i++) {
+        for (int i = current_port_idx + 1; i < int(route.size()); i++) {
             if (route[i] == (container->getPortCode())) return (i - current_port_idx);
         }
         return INT_MAX; // Infinite

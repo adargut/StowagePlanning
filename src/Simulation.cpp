@@ -1,13 +1,13 @@
 #include "Simulation.h"
 
 static bool isRangeValid(const Plan &plan, const Instruction &instruction) {
-    if (instruction.getFloor() < 0 || instruction.getFloor() >= plan.size()) return false;
-    if (instruction.getRow() < 0 || instruction.getFloor() >= plan[0].size()) return false;
-    return !(instruction.getCol() < 0 || instruction.getFloor() >= plan[0][0].size());
+    if (instruction.getFloor() < 0 || instruction.getFloor() >= int(plan.size())) return false;
+    if (instruction.getRow() < 0 || instruction.getFloor() >= int(plan[0].size())) return false;
+    return !(instruction.getCol() < 0 || instruction.getFloor() >= int(plan[0][0].size()));
 }
 
 static bool isDestinationReachable(const Ship &ship, const Container *container) {
-    for (int i = ship.getPortIndex(); i < ship.getRoute().size(); i++) {
+    for (int i = ship.getPortIndex(); i < int(ship.getRoute().size()); i++) {
         if(ship.getRoute()[i] == container->getPortCode()) return true;
     }
     return false;
@@ -73,8 +73,8 @@ static void handle_load_operation(Port& port, Ship& ship, AlgorithmErrors& error
     }
 }
 
-static void handle_reject_operation(Port& port, Ship& ship, AlgorithmErrors& errors, const Instruction& instruction,
-                                    std::vector<std::string>& rejected) {
+static void handle_reject_operation(Port &port, AlgorithmErrors &errors, const Instruction &instruction,
+                                    std::vector<std::string> &rejected) {
     bool in_containers_to_load = false;
 
     for(auto& container : port.getContainersToLoad())
@@ -94,8 +94,7 @@ static void check_containers_forgotten_on_ship(Port& port, Ship& ship, Algorithm
     }
 }
 
-static void check_containers_left_on_port(Port& port, Ship& ship, AlgorithmErrors& errors,
-                                          PortContainers& original_containers) {
+static void check_containers_left_on_port(Port &port, AlgorithmErrors &errors, PortContainers &original_containers) {
     for (auto &container : port.getContainers()) {
         if (container.second->getPortCode() != port.getCode()) {
             if (std::find(original_containers.begin(),
@@ -105,18 +104,19 @@ static void check_containers_left_on_port(Port& port, Ship& ship, AlgorithmError
     }
 }
 
-static void check_latest_destinations_rejected(Port& port, Ship& ship, AlgorithmErrors& errors,
-                                               PortContainers& unloaded_containers,
+static void check_latest_destinations_rejected(Port &port, AlgorithmErrors &errors, PortContainers &unloaded_containers,
                                                Utility::DistanceToDestinationComparator distance_to_dest) {
     ContainersVector sorted_containers_to_load(port.getContainersToLoad().begin(),
                                                port.getContainersToLoad().end());
     std::sort(sorted_containers_to_load.begin(), sorted_containers_to_load.end(), distance_to_dest);
+    // Minimal index from which we can reject containers
     size_t minimum_idx = port.getContainersToLoad().size() - unloaded_containers.size();
     if (minimum_idx < sorted_containers_to_load.size()) {
+        // Minimal distance from which we can reject containers
         int minimum_distance = distance_to_dest.distanceToDestination(
                 sorted_containers_to_load[minimum_idx]);
         for (auto &container : unloaded_containers) {
-            int distance = distance_to_dest.distanceToDestination(sorted_containers_to_load[minimum_idx]);
+            int distance = distance_to_dest.distanceToDestination(container.second);
             if (distance < minimum_distance) {
                 errors.push_back(AlgorithmError(AlgorithmError::IgnoredContainer));
             }
@@ -124,16 +124,15 @@ static void check_latest_destinations_rejected(Port& port, Ship& ship, Algorithm
     }
 }
 
-static void check_unloaded_rejected(Port& port, Ship& ship, AlgorithmErrors& errors,
-                                    PortContainers& unloaded_containers, std::vector<std::string>& rejected) {
+static void check_unloaded_rejected(AlgorithmErrors &errors, PortContainers &unloaded_containers,
+                                    std::vector<std::string> &rejected) {
     for (auto &container: unloaded_containers) {
         if (std::find(rejected.begin(), rejected.end(), container.second->getId()) == rejected.end())
             errors.push_back(AlgorithmError(AlgorithmError::IgnoredContainer));
     }
 }
 
-static void check_no_room_for_containers(Port& port, Ship& ship, AlgorithmErrors& errors,
-                                         PortContainers& unloaded_containers,
+static void check_no_room_for_containers(Ship &ship, AlgorithmErrors &errors, PortContainers &unloaded_containers,
                                          Utility::DistanceToDestinationComparator distance_to_dest) {
     for (auto& container : unloaded_containers)
         if(distance_to_dest.distanceToDestination(container.second) < INT_MAX && !ship.isShipFull())
@@ -146,7 +145,7 @@ Simulation::Simulation(Ports _ports, const Plan &_plan, const Route &_route,
         : ship(_plan, _route, _calculator), algorithm(_algorithm), ports(std::move(_ports)),
           travel_name(std::move(_travel_name)) {}
 
-void Simulation::run_simulation() {
+void Simulation::runSimulation() {
     AlgorithmErrors errors;
     algorithm->reset(ship.getPlan(), ship.getRoute(), ship.getCalculator());
     int number_of_operations = 0;
@@ -168,14 +167,14 @@ void Simulation::run_simulation() {
                 handle_load_operation(port, ship, errors, instruction);
             //handle reject operation
             if(instruction.getOp() == Instruction::Reject)
-                handle_reject_operation(port, ship, errors, instruction, rejected);
+                handle_reject_operation(port, errors, instruction, rejected);
         }
 
         // Post all operations for this port:
         // Check that no container destined for this port was forgotten on the ship
         check_containers_forgotten_on_ship(port, ship, errors);
         // Check containers left on the port are only those destined for that port, or were originally on the port
-        check_containers_left_on_port(port, ship, errors, original_containers);
+        check_containers_left_on_port(port, errors, original_containers);
 
         PortContainers unloaded_containers;
         for (auto &container : port.getContainers()) {
@@ -184,11 +183,11 @@ void Simulation::run_simulation() {
                 unloaded_containers.insert(container);
         }
         // Check that we rejected only the containers with the latest destinations
-        check_latest_destinations_rejected(port, ship, errors, unloaded_containers, distance_to_dest);
+        check_latest_destinations_rejected(port, errors, unloaded_containers, distance_to_dest);
         // Check that each got rejected properly by the algorithm
-        check_unloaded_rejected(port, ship, errors, unloaded_containers, rejected);
+        check_unloaded_rejected(errors, unloaded_containers, rejected);
         // Check there's no more room on the ship for unloaded containers that should be loaded
-        check_no_room_for_containers(port, ship, errors, unloaded_containers, distance_to_dest);
+        check_no_room_for_containers(ship, errors, unloaded_containers, distance_to_dest);
 
         ship.advanceCurrentPortIdx();
         // Save instructions for port to a file

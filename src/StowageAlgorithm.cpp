@@ -55,7 +55,7 @@ static void getInstructionForLoadingContainer(Ship *ship, Instructions &result,
                                               Container * container_to_load) {
     const Plan &ship_plan = ship->getPlan();
     bool destination_in_route = false;
-    for (int i = ship->getPortIndex() + 1; i < ship->getRoute().size(); ++i) {
+    for (int i = ship->getPortIndex() + 1; i < int(ship->getRoute().size()); ++i) {
         if (container_to_load->getPortCode() == ship->getRoute()[i]) destination_in_route = true;
     }
 
@@ -72,9 +72,9 @@ static void getInstructionForLoadingContainer(Ship *ship, Instructions &result,
         result.push_back(Instruction(Instruction::Reject, container_to_load->getId(), -1, -1, -1));
         return;
     }
-    for (int z = 0; z < ship_plan.size(); z++) { // TODO optimize this n^3 loop
-        for (int y = 0; y < ship_plan[0].size(); y++) {
-            for (int x = 0; x < ship_plan[0][0].size(); x++) {
+    for (int z = 0; z < int(ship_plan.size()); z++) { // TODO optimize this n^3 loop
+        for (int y = 0; y < int(ship_plan[0].size()); y++) {
+            for (int x = 0; x < int(ship_plan[0][0].size()); x++) {
                 if (ship_plan[z][y][x] == FREE_POS) {
                     // TODO check calculator
                     // Check if container destination still in route (beyond the current port)
@@ -125,9 +125,7 @@ Instructions NaiveStowageAlgorithm::getInstructionsForCargo(const ContainersVect
     ContainersVector sorted_containers_to_load(containers_to_load.begin(), containers_to_load.end());
     std::sort(sorted_containers_to_load.begin(), sorted_containers_to_load.end(), distance_to_destination);
     WeightBalanceCalculator *calculator = ship->getCalculator();
-
-    const ContainerMap &ship_map = ship->getContainerMap();
-    const Plan &ship_plan = ship->getPlan();
+    (void) calculator; // Suppress unused warning
 
     // Call helper functions, store their output in result
     getInstructionsForUnloading(ship, result);
