@@ -6,6 +6,7 @@
 #ifndef EX1_UTILITY_H
 #define EX1_UTILITY_H
 
+#include <climits>
 #include <vector>
 #include <map>
 #include <array>

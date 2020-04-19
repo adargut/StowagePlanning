@@ -13,8 +13,8 @@
 
 class Container {
 private:
-    const std::string port_code;
     const int weight;
+    const std::string port_code;
     const std::string id;
 public:
     Container(int _weight, std::string  _port_code, std::string _id);
