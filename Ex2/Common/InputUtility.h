@@ -12,7 +12,7 @@
 namespace InputUtility {
     char* getCmdOption(char ** begin, char ** end, const std::string& option);
     bool cmdOptionExists(char** begin, char** end, const std::string& option);
-};
+}
 
 
 #endif //EX2_INPUTUTILITY_H
