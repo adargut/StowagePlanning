@@ -34,7 +34,7 @@ public:
 };
 
 class RandomStowageAlgorithm : public StowageAlgorithm {
-    // TODO implement random algorithm in Ex2
+    // TODO implement random algorithm in Ex22
 };
 
 #endif //EX1_STOWAGEALGORITHM_H
