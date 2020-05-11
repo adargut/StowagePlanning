@@ -1,7 +1,7 @@
 #include "InputUtility.h"
 
 
-bool handleTravelArg(const string& travel_path)
+bool handleTravelArg(const string& travel_path, string& route_file, string& plan_file)
 {
     if (!fs::exists(travel_path))
     {
@@ -10,7 +10,6 @@ bool handleTravelArg(const string& travel_path)
     }
 
     // Check if travel path contains both route and plan files
-    string route_file, plan_file;
     for (const auto& entry : directory_iterator(travel_path))
     {
         string file_path = entry.path();
@@ -25,51 +24,70 @@ bool handleTravelArg(const string& travel_path)
             plan_file = file_path;
         }
     }
-    if (plan_file.empty() || plan_file.empty())
+    return !(plan_file.empty() || plan_file.empty());
+// TODO remove this?
+//    for (const auto& entry : directory_iterator(travel_path))
+//    {
+//        string file_path = entry.path();
+//        if (boost::algorithm::ends_with(file_path, CARGO_SUFFIX))
+//        {
+//            // TODO handle cargo found
+//        }
+//    }
+}
+
+bool handleAlgorithmArg(std::vector<string>& algorithm_paths)
+{
+    // Iterate over current working directory
+    for (const auto& entry : directory_iterator(CWD))
     {
-        //TODO fatal error
+        string file_path = entry.path();
+        if (boost::algorithm::ends_with(file_path, SO_SUFFIX))
+        {
+            algorithm_paths.push_back(std::move(file_path));
+        }
+    }
+    return true;
+}
+
+bool handleAlgorithmArg(const string& algorithm_path, std::vector<string>& algorithm_paths)
+{
+    // TODO implement me
+    if (!fs::exists(algorithm_path))
+    {
+        // TODO error and ask what to do?
         return false;
     }
 
-    for (const auto& entry : directory_iterator(travel_path))
+    for (const auto& entry : directory_iterator(algorithm_path))
     {
         string file_path = entry.path();
-        if (boost::algorithm::ends_with(file_path, CARGO_SUFFIX))
+        if (boost::algorithm::ends_with(file_path, SO_SUFFIX))
         {
-            // TODO handle cargo found
+            algorithm_paths.push_back(std::move(file_path));
         }
-
     }
-
     return true;
 }
 
-bool handleAlgorithmArg(const string& algorithm_path)
+bool handleOutputArg(const string& path, string& output_path)
 {
-    // TODO implement me
+    if (!fs::exists(path))
+    {
+        fs::create_directory(path); // TODO maybe check if permissions work?
+    }
+    output_path = path;
     return true;
 }
 
-bool handleAlgorithmArg()
+bool handleOutputArg(string& output_path)
 {
-    // TODO implement me
+    output_path = CWD;
     return true;
 }
 
-bool handleOutputArg(const string& algorithm_path)
-{
-    // TODO implement me
-    return true;
-}
-
-bool handleOutputArg()
-{
-    // TODO implement me
-    return true;
-}
-
-
-bool handleArgs(int argc, char** argv)
+bool handleArgs(int argc, char** argv, string& route_file, string& plan_file,
+                std::vector<string>& algorithm_paths, string& output_path);
 {
     // Declare the supported options
     po::options_description desc("Allowed options");
@@ -89,7 +107,7 @@ bool handleArgs(int argc, char** argv)
     // Parse path to travel folder
     if (vm.count(TRAVEL_OPTION))
     {
-        handleTravelArg(vm[TRAVEL_OPTION].as<string>());
+        handleTravelArg(vm[TRAVEL_OPTION].as<string>(), route_file, plan_file);
     }
     else
     {
@@ -99,20 +117,20 @@ bool handleArgs(int argc, char** argv)
     // Parse path to algorithm folder
     if (vm.count(ALGORITHM_OPTION))
     {
-        handleAlgorithmArg(vm[ALGORITHM_OPTION].as<string>());
+        handleAlgorithmArg(vm[ALGORITHM_OPTION].as<string>(), algorithm_paths);
     }
     else
     {
-        handleAlgorithmArg();
+        handleAlgorithmArg(algorithm_paths);
     }
     // Parse path to output folder
     if (vm.count(OUTPUT_OPTION))
     {
-        handleOutputArg(vm[OUTPUT_OPTION].as<string>());
+        handleOutputArg(vm[OUTPUT_OPTION].as<string>(), output_path);
     }
     else
     {
-        handleOutputArg();
+        handleOutputArg(output_path);
     }
     return true;
 }
