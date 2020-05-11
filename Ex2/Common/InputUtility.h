@@ -8,8 +8,8 @@
 #include <vector>
 
 #define TRAVEL_OPTION "travel_path"
-#define ALGORITHM_OPTION "-algorithm_path"
-#define OUTPUT_OPTION "-output_path"
+#define ALGORITHM_OPTION "algorithm_path"
+#define OUTPUT_OPTION "output_path"
 #define TRAVEL_DESC "path to travel"
 #define ALGORITHM_DESC "path to algorithm"
 #define OUTPUT_DESC "path to output"
@@ -28,11 +28,11 @@ using std::cout;
 
 namespace InputUtility
 {
-    bool handleTravelArg(const string& travel_path, string& route_file, string& plan_file);
-    bool handleAlgorithmArg(const string& algorithm_path, std::vector<string>& algorithm_paths);
-    bool handleAlgorithmArg(std::vector<string>& algorithm_paths);
-    bool handleOutputArg(const string& path, string& output_path);
-    bool handleOutputArg(const string& output_path);
+//    bool handleTravelArg(const string& travel_path, string& route_file, string& plan_file);
+//    bool handleAlgorithmArg(const string& algorithm_path, std::vector<string>& algorithm_paths);
+//    bool handleAlgorithmArg(std::vector<string>& algorithm_paths);
+//    bool handleOutputArg(const string& path, string& output_path);
+//    bool handleOutputArg(const string& output_path);
     bool handleArgs(int argc, char** argv, string& route_file, string& plan_file,
                     std::vector<string>& algorithm_paths, string& output_path);
 }

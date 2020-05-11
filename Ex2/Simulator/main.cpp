@@ -12,4 +12,9 @@ int main(int argc, char** argv)
     InputUtility::handleArgs(argc, argv, route, plan, algorithm_paths, output_path);
     cout << route << "\n";
     cout << plan << "\n";
+    if(!algorithm_paths.empty())
+    {
+        cout << algorithm_paths[0] << "\n";
+        cout << algorithm_paths[1] << "\n";
+    }
 }
