@@ -86,8 +86,8 @@ bool handleOutputArg(string& output_path)
     return true;
 }
 
-bool handleArgs(int argc, char** argv, string& route_file, string& plan_file,
-                std::vector<string>& algorithm_paths, string& output_path);
+bool InputUtility::handleArgs(int argc, char** argv, string& route_file, string& plan_file,
+                                std::vector<string>& algorithm_paths, string& output_path)
 {
     // Declare the supported options
     po::options_description desc("Allowed options");
