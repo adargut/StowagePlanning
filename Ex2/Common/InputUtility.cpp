@@ -46,16 +46,25 @@ bool handleTravelArg(const string& travel_path)
 
 bool handleAlgorithmArg(const string& algorithm_path)
 {
+    // TODO implement me
     return true;
 }
 
 bool handleAlgorithmArg()
 {
+    // TODO implement me
     return true;
 }
 
 bool handleOutputArg(const string& algorithm_path)
 {
+    // TODO implement me
+    return true;
+}
+
+bool handleOutputArg()
+{
+    // TODO implement me
     return true;
 }
 
@@ -87,7 +96,6 @@ bool handleArgs(int argc, char** argv)
         // TODO return fatal error because no travel supplied and stop travel
         return false;
     }
-
     // Parse path to algorithm folder
     if (vm.count(ALGORITHM_OPTION))
     {
@@ -97,7 +105,6 @@ bool handleArgs(int argc, char** argv)
     {
         handleAlgorithmArg();
     }
-
     // Parse path to output folder
     if (vm.count(OUTPUT_OPTION))
     {
@@ -105,8 +112,7 @@ bool handleArgs(int argc, char** argv)
     }
     else
     {
-        handleAlgorithmArg();
+        handleOutputArg();
     }
-
     return true;
 }
