@@ -4,6 +4,7 @@
 
 #include "AlgorithmManager.h"
 AlgorithmManager AlgorithmManager::instance;
-void AlgorithmManager::registerAlgorithm(const std::function<std::unique_ptr<AbstractAlgorithm>()>& factory) {
+void AlgorithmManager::registerAlgorithm(const std::function<std::unique_ptr<AbstractAlgorithm>()>& factory)
+{
     factoryBuffer = std::make_unique<AlgorithmFactory>(factory);
 }
