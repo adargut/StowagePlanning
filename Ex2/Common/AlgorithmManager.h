@@ -1,7 +1,3 @@
-//
-// Created by nir on 11/05/2020.
-//
-
 #ifndef EX2_ALGORITHMMANAGER_H
 #define EX2_ALGORITHMMANAGER_H
 
@@ -14,20 +10,17 @@
 using string = std::string;
 using AlgorithmFactory = std::function<std::unique_ptr<AbstractAlgorithm>()>;
 
-class AlgorithmManager {
+
+class AlgorithmManager
+{
+private:
     static AlgorithmManager instance;
     std::unique_ptr<AlgorithmFactory> factoryBuffer;
     std::unordered_map<string, std::unique_ptr<AlgorithmFactory>> factoryMap;
 public:
+    static AlgorithmManager& getInstance() { return instance; }
     void registerAlgorithm(const std::function<std::unique_ptr<AbstractAlgorithm>()>& factory);
-    bool bufferToMap(const string& algorithmName){
-        if(!factoryBuffer) return false;
-        factoryMap[algorithmName] = std::move(factoryBuffer);
-        return true;
-    }
-    static AlgorithmManager& getInstance() {
-        return instance;
-    }
+    bool bufferToMap(const string& algorithmName);
 };
 
 
