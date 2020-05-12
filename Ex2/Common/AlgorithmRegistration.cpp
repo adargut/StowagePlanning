@@ -4,5 +4,5 @@
 
 AlgorithmRegistration::AlgorithmRegistration(std::function<std::unique_ptr<AbstractAlgorithm>()> factory)
 {
-    AlgorithmManager::getInstance().registerAlgorithm(factory);
+    AlgorithmManager::getInstance().registerFactory(factory);
 }

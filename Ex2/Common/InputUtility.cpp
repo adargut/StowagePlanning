@@ -51,36 +51,23 @@ bool handleTravelArg(const string& travel_path, std::vector<string>& travel_path
 //    }
 }
 
-
-bool handleAlgorithmArg(std::vector<string>& algorithm_paths)
-{
-    // Iterate over current working directory
-    for (const auto& entry : directory_iterator(CWD))
-    {
-        string file_path = entry.path();
-        if (boost::algorithm::ends_with(file_path, SO_SUFFIX))
-        {
-            algorithm_paths.push_back(std::move(file_path));
-        }
-    }
-    return true;
-}
-
-bool handleAlgorithmArg(const string& algorithm_path, std::vector<string>& algorithm_paths)
+bool handleAlgorithmArg(const string& algorithmDir, std::vector<string>& algorithm_paths)
 {
     // TODO implement me
-    if (!fs::exists(algorithm_path))
+    if (!fs::exists(algorithmDir))
     {
         // TODO error and ask what to do?
         return false;
     }
 
-    for (const auto& entry : directory_iterator(algorithm_path))
+    for (const auto& entry : directory_iterator(algorithmDir))
     {
-        string file_path = entry.path();
-        if (boost::algorithm::ends_with(file_path, SO_SUFFIX))
+        std::filesystem::path p = entry.path();
+        if (p.extension() == SO_SUFFIX)
         {
-            algorithm_paths.push_back(std::move(file_path));
+            p.filename();
+            p.replace_extension();
+            algorithm_paths.push_back(std::move(p));
         }
     }
     return true;
@@ -103,8 +90,8 @@ bool handleOutputArg(string& output_path)
 }
 
 bool
-InputUtility::handleArgs(int argc, char **argv, std::vector<string> &travel_paths, std::vector<string> &algorithm_paths,
-                         string &output_path)
+InputUtility::handleArgs(int argc, char **argv, std::vector<string> &travel_paths, string algorithmsDir,
+                         std::vector<string> &algorithmNames, string &outputPath)
 {
     // Declare the supported options
     po::options_description desc("Allowed options");
@@ -134,20 +121,22 @@ InputUtility::handleArgs(int argc, char **argv, std::vector<string> &travel_path
     // Parse path to algorithm folder
     if (vm.count(ALGORITHM_OPTION))
     {
-        handleAlgorithmArg(vm[ALGORITHM_OPTION].as<string>(), algorithm_paths);
+        algorithmsDir = vm[ALGORITHM_OPTION].as<string>();
+        handleAlgorithmArg(algorithmsDir, algorithmNames);
     }
     else
     {
-        handleAlgorithmArg(algorithm_paths);
+        algorithmsDir = CWD;
+        handleAlgorithmArg(algorithmsDir, algorithmNames);
     }
     // Parse path to output folder
     if (vm.count(OUTPUT_OPTION))
     {
-        handleOutputArg(vm[OUTPUT_OPTION].as<string>(), output_path);
+        handleOutputArg(vm[OUTPUT_OPTION].as<string>(), outputPath);
     }
     else
     {
-        handleOutputArg(output_path);
+        handleOutputArg(outputPath);
     }
     return true;
 }
