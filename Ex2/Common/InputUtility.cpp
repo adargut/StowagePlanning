@@ -151,3 +151,46 @@ InputUtility::handleArgs(int argc, char **argv, std::vector<string> &travel_path
     }
     return true;
 }
+
+AlgorithmError::errorCode InputUtility::readShipPlan(const std::string& full_path_and_file_name, Plan &plan)
+{
+    if (!fs::exists(full_path_and_file_name))
+    {
+        return AlgorithmError::errorCode::BadPlanFile;
+    }
+    ifstream in(full_path_and_file_name);
+    std::string line;
+    bool first_line = true;
+    int dim_x = 0, dim_y = 0, dim_z = 0;
+    std::vector<string> split_line;
+    int x, y, z;
+
+    while (getline(in, line))
+    {
+        // Ignore lines starting with #
+        if (boost::trim_left_copy(line)[0] == COMMENT) continue;
+        // Treat first line differently
+        if (first_line)
+        {
+            first_line = false;
+            boost::algorithm::split(split_line, line, boost::is_any_of(DELIMETER));
+            // Check if first line has number of arguments != 3
+            if (split_line.size() != 3) return AlgorithmError::errorCode::BadPlanFile;
+
+            for (auto &number : split_line)
+            {
+                // Check if first line has a non-number string
+                if (number.find_first_not_of("0123456789") != string::npos)
+                    return AlgorithmError::errorCode::BadPlanFile;
+            }
+            dim_z = stoi(split_line[0]);
+            dim_x = stoi(split_line[1]);
+            dim_y = stoi(split_line[2]);
+        }
+        // Not first line
+        else
+        {
+
+        }
+    }
+}

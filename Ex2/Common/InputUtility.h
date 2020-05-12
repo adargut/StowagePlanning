@@ -6,6 +6,13 @@
 #include <filesystem>
 #include <iostream>
 #include <vector>
+#include <memory>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <boost/algorithm/string.hpp>
+#include "../Common/AlgorithmError.h"
+#include "GeneralUtility.h"
 
 #define TRAVEL_OPTION "travel_path"
 #define ALGORITHM_OPTION "algorithm_path"
@@ -18,12 +25,17 @@
 #define SO_SUFFIX ".so"
 #define CARGO_SUFFIX ".cargo_data"
 #define CWD "./"
+#define COMMENT '#'
+#define DELIMETER ", "
 
 namespace po = boost::program_options;
 namespace fs = std::filesystem;
 using directory_iterator = fs::directory_iterator;
 using string = std::string;
 using std::cout;
+using stoi = std::stoi;
+using ifstream = std::ifstream;
+using getline = std::getline;
 
 
 namespace InputUtility
@@ -35,6 +47,7 @@ namespace InputUtility
 //    bool handleOutputArg(const string& output_path);
     bool handleArgs(int argc, char **argv, std::vector<string> &travel_paths, std::vector<string> &algorithm_paths,
                     string &output_path);
+    AlgorithmError::errorCode readShipPlan(const std::string& full_path_and_file_name, Plan& plan);
 }
 
 

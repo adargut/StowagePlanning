@@ -6,5 +6,5 @@ set(CMAKE_CXX_FLAGS "-std=c++2a -Wall -Wextra -Werror -pedantic-errors -DNDEBUG"
 link_libraries(stdc++fs)
 FIND_PACKAGE(Boost COMPONENTS program_options REQUIRED)
 
-add_executable(Ex2 Common/AbstractAlgorithm.h Common/AlgorithmRegistration.h Simulator/AlgorithmRegistration.cpp Common/WeightBalanceCalculator.cpp Common/WeightBalanceCalculator.h Simulator/main.cpp Common/InputUtility.cpp Common/InputUtility.h Common/AlgorithmManager.cpp Common/AlgorithmManager.h Common/AlgorithmRegistration.cpp)
+add_executable(Ex2 Common/AbstractAlgorithm.h Common/AlgorithmRegistration.h Simulator/AlgorithmRegistration.cpp Common/WeightBalanceCalculator.cpp Common/WeightBalanceCalculator.h Simulator/main.cpp Common/InputUtility.cpp Common/InputUtility.h Common/AlgorithmManager.cpp Common/AlgorithmManager.h Common/AlgorithmRegistration.cpp Common/AlgorithmError.cpp Common/AlgorithmError.h Algorithm/SimpleAlgorithm.cpp Algorithm/SimpleAlgorithm.h Common/GeneralUtility.cpp Common/GeneralUtility.h)
 TARGET_LINK_LIBRARIES(Ex2 LINK_PUBLIC ${Boost_LIBRARIES})
