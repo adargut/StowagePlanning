@@ -1,31 +1,46 @@
 #include "InputUtility.h"
 
 
-bool handleTravelArg(const string& travel_path, string& route_file, string& plan_file)
-{
-    if (!fs::exists(travel_path))
-    {
+bool handleTravelArg(const string& travel_path, std::vector<string>& travel_paths) {
+    if (!fs::exists(travel_path)) {
         // TODO return fatal error and make sure travel stops
         return false;
     }
 
     // Check if travel path contains both route and plan files
-    for (const auto& entry : directory_iterator(travel_path))
-    {
-        string file_path = entry.path();
-        if (boost::algorithm::ends_with(file_path, ROUTE_SUFFIX))
-        {
-            //TODO parse route file
-            route_file = file_path;
-        }
-        else if (boost::algorithm::ends_with(file_path, PLAN_SUFFIX))
-        {
-            //TODO parse plan file
-            plan_file = file_path;
+    for (const auto &entry : directory_iterator(travel_path)) {
+        bool valid_route_file = false, valid_plan_file = false;
+        if (entry.is_directory()) {
+            string travel_directory = entry.path();
+            for (const auto &file : directory_iterator(travel_directory)) {
+                string file_path = file.path();
+                if (boost::algorithm::ends_with(file_path, ROUTE_SUFFIX)) {
+                    //TODO parse route file
+                    //route_file = file_path;
+                    if (valid_route_file)                     // Two or more route files
+                    {
+                        valid_route_file = false;
+                        break;
+                    }
+                    valid_route_file = true;
+                } else if (boost::algorithm::ends_with(file_path, PLAN_SUFFIX)) {
+                    //TODO parse plan file
+                    //plan_file = file_path;
+                    if (valid_plan_file)                    // Two or more plan files
+                    {
+                        valid_plan_file = false;
+                        break;
+                    }
+                    valid_plan_file = true;
+                }
+            }
+            if (valid_plan_file && valid_route_file) {
+                travel_paths.push_back(std::move(travel_directory));
+            }
         }
     }
-    return !(plan_file.empty() || plan_file.empty());
-// TODO remove this?
+    return !travel_paths.empty();
+    // TODO remove this?
 //    for (const auto& entry : directory_iterator(travel_path))
 //    {
 //        string file_path = entry.path();
@@ -35,6 +50,7 @@ bool handleTravelArg(const string& travel_path, string& route_file, string& plan
 //        }
 //    }
 }
+
 
 bool handleAlgorithmArg(std::vector<string>& algorithm_paths)
 {
@@ -86,8 +102,9 @@ bool handleOutputArg(string& output_path)
     return true;
 }
 
-bool InputUtility::handleArgs(int argc, char** argv, string& route_file, string& plan_file,
-                                std::vector<string>& algorithm_paths, string& output_path)
+bool
+InputUtility::handleArgs(int argc, char **argv, std::vector<string> &travel_paths, std::vector<string> &algorithm_paths,
+                         string &output_path)
 {
     // Declare the supported options
     po::options_description desc("Allowed options");
@@ -107,7 +124,7 @@ bool InputUtility::handleArgs(int argc, char** argv, string& route_file, string&
     // Parse path to travel folder
     if (vm.count(TRAVEL_OPTION))
     {
-        handleTravelArg(vm[TRAVEL_OPTION].as<string>(), route_file, plan_file);
+        handleTravelArg(vm[TRAVEL_OPTION].as<string>(), travel_paths);
     }
     else
     {
