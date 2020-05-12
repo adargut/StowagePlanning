@@ -45,8 +45,8 @@ namespace InputUtility
 //    bool handleAlgorithmArg(std::vector<string>& algorithm_paths);
 //    bool handleOutputArg(const string& path, string& output_path);
 //    bool handleOutputArg(const string& output_path);
-    bool handleArgs(int argc, char **argv, std::vector<string> &travel_paths, std::vector<string> &algorithm_paths,
-                    string &output_path);
+    bool handleArgs(int argc, char **argv, std::vector<string> &travelPaths, string algorithmsDir,
+                    std::vector<string> &algorithmNames, string &outputPath);
     AlgorithmError::errorCode readShipPlan(const std::string& full_path_and_file_name, Plan& plan);
 }
 

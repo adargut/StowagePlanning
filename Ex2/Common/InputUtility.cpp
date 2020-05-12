@@ -90,7 +90,7 @@ bool handleOutputArg(string& output_path)
 }
 
 bool
-InputUtility::handleArgs(int argc, char **argv, std::vector<string> &travel_paths, string algorithmsDir,
+InputUtility::handleArgs(int argc, char **argv, std::vector<string> &travelPaths, string algorithmsDir,
                          std::vector<string> &algorithmNames, string &outputPath)
 {
     // Declare the supported options
@@ -111,7 +111,7 @@ InputUtility::handleArgs(int argc, char **argv, std::vector<string> &travel_path
     // Parse path to travel folder
     if (vm.count(TRAVEL_OPTION))
     {
-        handleTravelArg(vm[TRAVEL_OPTION].as<string>(), travel_paths);
+        handleTravelArg(vm[TRAVEL_OPTION].as<string>(), travelPaths);
     }
     else
     {
