@@ -8,11 +8,11 @@ bool handleTravelArg(const string& travel_path, std::vector<string>& travel_path
     }
 
     // Check if travel path contains both route and plan files
-    for (const auto &entry : directory_iterator(travel_path)) {
+    for (const auto &entry : DirectoryIterator(travel_path)) {
         bool valid_route_file = false, valid_plan_file = false;
         if (entry.is_directory()) {
             string travel_directory = entry.path();
-            for (const auto &file : directory_iterator(travel_directory)) {
+            for (const auto &file : DirectoryIterator(travel_directory)) {
                 string file_path = file.path();
                 if (boost::algorithm::ends_with(file_path, ROUTE_SUFFIX)) {
                     //TODO parse route file
@@ -41,7 +41,7 @@ bool handleTravelArg(const string& travel_path, std::vector<string>& travel_path
     }
     return !travel_paths.empty();
     // TODO remove this?
-//    for (const auto& entry : directory_iterator(travel_path))
+//    for (const auto& entry : DirectoryIterator(travel_path))
 //    {
 //        string file_path = entry.path();
 //        if (boost::algorithm::ends_with(file_path, CARGO_SUFFIX))
@@ -60,7 +60,7 @@ bool handleAlgorithmArg(const string& algorithmDir, std::vector<string>& algorit
         return false;
     }
 
-    for (const auto& entry : directory_iterator(algorithmDir))
+    for (const auto& entry : DirectoryIterator(algorithmDir))
     {
         std::filesystem::path p = entry.path();
         if (p.extension() == SO_SUFFIX)
@@ -90,8 +90,8 @@ bool handleOutputArg(string& output_path)
 }
 
 bool
-InputUtility::handleArgs(int argc, char **argv, std::vector<string> &travelPaths, string algorithmsDir,
-                         std::vector<string> &algorithmNames, string &outputPath)
+InputUtility::handleArgs(int argc, char **argv, std::vector<string> &travel_paths, string algorithms_dir,
+                         std::vector<string> &algorithm_names, string &output_path)
 {
     // Declare the supported options
     po::options_description desc("Allowed options");
@@ -111,7 +111,7 @@ InputUtility::handleArgs(int argc, char **argv, std::vector<string> &travelPaths
     // Parse path to travel folder
     if (vm.count(TRAVEL_OPTION))
     {
-        handleTravelArg(vm[TRAVEL_OPTION].as<string>(), travelPaths);
+        handleTravelArg(vm[TRAVEL_OPTION].as<string>(), travel_paths);
     }
     else
     {
@@ -121,31 +121,56 @@ InputUtility::handleArgs(int argc, char **argv, std::vector<string> &travelPaths
     // Parse path to algorithm folder
     if (vm.count(ALGORITHM_OPTION))
     {
-        algorithmsDir = vm[ALGORITHM_OPTION].as<string>();
-        handleAlgorithmArg(algorithmsDir, algorithmNames);
+        algorithms_dir = vm[ALGORITHM_OPTION].as<string>();
+        handleAlgorithmArg(algorithms_dir, algorithm_names);
     }
     else
     {
-        algorithmsDir = CWD;
-        handleAlgorithmArg(algorithmsDir, algorithmNames);
+        algorithms_dir = CWD;
+        handleAlgorithmArg(algorithms_dir, algorithm_names);
     }
     // Parse path to output folder
     if (vm.count(OUTPUT_OPTION))
     {
-        handleOutputArg(vm[OUTPUT_OPTION].as<string>(), outputPath);
+        handleOutputArg(vm[OUTPUT_OPTION].as<string>(), output_path);
     }
     else
     {
-        handleOutputArg(outputPath);
+        handleOutputArg(output_path);
     }
     return true;
 }
 
-AlgorithmError::errorCode InputUtility::readShipPlan(const std::string& full_path_and_file_name, Plan &plan)
+bool verifyPlanLineFormat(const std::vector<string>& line)
 {
+    // Check if line has number of arguments != 3
+    if (line.size() != 3)
+    {
+        return false;
+    }
+
+    // Check if line has a non-number string
+    for (auto &number : line)
+    {
+        // Check if first line has a non-number string
+        if (number.find_first_not_of("0123456789") != string::npos) {
+            return false;
+        }
+    }
+    return true;
+}
+
+ErrorSet InputUtility::readShipPlan(const std::string& full_path_and_file_name, Plan &plan)
+{
+    // Store accumulated errors
+    ErrorSet errors;
+    // Store previous positions found for error checking
+    std::map<pos, int> previous_positions{};
+
     if (!fs::exists(full_path_and_file_name))
     {
-        return AlgorithmError::errorCode::BadPlanFile;
+        errors.insert(AlgorithmError::errorCode::BadPlanFile);
+        return errors;
     }
     ifstream in(full_path_and_file_name);
     std::string line;
@@ -158,20 +183,19 @@ AlgorithmError::errorCode InputUtility::readShipPlan(const std::string& full_pat
     {
         // Ignore lines starting with #
         if (boost::trim_left_copy(line)[0] == COMMENT) continue;
+        // Split line by ", " delimeter
+        boost::algorithm::split(split_line, line, boost::is_any_of(DELIMETER));
         // Treat first line differently
         if (first_line)
         {
             first_line = false;
-            boost::algorithm::split(split_line, line, boost::is_any_of(DELIMETER));
-            // Check if first line has number of arguments != 3
-            if (split_line.size() != 3) return AlgorithmError::errorCode::BadPlanFile;
-
-            for (auto &number : split_line)
+            // First line MUST have correct format
+            if (!verifyPlanLineFormat(split_line))
             {
-                // Check if first line has a non-number string
-                if (number.find_first_not_of("0123456789") != string::npos)
-                    return AlgorithmError::errorCode::BadPlanFile;
+                errors.insert(AlgorithmError::errorCode::BadPlanFile);
+                return errors;
             }
+
             dim_z = stoi(split_line[0]);
             dim_x = stoi(split_line[1]);
             dim_y = stoi(split_line[2]);
@@ -179,7 +203,100 @@ AlgorithmError::errorCode InputUtility::readShipPlan(const std::string& full_pat
         // Not first line
         else
         {
+            // Line has bad format, we ignore it
+            if (!verifyPlanLineFormat(split_line))
+            {
+                errors.insert(AlgorithmError::errorCode::BadLineFormatOrDuplicateXY);
+                continue;
+            }
+            x = stoi(split_line[0]);
+            y = stoi(split_line[1]);
+            z = stoi(split_line[2]);
 
+            // Error handling
+            pos new_pos = std::make_pair(x, y);
+            if (previous_positions.count(new_pos) > 0)
+            {
+                if (previous_positions[new_pos] != z)
+                {
+                    // Conflicting redefinition of X,Y so we quit
+                    errors.insert(AlgorithmError::errorCode::ConflictingXY);
+                    return errors;
+                }
+                // Non-conflicting redefinition of X,Y so we ignore
+                errors.insert(AlgorithmError::errorCode::BadLineFormatOrDuplicateXY);
+                continue;
+            }
+            // FLoor is too high
+            if (z >= dim_z)
+            {
+                errors.insert(AlgorithmError::errorCode::ExceedingFloorValue);
+                continue;
+            }
+            // X,Y dimensions are incorrect
+            if (x > dim_x || y > dim_y || x < 0 || y < 0)
+            {
+                errors.insert(AlgorithmError::errorCode::ExceedingXYValue);
+                continue;
+            }
+
+            for (int i = 0; i < z; i++)
+            {
+                // TODO is this right indexing??
+                plan[i][x][y] = ILLEGAL_POS;
+            }
         }
     }
+    return errors;
+}
+
+bool verifyISO6346(const std::string& port_name)
+{
+    // TODO implement me
+    if (!port_name.empty()) {
+        return true;
+    }
+    return false;
+}
+
+ErrorSet readShipRoute(const std::string& full_path_and_file_name, Route& route)
+{
+    // Store accumulated errors
+    ErrorSet errors;
+
+    if (!fs::exists(full_path_and_file_name))
+    {
+        errors.insert(AlgorithmError::errorCode::BadTravelFile);
+        return errors;
+    }
+    ifstream in(full_path_and_file_name);
+    std::string line;
+
+    while (getline(in, line))
+    {
+        // Same port appearing twice in a row
+        if (!route.empty() && route.back() == line)
+        {
+            errors.insert(AlgorithmError::errorCode::SamePortConsecutively);
+            continue;
+        }
+        // Incorrect ISO6346 formatting
+        if (!verifyISO6346(line))
+        {
+            errors.insert(AlgorithmError::errorCode::BadPortSymbol);
+            continue;
+        }
+        route.push_back(line);
+    }
+    // Route must have length > 1
+    if (route.size() == 1)
+    {
+        errors.insert(AlgorithmError::errorCode::SinglePortTravel);
+    }
+    // Route canot be empty
+    if (route.size() == 0)
+    {
+        errors.insert(AlgorithmError::errorCode::BadTravelFile);
+    }
+    return errors;
 }
