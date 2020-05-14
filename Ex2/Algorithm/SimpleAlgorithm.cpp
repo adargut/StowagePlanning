@@ -6,12 +6,30 @@
 
 int SimpleAlgorithm::readShipPlan(const std::string& full_path_and_file_name)
 {
-    return 0;
+    Plan &plan;
+    ErrorSet errors;
+    errors = InputUtility::readShipPlan(full_path_and_file_name, plan);
+    m_ship->setMPlan(plan);
+
+    for (auto& error : errors)
+    {
+        m_algorithmErrors.setBit(error);
+    }
+    return m_algorithmErrors.getAndClear();
 }
 
 int SimpleAlgorithm::readShipRoute(const std::string& full_path_and_file_name)
 {
-    return 0;
+    Route &route;
+    ErrorSet errors;
+    errors = InputUtility::readShipRoute(full_path_and_file_name, route);
+    m_ship->setMRoute(plan);
+
+    for (auto& error : errors)
+    {
+        m_algorithmErrors.setBit(error);
+    }
+    return m_algorithmErrors.getAndClear();
 }
 
 int SimpleAlgorithm::setWeightBalanceCalculator(WeightBalanceCalculator& calculator)

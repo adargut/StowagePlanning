@@ -7,6 +7,7 @@
 
 #include "../Common/AbstractAlgorithm.h"
 #include "../Common/AlgorithmError.h"
+#include "../Common/InputUtility.h"
 #include "../Common/Ship.h"
 #include <string>
 #include <memory>

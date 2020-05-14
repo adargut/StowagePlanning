@@ -1,9 +1,11 @@
 #include "../Common/InputUtility.h"
 #include "../Common/AlgorithmManager.h"
+#include "../Common/AlgorithmError.h"
 
 int main(int argc, char** argv)
 {
     // TESTS TODO REMOVE
+    cout << AlgorithmError::errorCode::SinglePortTravel << "\n";
     std::vector<string> travel_paths;
     string algorithmDir;
     std::vector<string> algorithmNames;

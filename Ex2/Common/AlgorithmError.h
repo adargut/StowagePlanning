@@ -27,6 +27,7 @@ public:
     explicit AlgorithmError(uint32_t errorCode=0);
     bool setBit(uint32_t bit);
     bool getBit(uint32_t bit) const;
+    int getAndClear();
     string getErrorDescription(errorCode code);
 };
 

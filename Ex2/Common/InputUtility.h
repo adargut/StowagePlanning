@@ -33,7 +33,6 @@
 
 // typedef declarations
 typedef std::pair<int, int> pos;
-typedef typename std::vector<std::string> Route;
 
 // namespace declarations
 namespace po = boost::program_options;
@@ -51,11 +50,9 @@ using ifstream = std::ifstream;
 
 namespace InputUtility
 {
-    // Populates plan (if possible), returns set of errors that occurred in the procedure
     ErrorSet readShipPlan(const std::string& full_path_and_file_name, Plan& plan);
-    // Populates route (if possible), returns set of errors that occurred in the procedure
     ErrorSet readShipRoute(const std::string& full_path_and_file_name, Route& route);
-    // Parses command line arguments: stores results in travel_paths, algorithms_dir, algorithm_names & output_path
+    ErrorSet readPort(const std::string& full_path_and_file_name, Port& port);
     bool handleArgs(int argc, char **argv, std::vector<string> &travel_paths, string algorithms_dir,
                     std::vector<string> &algorithm_names, string &output_path);
 }

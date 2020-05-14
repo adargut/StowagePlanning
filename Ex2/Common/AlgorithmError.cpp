@@ -27,6 +27,13 @@ bool AlgorithmError::getBit(uint32_t bit) const
     return m_errorCode & uint32_t(1) >> bit;
 }
 
+int AlgorithmError::getAndClear()
+{
+    uint32_t tmpErrorCode = m_errorCode;
+    m_errorCode = 0;
+    return tmpErrorCode;
+}
+
 string AlgorithmError::getErrorDescription(errorCode code)
 {
     switch (code)

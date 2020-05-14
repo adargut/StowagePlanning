@@ -250,6 +250,12 @@ ErrorSet InputUtility::readShipPlan(const std::string& full_path_and_file_name, 
     return errors;
 }
 
+ErrorSet InputUtility::readPort(const string &full_path_and_file_name, Port &port)
+{
+    // TODO implement me
+    return ErrorSet();
+}
+
 bool verifyISO6346(const std::string& port_name)
 {
     // TODO implement me

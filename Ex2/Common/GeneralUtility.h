@@ -8,13 +8,15 @@
 #include <vector>
 #include <string>
 
+// typedef declarations
 typedef typename std::vector<std::vector<std::vector<std::string>>> Plan;
+typedef typename std::vector<std::string> Route;
 
 
-class GeneralUtility
+namespace GeneralUtility
 {
     //
-};
+}
 
 
 #endif //EX2_GENERALUTILITY_H
