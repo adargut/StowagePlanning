@@ -12,7 +12,8 @@
 #include <sstream>
 #include <boost/algorithm/string.hpp>
 #include <unordered_set>
-#include "../Common/AlgorithmError.h"
+#include "AlgorithmError.h"
+#include "Port.h"
 #include "GeneralUtility.h"
 
 // macros
