@@ -8,6 +8,7 @@
 #include <vector>
 #include <string>
 #include <memory>
+#include <unordered_map>
 #include "../Common/Container.h"
 
 // typedef declarations

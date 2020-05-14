@@ -22,9 +22,9 @@ public:
     const std::string &getCode() const;
     const PortContainers &getContainers() const;
     const ContainersVector &getContainersToLoad() const;
-    // TODO is this really weak ptr?
+    // TODO is this really shared ptr?
     std::shared_ptr<Container> unloadContainer(const std::string& container_id);
-    bool loadContainer(Container* container);
+    bool loadContainer(std::shared_ptr<Container> container);
 };
 
 
