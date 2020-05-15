@@ -17,7 +17,7 @@ private:
     const std::string port_code;
     const std::string id;
 public:
-    Container(int _weight, std::string  _port_code, std::string _id);
+    Container(int weight, std::string  portCode, std::string id);
     const std::string& getPortCode() const;
     int getWeight() const;
     const std::string& getId() const;
