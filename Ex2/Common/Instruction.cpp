@@ -4,8 +4,10 @@
 
 #include "Instruction.h"
 
-Instruction::Instruction(Instruction::Operation _op, const std::string& _container_id, int _floor, int _row, int _col) :
-        op(_op), container_id(_container_id), floor(_floor), row(_row), col(_col) {}
+Instruction::Instruction(Instruction::Operation _op, const std::string& _container_id, int _floor, int _row, int _col,
+                         int _new_floor, int _new_row, int _new_col) :
+        op(_op), container_id(_container_id), floor(_floor), row(_row), col(_col),
+        new_floor(_new_floor), new_row(_new_row), new_col(_new_col){}
 
 Instruction::Operation Instruction::getOp() const {
     return op;
@@ -25,4 +27,33 @@ int Instruction::getRow() const {
 
 int Instruction::getCol() const {
     return col;
+}
+
+void Instruction::instructionToString(const Instruction &instruction, std::string &result)
+{
+    //TODO implement
+    (void)instruction;
+    (void )result;
+}
+
+int Instruction::countInstructions(const Instructions &instructions)
+{
+    //TODO implement
+    (void)instructions;
+    return 0;
+}
+
+int Instruction::getNewFloor() const
+{
+    return new_floor;
+}
+
+int Instruction::getNewRow() const
+{
+    return new_row;
+}
+
+int Instruction::getNewCol() const
+{
+    return new_col;
 }

@@ -135,6 +135,7 @@ int SimpleAlgorithm::getInstructionsForCargo(const std::string& input_full_path_
     string port_name = InputUtility::getFileName(input_full_path_and_file_name);
     getInstructionsForUnloading(instructions);
     setRealDestinations(containers_to_load);
+    //TODO sort based on distance to destination
     for (auto& container : containers_to_load)
     {
         getInstructionForLoadingContainer(container, instructions);

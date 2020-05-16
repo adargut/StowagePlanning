@@ -15,9 +15,20 @@ private:
     const int floor;
     const int row;
     const int col;
+    const int new_floor;
+public:
+    int getNewFloor() const;
+
+    int getNewRow() const;
+
+    int getNewCol() const;
+
+private:
+    const int new_row;
+    const int new_col;
 public:
     explicit Instruction(Operation _op = None, const std::string& _container_id = "", int _floor = -1,
-                         int _row = -1, int _col = -1);
+                         int _row = -1, int _col = -1, int _new_floor = -1, int _new_row = 1, int _new_col = -1);
     const std::string& getContainerId() const;
     Operation getOp() const;
     int getFloor() const;
@@ -25,7 +36,8 @@ public:
     int getCol() const;
     // TODO Utility functions to convert instructions to string
 //    static std::string opToString(Operation oper);
-//    static void instructionToString(const Instruction &instruction, std::string &result);
+    static void instructionToString(const Instruction &instruction, std::string &result);
+    static int countInstructions(const Instructions& instructions);
 //    static std::string instructionsToString(const Instructions& instructions);
 };
 

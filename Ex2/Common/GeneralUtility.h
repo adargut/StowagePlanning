@@ -19,7 +19,7 @@
 class Container;
 class Instruction;
 class Port;
-
+class Error;
 // typedef declarations
 typedef typename std::vector<std::vector<std::vector<std::string>>> Plan;
 // TODO should this be shared? not sure
@@ -30,6 +30,7 @@ typedef typename std::vector<std::shared_ptr<Container>> ContainersVector;
 typedef typename std::vector<std::string> Route;
 typedef typename std::vector<Port> Ports;
 typedef typename std::vector<Instruction> Instructions;
+typedef typename std::vector<Error> Errors;
 using string = std::string;
 
 
