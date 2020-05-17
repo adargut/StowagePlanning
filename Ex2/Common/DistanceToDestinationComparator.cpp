@@ -3,7 +3,7 @@
 //
 
 #include "DistanceToDestinationComparator.h"
-DistanceToDestinationComparator::DistanceToDestinationComparator(const int &currentPortIdx, const Route &route)
+DistanceToDestinationComparator::DistanceToDestinationComparator(int currentPortIdx, const Route &route)
         : current_port_idx(currentPortIdx), route(route) {}
 
 bool DistanceToDestinationComparator::operator()(std::shared_ptr<Container> c1, std::shared_ptr<Container> c2)

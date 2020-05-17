@@ -61,20 +61,26 @@ bool Simulation::initialize()
     m_ship.setPlan(ship_plan);
 
     // Set data of ports
-    for (auto& port :ship_route)
+    for (size_t i = 0; i < ship_route.size(); ++i)
     {
+        auto& port = ship_route[i];
         ContainersVector port_containers;
         string port_file = m_travelDir + "/" + port + CARGO_SUFFIX;
         errors = InputUtility::readCargo(port_file, port_containers);
         //TODO handle errors
+        setRealDestinations(ship_route, i, port_containers);
         m_ports.emplace_back(port, port_containers);
     }
+
+
+    //TODO check errors
+    m_algorithm->readShipRoute(route_file);
+    m_algorithm->readShipPlan(plan_file);
     return true;
 }
 
-bool Simulation::run()
+int Simulation::run()
 {
-    bool run_failed = 0;
     int number_of_operations = 0;
     int reported_errors;
     Errors errors;
@@ -88,7 +94,7 @@ bool Simulation::run()
         string cargo_file = m_travelDir + "/" + port_code + CARGO_SUFFIX;
         string crane_instructions_file = m_outputDir + "/" + port_code + CRANE_INSTRUCTIONS_SUFFIX;
         reported_errors = m_algorithm->getInstructionsForCargo(cargo_file, crane_instructions_file);
-        Instructions instructions; //TODO fill from crane instructions file
+        Instructions instructions;
         if(!InputUtility::readCraneInstructions(crane_instructions_file, instructions))
         {
             // TODO handle error while loading instructions from instructions file
@@ -109,6 +115,7 @@ bool Simulation::run()
             if(instruction.getOp() == Instruction::Reject)
                 handleRejectOperation(port, instruction, errors, rejected);
         }
+
         // Post all operations for this port:
         // Check that no container destined for this port was forgotten on the ship
         checkContainersForgottenOnShip(port, errors);
@@ -116,7 +123,8 @@ bool Simulation::run()
         checkContainersLeftOnPort(port, original_containers, errors);
 
         PortContainers unloaded_containers;
-        for (auto &container : port.getContainers()) {
+        for (auto &container : port.getContainers())
+        {
             if (std::find(original_containers.begin(),
                           original_containers.end(), container) != original_containers.end())
                 unloaded_containers.insert(container);
@@ -131,7 +139,8 @@ bool Simulation::run()
     }
     // TODO: Save errors and number of operations to a file
     (void)reported_errors;
-    return run_failed;
+    if(!errors.empty()) return -1;
+    return number_of_operations;
 }
 
 
@@ -319,6 +328,25 @@ void Simulation::checkNoRoomForContainers(PortContainers& unloaded_containers,
     for (auto& container : unloaded_containers)
         if(distance_to_dest.distanceToDestination(container.second) < INT_MAX && !m_ship.isShipFull())
             errors.push_back(Error(Error::IgnoredContainer));
+}
+
+void Simulation::setRealDestinations(const Route& route, int curr_idx, ContainersVector& containers)
+{
+    for (auto& container : containers)
+    {
+        string destination = container->getPortCode();
+        container->setPortCode(BAD_DESTINATION);
+        for (size_t i = curr_idx; i < route.size(); ++i)
+        {
+            std::vector<string> split_line;
+            boost::algorithm::split(split_line, route[i], boost::is_any_of(UNDERSCORE));
+            if(split_line[0] == destination)
+            {
+                container->setPortCode(route[i]);
+                break;
+            }
+        }
+    }
 }
 
 

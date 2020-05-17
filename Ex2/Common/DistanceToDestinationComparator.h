@@ -11,10 +11,10 @@
 
 class DistanceToDestinationComparator {
 private:
-    const int &current_port_idx;
+    int current_port_idx;
     const Route &route;
 public:
-    DistanceToDestinationComparator(const int &_current_port_idx, const Route &_route);
+    DistanceToDestinationComparator(int currentPortIdx, const Route &route);
     // Returns distance from container to destination based on current port index
     int distanceToDestination(std::shared_ptr<Container> container);
     bool operator()(std::shared_ptr<Container> c1, std::shared_ptr<Container> c2);

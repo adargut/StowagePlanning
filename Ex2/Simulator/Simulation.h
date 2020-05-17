@@ -29,7 +29,7 @@ public:
             m_travelDir(std::move(travel_dir)), m_outputDir(std::move(output_dir)) {}
     // Return false if run can't be started
     bool initialize();
-    bool run();
+    int run();
 
 private:
     bool isDestinationReachable(std::shared_ptr<const Container> container);
@@ -49,5 +49,6 @@ private:
     void
     checkNoRoomForContainers(PortContainers& unloaded_containers, DistanceToDestinationComparator& distance_to_dest,
                              Errors& errors);
+    static void setRealDestinations(const Route& route, int curr_idx, ContainersVector& containers);
 };
 #endif //EX2_SIMULATION_H

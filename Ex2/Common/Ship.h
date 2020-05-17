@@ -13,7 +13,7 @@ class Ship
 private:
     Route m_route;
     Plan m_plan;
-    int m_currentPortIdx;
+    int m_currentPortIdx = 0;
     ContainerMap m_containers;
 public:
     const Route &getRoute() const;
@@ -29,6 +29,7 @@ public:
     std::shared_ptr<Container> unloadContainer(int floor, int row, int col);
     void advanceCurrentPortIdx();
     bool isShipFull();
+    bool hasContainer(const std::string &container_id);
 
 private:
     void updatePlan(int floor, int row, int col, const std::string& val);

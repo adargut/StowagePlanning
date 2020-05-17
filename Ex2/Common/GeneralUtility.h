@@ -9,19 +9,31 @@
 #define BAD_DESTINATION ""
 #define FREE_POS "free"
 #define ILLEGAL_POS "illegal"
+#define CSV_SEPERATOR ","
 #define UNDERSCORE "_"
+#define DELIMETER ","
 
 #include <vector>
 #include <string>
 #include <memory>
 #include <unordered_map>
 
+// Forward declarations
 class Container;
 class Instruction;
 class Port;
 class Error;
-// typedef declarations
+class AlgorithmError;
+
+using string = std::string;
+
+// Typedef declarations
 typedef typename std::vector<std::vector<std::vector<std::string>>> Plan;
+typedef typename std::vector<std::vector<AlgorithmError>> AlgorithmErrors;
+// Map algorithm name to vector of results for all travels
+typedef typename std::unordered_map<string, std::vector<string>> AlgorithmTravelResultsMap;
+typedef typename std::unordered_map<string, AlgorithmErrors> AlgorithmTravelErrors;
+// Map algorithm name to vector of results for all travels
 // TODO should this be shared? not sure
 typedef typename std::unordered_map<std::string, std::shared_ptr<Container>> PortContainers;
 typedef typename std::array<int, 3> Position;
@@ -31,7 +43,6 @@ typedef typename std::vector<std::string> Route;
 typedef typename std::vector<Port> Ports;
 typedef typename std::vector<Instruction> Instructions;
 typedef typename std::vector<Error> Errors;
-using string = std::string;
 
 
 namespace GeneralUtility

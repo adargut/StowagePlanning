@@ -58,10 +58,10 @@ string AlgorithmError::getErrorDescription(errorCode code)
             return "SinglePortTravel";
         case Reserved:
             return "Reserved";
-        case DuplicatePortID:
-            return "DuplicatePortID";
-        case PortOnShip:
-            return "PortOnShip";
+        case DuplicateContainerOnPort:
+            return "DuplicateContainerOnPort";
+        case DuplicateContainerOnShip:
+            return "DuplicateContainerOnShip";
         case BadPortWeight:
             return "BadPortWeight";
         case BadPortDest:
@@ -77,5 +77,12 @@ string AlgorithmError::getErrorDescription(errorCode code)
         case ContainersExceedingCapacity:
             return "ContainersExceedingCapacity";
     }
+    return "";
+}
+
+string AlgorithmError::errorsToString(std::vector<AlgorithmError> algorithm_errors) 
+{
+    // TODO implement me!
+    (void)algorithm_errors;
     return "";
 }

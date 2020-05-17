@@ -7,5 +7,5 @@ link_libraries(stdc++fs)
 FIND_PACKAGE(Boost COMPONENTS program_options REQUIRED)
 
 add_executable(Ex2 Common/AbstractAlgorithm.h Common/AlgorithmRegistration.h Common/WeightBalanceCalculator.cpp Common/WeightBalanceCalculator.h Simulator/main.cpp Common/InputUtility.cpp Common/InputUtility.h Common/AlgorithmManager.cpp Common/AlgorithmManager.h Common/AlgorithmRegistration.cpp Common/Ship.cpp Common/Ship.h Common/Port.cpp Common/Port.h Common/Container.cpp Common/Container.h Simulator/Simulation.cpp Simulator/Simulation.h Common/Instruction.cpp Common/Instruction.h
-        Algorithm/SimpleAlgorithm.cpp Algorithm/SimpleAlgorithm.h Common/AlgorithmError.cpp Common/AlgorithmError.h Simulator/Error.cpp Simulator/Error.h Common/DistanceToDestinationComparator.cpp Common/DistanceToDestinationComparator.h Common/ISO_6346.cpp Common/ISO_6346.h)
+        Algorithm/SimpleAlgorithm.cpp Algorithm/SimpleAlgorithm.h Common/AlgorithmError.cpp Common/AlgorithmError.h Simulator/Error.cpp Simulator/Error.h Common/DistanceToDestinationComparator.cpp Common/DistanceToDestinationComparator.h Common/ISO_6346.cpp Common/ISO_6346.h Common/OutputUtility.h Common/OutputUtility.cpp)
 TARGET_LINK_LIBRARIES(Ex2 LINK_PUBLIC ${Boost_LIBRARIES} ${CMAKE_DL_LIBS})

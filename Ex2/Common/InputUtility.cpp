@@ -195,7 +195,8 @@ ErrorSet InputUtility::readShipPlan(const std::string& full_path_and_file_name, 
     {
         // Ignore lines starting with #
         if (boost::trim_left_copy(line)[0] == COMMENT) continue;
-        // Split line by ", " delimeter
+        // Split line by "," delimeter
+        boost::erase_all( line, " " );
         boost::algorithm::split(split_line, line, boost::is_any_of(DELIMETER));
         // Treat first line differently
         if (first_line)
@@ -211,6 +212,14 @@ ErrorSet InputUtility::readShipPlan(const std::string& full_path_and_file_name, 
             dim_z = stoi(split_line[0]);
             dim_x = stoi(split_line[1]);
             dim_y = stoi(split_line[2]);
+            if (dim_x < 1 || dim_y < 1 || dim_z < 1)
+            {
+                errors.insert(AlgorithmError::errorCode::BadPlanFile);
+                return errors;
+            }
+            plan = std::vector<std::vector<std::vector<std::string>>>
+                    (dim_z, std::vector<std::vector<std::string>>
+                            (dim_y, std::vector<std::string>(dim_x, FREE_POS)));
         }
         // Not first line
         else
@@ -275,8 +284,9 @@ ErrorSet InputUtility::readCargo(const string &full_path_and_file_name, Containe
     {
         if (boost::trim_left_copy(line)[0] == COMMENT) continue;
         std::vector<string> split_line;
+        boost::erase_all( line, " " );
         boost::algorithm::split(split_line, line, boost::is_any_of(DELIMETER));
-        int bound = std::min<int>(2, split_line.size());
+        int bound = split_line.size();
         auto container = std::make_shared<Container>();
         // ID
         if (bound > 0)
@@ -350,12 +360,12 @@ ErrorSet InputUtility::readShipRoute(const std::string& full_path_and_file_name,
         if (port_map.count(line))
         {
             int curr_idx = port_map[line];
-            line.append("_" + std::to_string(curr_idx+1));
+            line.append(UNDERSCORE + std::to_string(curr_idx+1));
             port_map[line] += 1;
         } else
         {
             port_map[line] = 1;
-            line.append("_" + std::to_string(1));
+            line.append(UNDERSCORE + std::to_string(1));
         }
         route.push_back(line);
     }
@@ -386,6 +396,7 @@ bool InputUtility::readCraneInstructions(const string& full_path_and_file_name, 
     {
         if (boost::trim_left_copy(line)[0] == COMMENT) continue;
         std::vector<string> split_line;
+        boost::erase_all( line, " " );
         boost::algorithm::split(split_line, line, boost::is_any_of(DELIMETER));
         if(split_line.size() < 2) return false;
         string& container_id = split_line[1];
@@ -396,31 +407,31 @@ bool InputUtility::readCraneInstructions(const string& full_path_and_file_name, 
         }
         else if (split_line.size() < 5) return false;
         if(split_line[2].find_first_not_of("0123456789") != string::npos) return false;
-        int x = stoi(split_line[2]);
+        int z = stoi(split_line[2]);
         if(split_line[3].find_first_not_of("0123456789") != string::npos) return false;
-        int y = stoi(split_line[3]);
+        int x = stoi(split_line[3]);
         if(split_line[4].find_first_not_of("0123456789") != string::npos) return false;
-        int z = stoi(split_line[4]);
+        int y = stoi(split_line[4]);
         if(split_line[0] == "L")
         {
-            instructions.emplace_back(Instruction::Load, container_id, x, y, z);
+            instructions.emplace_back(Instruction::Load, container_id, z, y, x);
             continue;
         }
         if(split_line[0] == "U")
         {
-            instructions.emplace_back(Instruction::Unload, container_id, x, y, z);
+            instructions.emplace_back(Instruction::Unload, container_id, z, y, x);
             continue;
         }
         if(split_line[0] == "M")
         {
             if(split_line.size() < 8) return false;
             if(split_line[5].find_first_not_of("0123456789") != string::npos) return false;
-            int new_x = stoi(split_line[5]);
+            int new_z = stoi(split_line[5]);
             if(split_line[6].find_first_not_of("0123456789") != string::npos) return false;
-            int new_y = stoi(split_line[6]);
+            int new_x = stoi(split_line[6]);
             if(split_line[7].find_first_not_of("0123456789") != string::npos) return false;
-            int new_z = stoi(split_line[7]);
-            instructions.emplace_back(Instruction::Move, container_id, x, y, z, new_x, new_y, new_z);
+            int new_y = stoi(split_line[7]);
+            instructions.emplace_back(Instruction::Move, container_id, z, y, x, new_z, new_y, new_x);
             continue;
         }
         return false;

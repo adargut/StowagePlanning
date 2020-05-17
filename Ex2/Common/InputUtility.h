@@ -33,7 +33,6 @@
 #define CARGO_SUFFIX ".cargo_data"
 #define CWD "./"
 #define COMMENT '#'
-#define DELIMETER ", "
 
 // typedef declarations
 typedef std::pair<int, int> pos;

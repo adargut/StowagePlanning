@@ -29,9 +29,16 @@ int Ship::getCurrentPortIdx() const
     return m_currentPortIdx;
 }
 
-const ContainerMap &Ship::getContainerMap() const {
+const ContainerMap &Ship::getContainerMap() const
+{
     return m_containers;
 }
+
+bool Ship::hasContainer(const std::string &container_id)
+{
+    return m_containers.count(container_id) > 0;
+}
+
 
 bool Ship::loadContainer(int floor, int row, int col, std::shared_ptr<Container> container_to_load) {
     if (floor < 0 || row < 0 || col < 0 || floor > int(m_plan.size()) || row > int(m_plan[0].size()) ||
