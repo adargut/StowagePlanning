@@ -15,6 +15,8 @@
 #include "AlgorithmError.h"
 #include "Port.h"
 #include "GeneralUtility.h"
+#include "Instruction.h"
+#include "ISO_6346.h"
 
 // macros
 #define TRAVEL_OPTION "travel_path"
@@ -55,6 +57,7 @@ namespace InputUtility
     ErrorSet readShipPlan(const std::string& full_path_and_file_name, Plan& plan);
     ErrorSet readShipRoute(const std::string& full_path_and_file_name, Route& route);
     ErrorSet readCargo(const std::string& full_path_and_file_name, ContainersVector &containers_to_load);
+    bool readCraneInstructions(const std::string& full_path_and_file_name, Instructions& instructions);
     bool handleArgs(int argc, char **argv, std::vector<string> &travel_paths, string algorithms_dir,
                     std::vector<string> &algorithm_names, string &output_path);
     string getFileName(const std::string& full_path_and_file_name);

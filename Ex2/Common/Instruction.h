@@ -16,6 +16,8 @@ private:
     const int row;
     const int col;
     const int new_floor;
+    const int new_row;
+    const int new_col;
 public:
     int getNewFloor() const;
 
@@ -23,9 +25,6 @@ public:
 
     int getNewCol() const;
 
-private:
-    const int new_row;
-    const int new_col;
 public:
     explicit Instruction(Operation _op = None, const std::string& _container_id = "", int _floor = -1,
                          int _row = -1, int _col = -1, int _new_floor = -1, int _new_row = 1, int _new_col = -1);

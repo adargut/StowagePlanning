@@ -18,7 +18,7 @@ private:
     PortContainers m_containers;
     ContainersVector m_containersToLoad;
 public:
-    Port(std::string code, const ContainersVector &containers);
+    Port(std::string code, const ContainersVector& containers);
     const std::string &getCode() const;
     const PortContainers &getContainers() const;
     const ContainersVector &getContainersToLoad() const;

@@ -28,11 +28,53 @@ bool Simulation::isDestinationReachable(std::shared_ptr<const Container> contain
 
 bool Simulation::initialize()
 {
-    return false;
+    Plan ship_plan;
+    Route ship_route;
+    string plan_file;
+    string route_file;
+    ErrorSet errors;
+
+    // Set ship initial configuration
+    for (const auto &file : DirectoryIterator(m_travelDir))
+    {
+        string file_path = file.path();
+        if (boost::algorithm::ends_with(file_path, ROUTE_SUFFIX))
+        {
+            route_file = std::move(file_path);
+            break;
+        }
+    }
+    errors = InputUtility::readShipRoute(route_file, ship_route);
+    //TODO handle errors
+    for (const auto &file : DirectoryIterator(m_travelDir))
+    {
+        string file_path = file.path();
+        if (boost::algorithm::ends_with(file_path, PLAN_SUFFIX))
+        {
+            plan_file = std::move(file_path);
+            break;
+        }
+    }
+    errors = InputUtility::readShipPlan(plan_file, ship_plan);
+    //TODO handle errors
+    m_ship.setRoute(ship_route);
+    m_ship.setPlan(ship_plan);
+
+    // Set data of ports
+    for (auto& port :ship_route)
+    {
+        ContainersVector port_containers;
+        string port_file = m_travelDir + "/" + port + CARGO_SUFFIX;
+        errors = InputUtility::readCargo(port_file, port_containers);
+        //TODO handle errors
+        m_ports.emplace_back(port, port_containers);
+    }
+    return true;
 }
 
 bool Simulation::run()
 {
+    bool run_failed = 0;
     int number_of_operations = 0;
     int reported_errors;
     Errors errors;
@@ -47,6 +89,10 @@ bool Simulation::run()
         string crane_instructions_file = m_outputDir + "/" + port_code + CRANE_INSTRUCTIONS_SUFFIX;
         reported_errors = m_algorithm->getInstructionsForCargo(cargo_file, crane_instructions_file);
         Instructions instructions; //TODO fill from crane instructions file
+        if(!InputUtility::readCraneInstructions(crane_instructions_file, instructions))
+        {
+            // TODO handle error while loading instructions from instructions file
+        }
         number_of_operations+=Instruction::countInstructions(instructions);
         for (auto& instruction : instructions)
         {
@@ -85,7 +131,7 @@ bool Simulation::run()
     }
     // TODO: Save errors and number of operations to a file
     (void)reported_errors;
-    return false;
+    return run_failed;
 }
 
 

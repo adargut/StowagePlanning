@@ -10,12 +10,7 @@ bool verifyPortSymbol(const string& line)
 
 bool verifyISO6346(const std::string& port_name)
 {
-    // TODO implement me
-    if (!port_name.empty())
-    {
-        return true;
-    }
-    return false;
+    return ISO_6346::isValidId(port_name);
 }
 
 bool handleTravelArg(const string& travel_path, std::vector<string>& travel_paths) {
@@ -375,4 +370,60 @@ ErrorSet InputUtility::readShipRoute(const std::string& full_path_and_file_name,
         errors.insert(AlgorithmError::errorCode::BadTravelFile);
     }
     return errors;
+}
+
+bool InputUtility::readCraneInstructions(const string& full_path_and_file_name, Instructions& instructions)
+{
+    if (!fs::exists(full_path_and_file_name))
+    {
+        return false;
+    }
+
+    ifstream in(full_path_and_file_name);
+    std::string line;
+
+    while (getline(in, line))
+    {
+        if (boost::trim_left_copy(line)[0] == COMMENT) continue;
+        std::vector<string> split_line;
+        boost::algorithm::split(split_line, line, boost::is_any_of(DELIMETER));
+        if(split_line.size() < 2) return false;
+        string& container_id = split_line[1];
+        if(split_line[0] == "R")
+        {
+            instructions.emplace_back(Instruction::Reject, container_id);
+            continue;
+        }
+        else if (split_line.size() < 5) return false;
+        if(split_line[2].find_first_not_of("0123456789") != string::npos) return false;
+        int x = stoi(split_line[2]);
+        if(split_line[3].find_first_not_of("0123456789") != string::npos) return false;
+        int y = stoi(split_line[3]);
+        if(split_line[4].find_first_not_of("0123456789") != string::npos) return false;
+        int z = stoi(split_line[4]);
+        if(split_line[0] == "L")
+        {
+            instructions.emplace_back(Instruction::Load, container_id, x, y, z);
+            continue;
+        }
+        if(split_line[0] == "U")
+        {
+            instructions.emplace_back(Instruction::Unload, container_id, x, y, z);
+            continue;
+        }
+        if(split_line[0] == "M")
+        {
+            if(split_line.size() < 8) return false;
+            if(split_line[5].find_first_not_of("0123456789") != string::npos) return false;
+            int new_x = stoi(split_line[5]);
+            if(split_line[6].find_first_not_of("0123456789") != string::npos) return false;
+            int new_y = stoi(split_line[6]);
+            if(split_line[7].find_first_not_of("0123456789") != string::npos) return false;
+            int new_z = stoi(split_line[7]);
+            instructions.emplace_back(Instruction::Move, container_id, x, y, z, new_x, new_y, new_z);
+            continue;
+        }
+        return false;
+    }
+    return true;
 }
