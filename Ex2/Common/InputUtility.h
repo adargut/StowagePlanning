@@ -25,6 +25,7 @@
 #define OUTPUT_DESC "path to output"
 #define ROUTE_SUFFIX ".route"
 #define PLAN_SUFFIX ".ship_plan"
+#define CRANE_INSTRUCTIONS_SUFFIX ".crane_instructions"
 #define SO_SUFFIX ".so"
 #define ILLEGAL_POS "illegal"
 #define CARGO_SUFFIX ".cargo_data"
