@@ -24,9 +24,9 @@ public:
     int getRow() const;
     int getCol() const;
     // TODO Utility functions to convert instructions to string
-//    static std::string opToString(Operation oper);
-//    static void instructionToString(const Instruction &instruction, std::string &result);
-//    static std::string instructionsToString(const Instructions& instructions);
+   static std::string opToString(Operation oper);
+   static void instructionToString(const Instruction &instruction, std::string &result);
+   static std::string instructionsToString(const Instructions& instructions);
 };
 
 

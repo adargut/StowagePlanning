@@ -21,7 +21,7 @@ public:
         // Errors related travel route
         SamePortConsecutively=5, BadPortSymbol=6, BadTravelFile=7, SinglePortTravel=8, Reserved=9,
         // Errors related to containers
-        DuplicatePortID=10, PortOnShip=11, BadPortWeight=12, BadPortDest=13, MissingPortID=14, BadPortID=15,
+        DuplicateContainerOnPort=10, DuplicateContainerOnShip=11, BadPortWeight=12, BadPortDest=13, MissingPortID=14, BadPortID=15,
         BadCargoFile=16, LastPortNotEmpty=17, ContainersExceedingCapacity=18
     };
     explicit AlgorithmError(uint32_t errorCode=0);

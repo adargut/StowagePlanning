@@ -58,10 +58,10 @@ string AlgorithmError::getErrorDescription(errorCode code)
             return "SinglePortTravel";
         case Reserved:
             return "Reserved";
-        case DuplicatePortID:
-            return "DuplicatePortID";
-        case PortOnShip:
-            return "PortOnShip";
+        case DuplicateContainerOnPort:
+            return "DuplicateContainerOnPort";
+        case DuplicateContainerOnShip:
+            return "DuplicateContainerOnShip";
         case BadPortWeight:
             return "BadPortWeight";
         case BadPortDest:

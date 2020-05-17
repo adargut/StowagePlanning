@@ -29,6 +29,7 @@ public:
     std::shared_ptr<Container> unloadContainer(int floor, int row, int col);
     void advanceCurrentPortIdx();
     bool isShipFull();
+    bool hasContainer(const std::string &container_id);
 
 private:
     void updatePlan(int floor, int row, int col, const std::string& val);

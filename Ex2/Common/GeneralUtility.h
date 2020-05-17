@@ -9,6 +9,7 @@
 #define BAD_DESTINATION ""
 #define FREE_POS "free"
 #define ILLEGAL_POS "illegal"
+#define CSV_SEPERATOR ","
 #define UNDERSCORE "_"
 
 #include <vector>

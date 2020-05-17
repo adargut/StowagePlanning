@@ -5,10 +5,6 @@
 #ifndef EX2_SIMPLEALGORITHM_H
 #define EX2_SIMPLEALGORITHM_H
 
-#include "../Common/AbstractAlgorithm.h"
-#include "../Common/AlgorithmError.h"
-#include "../Common/InputUtility.h"
-#include "../Common/Ship.h"
 #include <string>
 #include <memory>
 #include <filesystem>
@@ -16,6 +12,10 @@
 #include <iostream>
 #include <sstream>
 #include <boost/algorithm/string.hpp>
+#include "../Common/AbstractAlgorithm.h"
+#include "../Common/AlgorithmError.h"
+#include "../Common/InputUtility.h"
+#include "../Common/Ship.h"
 #include "../Common/Instruction.h"
 #include "../Common/Container.h"
 #include "../Common/GeneralUtility.h"

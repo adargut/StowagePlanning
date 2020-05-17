@@ -355,12 +355,12 @@ ErrorSet InputUtility::readShipRoute(const std::string& full_path_and_file_name,
         if (port_map.count(line))
         {
             int curr_idx = port_map[line];
-            line.append("_" + std::to_string(curr_idx+1));
+            line.append(UNDERSCORE + std::to_string(curr_idx+1));
             port_map[line] += 1;
         } else
         {
             port_map[line] = 1;
-            line.append("_" + std::to_string(1));
+            line.append(UNDERSCORE + std::to_string(1));
         }
         route.push_back(line);
     }
