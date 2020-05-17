@@ -7,6 +7,7 @@
 
 #include <cstdint>
 #include <string>
+#include <vector>
 
 using string = std::string;
 
@@ -29,6 +30,7 @@ public:
     bool getBit(uint32_t bit) const;
     int getAndClear();
     string getErrorDescription(errorCode code);
+    static string errorsToString(std::vector<AlgorithmError> algorithm_errors);
 };
 
 

@@ -79,3 +79,8 @@ string AlgorithmError::getErrorDescription(errorCode code)
     }
     return "";
 }
+
+string AlgorithmError::errorsToString(std::vector<AlgorithmError> algorithm_errors) 
+{
+    // TODO implement me!
+}
