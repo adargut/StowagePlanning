@@ -4,12 +4,61 @@
 #include "Simulation.h"
 #include "../Algorithm/SimpleAlgorithm.h"
 
+
+int registerAlgorithms(const string& algorithmDir, const std::vector<string>& algorithmNames)
+{
+    AlgorithmManager::getInstance().setAlgorithmsPath(algorithmDir);
+    for (auto& algorithmName : algorithmNames)
+    {
+        if(!AlgorithmManager::getInstance().registerAlgorithm(algorithmName))
+        {
+            // TODO maybe handle?
+        }
+    }
+    return 0;
+}
+
+int runSimulations(std::vector<string>& travelPaths, std::vector<string>& algorithmNames, string& outputPath)
+{
+    std::vector<string> travelNames;
+    // Initialize vector of travel names
+    for (auto& travel : travelPaths)
+    {
+        string travelName = std::filesystem::path(travel).filename();
+        travelNames.push_back(std::move(travelName));
+    }
+    AlgorithmTravelResultsMap resultsMap;
+    for (auto& algorithmName : algorithmNames)
+    {
+        for (auto& travel : travelPaths)
+        {
+            string travelName = std::filesystem::path(travel).filename();
+            auto algorithm = AlgorithmManager::getInstance().getAlgorithmInstance(algorithmName);
+            if(algorithm == nullptr) continue; // algorithm didn't register
+            Simulation simulation(std::move(algorithm), algorithmName, travelName, travel, outputPath);
+            if(!simulation.initialize())
+            {
+                // TODO handle
+            }
+            if(resultsMap.count(algorithmName)) resultsMap[algorithmName].push_back(std::to_string(simulation.run()));
+            else resultsMap[algorithmName] = std::vector<string>();
+        }
+    }
+    // TODO fix this function...
+    // OutputUtility::writeResults(outputPath, resultsMap, travelNames);
+    return 0;
+}
+
 int test_run()
 {
     std::unique_ptr<AbstractAlgorithm> alg = std::make_unique<SimpleAlgorithm>();
-    Simulation simulation(std::move(alg), "test_algorithm", "travel_0", "../Travels_dir/travel_0", "../test_output");
+    Simulation simulation(std::move(alg), "test_algorithm", "travel_0", "../Travels_dir/travel_0", "./test_output");
     simulation.initialize();
-    std::cout << simulation.run() << std::endl;
+    AlgorithmTravelResultsMap resultsMap;
+    std::vector<string> travelNames = {"travel_0"};
+    resultsMap["test_algorithm"] = std::vector<string>();
+    resultsMap["test_algorithm"].push_back(std::to_string(simulation.run()));
+    OutputUtility::writeResults("./test_output", resultsMap, travelNames);
     return 0;
 }
 
@@ -18,24 +67,14 @@ int main(int argc, char** argv)
     (void)argc;
     (void)argv;
     // TESTS TODO REMOVE
-//    cout << AlgorithmError::errorCode::SinglePortTravel << "\n";
-//    std::vector<string> travel_paths;
-//    string algorithmDir;
-//    std::vector<string> algorithmNames;
-//    string output_path;
-////    string travel_path = "/Travels_dir";
-//    InputUtility::handleArgs(argc, argv, travel_paths, algorithmDir, algorithmNames, output_path);
-//    if(!algorithmNames.empty())
-//    {
-//        cout << algorithmNames[0] << "\n";
-//        cout << algorithmNames[1] << "\n";
-//    }
-//    if(!travel_paths.empty())
-//    {
-//        cout << travel_paths[0] << "\n";
-//    }
-//    AlgorithmManager::getInstance().setAlgorithmsPath(algorithmDir);
-//    AlgorithmManager::getInstance().registerAlgorithm(algorithmNames[0]);
+    std::vector<string> travel_paths;
+    string algorithmDir;
+    std::vector<string> algorithmNames;
+    string output_path;
+    InputUtility::handleArgs(argc, argv, travel_paths, algorithmDir, algorithmNames, output_path);
 //TODO create output dir if doesn't exist
-    return test_run();
+    //return test_run();
+    registerAlgorithms(algorithmDir, algorithmNames);
+    runSimulations(travel_paths, algorithmNames, output_path);
+    return 0;
 }

@@ -102,8 +102,8 @@ bool handleOutputArg(string& output_path)
 }
 
 bool
-InputUtility::handleArgs(int argc, char **argv, std::vector<string> &travel_paths, string algorithms_dir,
-                         std::vector<string> &algorithm_names, string &output_path)
+InputUtility::handleArgs(int argc, char **argv, std::vector<string>& travel_paths, string& algorithms_dir,
+                         std::vector<string>& algorithm_names, string& output_path)
 {
     // Declare the supported options
     po::options_description desc("Allowed options");

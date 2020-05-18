@@ -36,3 +36,9 @@ bool AlgorithmManager::registerAlgorithm(const string &algorithmName) {
     }
     return true;
 }
+
+std::unique_ptr<AbstractAlgorithm> AlgorithmManager::getAlgorithmInstance(const string& algorithmName)
+{
+    if(!factoryMap.count(algorithmName)) return nullptr;
+    return factoryMap[algorithmName]->operator()();
+}

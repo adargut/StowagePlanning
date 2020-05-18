@@ -39,6 +39,7 @@ public:
     bool registerAlgorithm(const string& algorithmName);
     // Called during algorithm registration (when the algorithm .so file is loaded)
     void registerFactory(const std::function<std::unique_ptr<AbstractAlgorithm>()>& factory);
+    std::unique_ptr<AbstractAlgorithm> getAlgorithmInstance(const string& algorithmName);
 };
 
 
