@@ -295,7 +295,7 @@ ErrorSet InputUtility::readCargo(const string &full_path_and_file_name, Containe
             if (!verifyISO6346((id)))
             {
                 errors.insert(AlgorithmError::errorCode::BadPortID);
-                continue;
+                bound = 0; // Container would be invalidated by having no destination
             }
             container->setId(id);
         }

@@ -20,9 +20,9 @@ void AlgorithmManager::setAlgorithmsPath(const string &algorithmsPath) {
 }
 
 bool AlgorithmManager::registerAlgorithm(const string &algorithmName) {
-    std::string SoPath = m_algorithmsPath + algorithmName + SO_SUFFIX;
+    std::string SoPath = m_algorithmsPath + "/" + algorithmName + SO_SUFFIX;
     std::unique_ptr<void, DLCloser> handle(dlopen(SoPath.c_str(), RTLD_LAZY));
-    if(handle)
+    if(!handle)
     {
         std::cout << "failed loading: " << SoPath << dlerror() << std::endl;
         return false;

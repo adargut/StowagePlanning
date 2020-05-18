@@ -3,6 +3,9 @@
 //
 
 #include "SimpleAlgorithm.h"
+#include "../Common/AlgorithmRegistration.h"
+
+REGISTER_ALGORITHM(SimpleAlgorithm)
 
 int SimpleAlgorithm::readShipPlan(const std::string& full_path_and_file_name)
 {

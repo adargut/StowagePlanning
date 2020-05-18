@@ -2,7 +2,7 @@
 #include "../Common/AlgorithmManager.h"
 #include "../Common/AlgorithmError.h"
 #include "Simulation.h"
-#include "../Algorithm/SimpleAlgorithm.h"
+//#include "../Algorithm/SimpleAlgorithm.h"
 
 
 int registerAlgorithms(const string& algorithmDir, const std::vector<string>& algorithmNames)
@@ -40,8 +40,8 @@ int runSimulations(std::vector<string>& travelPaths, std::vector<string>& algori
             {
                 // TODO handle
             }
-            if(resultsMap.count(algorithmName)) resultsMap[algorithmName].push_back(std::to_string(simulation.run()));
-            else resultsMap[algorithmName] = std::vector<string>();
+            if(!resultsMap.count(algorithmName)) resultsMap[algorithmName] = std::vector<string>();
+            resultsMap[algorithmName].push_back(std::to_string(simulation.run()));
         }
     }
     // TODO fix this function...
@@ -51,14 +51,14 @@ int runSimulations(std::vector<string>& travelPaths, std::vector<string>& algori
 
 int test_run()
 {
-    std::unique_ptr<AbstractAlgorithm> alg = std::make_unique<SimpleAlgorithm>();
-    Simulation simulation(std::move(alg), "test_algorithm", "travel_0", "../Travels_dir/travel_0", "./test_output");
-    simulation.initialize();
-    AlgorithmTravelResultsMap resultsMap;
-    std::vector<string> travelNames = {"travel_0"};
-    resultsMap["test_algorithm"] = std::vector<string>();
-    resultsMap["test_algorithm"].push_back(std::to_string(simulation.run()));
-    OutputUtility::writeResults("./test_output", resultsMap, travelNames);
+//    std::unique_ptr<AbstractAlgorithm> alg = std::make_unique<SimpleAlgorithm>();
+//    Simulation simulation(std::move(alg), "test_algorithm", "travel_0", "../Travels_dir/travel_0", "./test_output");
+//    simulation.initialize();
+//    AlgorithmTravelResultsMap resultsMap;
+//    std::vector<string> travelNames = {"travel_0"};
+//    resultsMap["test_algorithm"] = std::vector<string>();
+//    resultsMap["test_algorithm"].push_back(std::to_string(simulation.run()));
+//    OutputUtility::writeResults("./test_output", resultsMap, travelNames);
     return 0;
 }
 

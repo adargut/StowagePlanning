@@ -1,6 +1,8 @@
 #include "StowageAlgorithm.h"
 #include <iostream>
 
+
+
 // Utility functions used by getInstructionsForCargo
 static void getInstructionsForUnloading(Ship *ship,
                                         Instructions &result) {
