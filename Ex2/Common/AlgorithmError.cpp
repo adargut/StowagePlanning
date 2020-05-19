@@ -1,7 +1,3 @@
-//
-// Created by adargut on 5/12/20.
-//
-
 #include "AlgorithmError.h"
 
 AlgorithmError::AlgorithmError(uint32_t errorCode) : m_errorCode(errorCode) {}
@@ -10,7 +6,6 @@ bool AlgorithmError::setBit(uint32_t bit)
 {
     if (bit > 18)
     {
-        // TODO maybe return error?
         return false;
     }
     m_errorCode |= uint32_t(1) >> bit;
@@ -21,7 +16,6 @@ bool AlgorithmError::getBit(uint32_t bit) const
 {
     if (bit > 18)
     {
-        // TODO maybe return error?
         return false;
     }
     return m_errorCode & uint32_t(1) >> bit;
@@ -32,6 +26,11 @@ int AlgorithmError::getAndClear()
     uint32_t tmpErrorCode = m_errorCode;
     m_errorCode = 0;
     return tmpErrorCode;
+}
+
+AlgorithmError::errorCode AlgorithmError::getErrorCode() 
+{
+    return static_cast<AlgorithmError::errorCode>(m_errorCode);
 }
 
 string AlgorithmError::getErrorDescription(errorCode code)
@@ -82,7 +81,12 @@ string AlgorithmError::getErrorDescription(errorCode code)
 
 string AlgorithmError::errorsToString(std::vector<AlgorithmError> algorithm_errors) 
 {
-    // TODO implement me!
-    (void)algorithm_errors;
-    return "";
+    string res;
+
+    for (auto &error : algorithm_errors)
+    {
+        res += AlgorithmError::getErrorDescription(error.getErrorCode()) + " ";
+    }
+    res.pop_back();
+    return res;
 }

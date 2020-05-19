@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <string>
+#include <memory>
 #include "GeneralUtility.h"
 
 
@@ -30,8 +31,7 @@ public:
 // Functor for hashing containers based on id
 struct HashContainer
 {
-    // TODO this needs to be shared_ptr?
-    std::size_t operator()(const Container* _container) const {
+    std::size_t operator()(std::shared_ptr<Container> _container) const {
         return std::hash<std::string>()(_container->getId());
     }
 };

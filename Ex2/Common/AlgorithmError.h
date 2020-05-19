@@ -29,7 +29,8 @@ public:
     bool setBit(uint32_t bit);
     bool getBit(uint32_t bit) const;
     int getAndClear();
-    string getErrorDescription(errorCode code);
+    errorCode getErrorCode();
+    static string getErrorDescription(errorCode code);
     static string errorsToString(std::vector<AlgorithmError> algorithm_errors);
 };
 

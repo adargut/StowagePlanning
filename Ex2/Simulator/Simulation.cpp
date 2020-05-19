@@ -84,6 +84,8 @@ int Simulation::run()
     int number_of_operations = 0;
     int reported_errors;
     Errors errors;
+    string crane_instructions_dir = m_outputDir + "/" +m_algorithmName + "_" + m_travelName + "_crane_instructions";
+    fs::create_directories(crane_instructions_dir);
     for (auto& port : m_ports)
     {
         using Cmp = DistanceToDestinationComparator;
@@ -92,7 +94,7 @@ int Simulation::run()
         PortContainers original_containers(port.getContainers());
         const string& port_code = port.getCode();
         string cargo_file = m_travelDir + "/" + port_code + CARGO_SUFFIX;
-        string crane_instructions_file = m_outputDir + "/" + port_code + CRANE_INSTRUCTIONS_SUFFIX;
+        string crane_instructions_file = crane_instructions_dir + "/" + port_code + CRANE_INSTRUCTIONS_SUFFIX;
         reported_errors = m_algorithm->getInstructionsForCargo(cargo_file, crane_instructions_file);
         Instructions instructions;
         if(!InputUtility::readCraneInstructions(crane_instructions_file, instructions))
