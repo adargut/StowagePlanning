@@ -3,7 +3,7 @@
 #include "../Common/AlgorithmManager.h"
 #include "../Common/AlgorithmError.h"
 #include "Simulation.h"
-#include "../Algorithm/RandomAlgorithm.h"
+//#include "../Algorithm/RandomAlgorithm.h"
 
 
 int registerAlgorithms(const string& algorithmDir, const std::vector<string>& algorithmNames)
@@ -52,14 +52,14 @@ int runSimulations(std::vector<string>& travelPaths, std::vector<string>& algori
 
 int test_run()
 {
-    std::unique_ptr<AbstractAlgorithm> alg = std::make_unique<RandomAlgorithm>();
-    Simulation simulation(std::move(alg), "test_algorithm", "travel_0", "../Travels_dir/travel_0", "../test_output");
-    simulation.initialize();
-    AlgorithmTravelResultsMap resultsMap;
-    std::vector<string> travelNames = {"travel_0"};
-    resultsMap["test_algorithm"] = std::vector<string>();
-    resultsMap["test_algorithm"].push_back(std::to_string(simulation.run()));
-    //OutputUtility::writeResults("./test_output", resultsMap, travelNames);
+//    std::unique_ptr<AbstractAlgorithm> alg = std::make_unique<RandomAlgorithm>();
+//    Simulation simulation(std::move(alg), "test_algorithm", "travel_0", "../Travels_dir/travel_0", "../test_output");
+//    simulation.initialize();
+//    AlgorithmTravelResultsMap resultsMap;
+//    std::vector<string> travelNames = {"travel_0"};
+//    resultsMap["test_algorithm"] = std::vector<string>();
+//    resultsMap["test_algorithm"].push_back(std::to_string(simulation.run()));
+//    //OutputUtility::writeResults("./test_output", resultsMap, travelNames);
     return 0;
 }
 
@@ -74,7 +74,7 @@ int main(int argc, char** argv)
     string output_path;
     InputUtility::handleArgs(argc, argv, travel_paths, algorithmDir, algorithmNames, output_path);
 //TODO create output dir if doesn't exist
-    return test_run();
+    //return test_run();
     registerAlgorithms(algorithmDir, algorithmNames);
     runSimulations(travel_paths, algorithmNames, output_path);
     return 0;
