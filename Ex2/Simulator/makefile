@@ -58,4 +58,4 @@ AlgorithmManager.o: $(CommonDir)/AlgorithmManager.cpp
 AlgorithmRegistration.o: $(CommonDir)/AlgorithmRegistration.cpp
 	$(COMP) $(CPP_COMP_FLAG) -c $(CommonDir)/$*.cpp
 clean:
-	rm -f $(OBJS) $(SHARED_OBJS)
+	rm -f $(OBJS) $(EXEC)
