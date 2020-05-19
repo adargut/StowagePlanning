@@ -1,4 +1,4 @@
-COMP = g++-8
+COMP = g++
 CommonDir = ../Common
 OBJS = SimpleAlgorithm.o AlgorithmError.o Container.o DistanceToDestinationComparator.o GeneralUtility.o InputUtility.o Instruction.o ISO_6346.o OutputUtility.o Ship.o Instruction.o WeightBalanceCalculator.o
 SHARED_OBJS = SimpleAlgorithm.so

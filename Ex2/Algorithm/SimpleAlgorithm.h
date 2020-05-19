@@ -11,7 +11,6 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
-#include <boost/algorithm/string.hpp>
 #include "../Common/AbstractAlgorithm.h"
 #include "../Common/AlgorithmError.h"
 #include "../Common/InputUtility.h"

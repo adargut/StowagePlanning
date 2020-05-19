@@ -10,13 +10,17 @@
 #define FREE_POS "free"
 #define ILLEGAL_POS "illegal"
 #define CSV_SEPERATOR ","
-#define UNDERSCORE "_"
-#define DELIMETER ","
+#define UNDERSCORE '_'
+#define DELIMETER ','
+#define DELIMETER_STR ","
 
 #include <vector>
 #include <string>
 #include <memory>
 #include <unordered_map>
+#include <map>
+#include <algorithm>
+#include <sstream>
 
 // Forward declarations
 class Container;
@@ -47,7 +51,8 @@ typedef typename std::vector<Error> Errors;
 
 namespace GeneralUtility
 {
-    //
+    void split(std::vector<string>& result, const std::string &s, char delim);
+    void removeSpaces(string& input);
 }
 
 

@@ -24,9 +24,9 @@ bool handleTravelArg(const string& travel_path, std::vector<string>& travel_path
         bool valid_route_file = false, valid_plan_file = false;
         if (entry.is_directory()) {
             string travel_directory = entry.path();
-            for (const auto &file : DirectoryIterator(travel_directory)) {
-                string file_path = file.path();
-                if (boost::algorithm::ends_with(file_path, ROUTE_SUFFIX)) {
+            for (const auto &file : DirectoryIterator(travel_directory))
+            {
+                if (file.path().extension() == ROUTE_SUFFIX) {
                     //TODO parse route file
                     //route_file = file_path;
                     if (valid_route_file)                     // Two or more route files
@@ -35,7 +35,7 @@ bool handleTravelArg(const string& travel_path, std::vector<string>& travel_path
                         break;
                     }
                     valid_route_file = true;
-                } else if (boost::algorithm::ends_with(file_path, PLAN_SUFFIX)) {
+                } else if (file.path().extension() ==  PLAN_SUFFIX) {
                     //TODO parse plan file
                     //plan_file = file_path;
                     if (valid_plan_file)                    // Two or more plan files
@@ -85,19 +85,12 @@ bool handleAlgorithmArg(const string& algorithmDir, std::vector<string>& algorit
     return true;
 }
 
-bool handleOutputArg(const string& path, string& output_path)
+static bool handleOutputArg(string& output_path)
 {
-    if (!fs::exists(path))
+    if (!fs::exists(output_path))
     {
-        fs::create_directory(path); // TODO maybe check if permissions work?
+        fs::create_directory(output_path); // TODO maybe check if permissions work?
     }
-    output_path = path;
-    return true;
-}
-
-bool handleOutputArg(string& output_path)
-{
-    output_path = CWD;
     return true;
 }
 
@@ -105,51 +98,22 @@ bool
 InputUtility::handleArgs(int argc, char **argv, std::vector<string>& travel_paths, string& algorithms_dir,
                          std::vector<string>& algorithm_names, string& output_path)
 {
-    // Declare the supported options
-    po::options_description desc("Allowed options");
-    desc.add_options()
-            (TRAVEL_OPTION, po::value<string>(), TRAVEL_DESC)
-            (OUTPUT_OPTION, po::value<string>(), OUTPUT_DESC)
-            (ALGORITHM_OPTION, po::value<string>(), ALGORITHM_DESC);
 
-    // Store the command line arguments in a variable map
-    po::variables_map vm;
-    po::store(po::command_line_parser(argc, argv)
-                      .options(desc)
-                      .style(po::command_line_style::unix_style | po::command_line_style::allow_long_disguise)
-                      .run(), vm);
-    po::notify(vm);
-
-    // Parse path to travel folder
-    if (vm.count(TRAVEL_OPTION))
+    string travel_folder;
+    if(!parseArgs(argc, argv, travel_folder, algorithms_dir, output_path))
     {
-        handleTravelArg(vm[TRAVEL_OPTION].as<string>(), travel_paths);
+        return false; //handle
     }
-    else
+    // Parse path to travel folder
+    if(!handleTravelArg(travel_folder, travel_paths))
     {
-        // TODO return fatal error because no travel supplied and stop travel
         return false;
+        //TODO handle
     }
     // Parse path to algorithm folder
-    if (vm.count(ALGORITHM_OPTION))
-    {
-        algorithms_dir = vm[ALGORITHM_OPTION].as<string>();
-        handleAlgorithmArg(algorithms_dir, algorithm_names);
-    }
-    else
-    {
-        algorithms_dir = CWD;
-        handleAlgorithmArg(algorithms_dir, algorithm_names);
-    }
+    handleAlgorithmArg(algorithms_dir, algorithm_names);
     // Parse path to output folder
-    if (vm.count(OUTPUT_OPTION))
-    {
-        handleOutputArg(vm[OUTPUT_OPTION].as<string>(), output_path);
-    }
-    else
-    {
-        handleOutputArg(output_path);
-    }
+    handleOutputArg(output_path);
     return true;
 }
 
@@ -193,11 +157,11 @@ ErrorSet InputUtility::readShipPlan(const std::string& full_path_and_file_name, 
 
     while (getline(in, line))
     {
+        GeneralUtility::removeSpaces(line);
         // Ignore lines starting with #
-        if (boost::trim_left_copy(line)[0] == COMMENT) continue;
+        if (line[0] == COMMENT) continue;
         // Split line by "," delimeter
-        boost::erase_all( line, " " );
-        boost::algorithm::split(split_line, line, boost::is_any_of(DELIMETER));
+        GeneralUtility::split(split_line, line, DELIMETER);
         // Treat first line differently
         if (first_line)
         {
@@ -282,10 +246,10 @@ ErrorSet InputUtility::readCargo(const string &full_path_and_file_name, Containe
     string line;
     while (getline(in, line))
     {
-        if (boost::trim_left_copy(line)[0] == COMMENT) continue;
+        GeneralUtility::removeSpaces(line);
+        if (line[0] == COMMENT) continue;
         std::vector<string> split_line;
-        boost::erase_all( line, " " );
-        boost::algorithm::split(split_line, line, boost::is_any_of(DELIMETER));
+        GeneralUtility::split(split_line, line, DELIMETER);
         int bound = split_line.size();
         auto container = std::make_shared<Container>();
         // ID
@@ -394,10 +358,10 @@ bool InputUtility::readCraneInstructions(const string& full_path_and_file_name, 
 
     while (getline(in, line))
     {
-        if (boost::trim_left_copy(line)[0] == COMMENT) continue;
+        GeneralUtility::removeSpaces(line);
+        if ((line)[0] == COMMENT) continue;
         std::vector<string> split_line;
-        boost::erase_all( line, " " );
-        boost::algorithm::split(split_line, line, boost::is_any_of(DELIMETER));
+        GeneralUtility::split(split_line, line, DELIMETER);
         if(split_line.size() < 2) return false;
         string& container_id = split_line[1];
         if(split_line[0] == "R")
@@ -435,6 +399,42 @@ bool InputUtility::readCraneInstructions(const string& full_path_and_file_name, 
             continue;
         }
         return false;
+    }
+    return true;
+}
+
+bool InputUtility::parseArgs(int argc, char** argv, string& travelFolder, string& algorithmFolder, string& outputFolder)
+{
+    if(argc != 3 && argc != 5 && argc != 7) return false; //TODO handle?
+    std::unordered_map<string, string> arg_map;
+    for (int i = 1; i < argc; i+=2)
+    {
+        if(arg_map.count(argv[i])) return false; // Same argument pass twice, TODO check if correct behaviour
+        arg_map[argv[i]] = argv[i+1];
+    }
+
+    if(arg_map.count(TRAVEL_OPTION))
+    {
+        travelFolder = arg_map[TRAVEL_OPTION];
+    } else
+    {
+        return false; //TODO handle?
+    }
+    if(arg_map.count(TRAVEL_OPTION))
+    {
+        algorithmFolder = arg_map[ALGORITHM_OPTION];
+    }
+    else
+    {
+        algorithmFolder = CWD;
+    }
+    if(arg_map.count(OUTPUT_OPTION))
+    {
+        outputFolder = arg_map[OUTPUT_OPTION];
+    }
+    else
+    {
+        outputFolder = CWD;
     }
     return true;
 }

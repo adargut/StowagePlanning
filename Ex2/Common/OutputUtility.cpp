@@ -31,10 +31,10 @@ static bool sortBuffer(std::vector<string>& file_buffer)
     auto cmp = [](string l1, string l2)
     {
         std::vector<string> split_l1, split_l2;
-        boost::erase_all( l1, " " );
-        boost::erase_all( l2, " " );
-        boost::algorithm::split(split_l1, l1, boost::is_any_of(CSV_SEPERATOR));
-        boost::algorithm::split(split_l2, l2, boost::is_any_of(CSV_SEPERATOR));
+        GeneralUtility::removeSpaces(l1);
+        GeneralUtility::removeSpaces(l2);
+        GeneralUtility::split(split_l1, l1, DELIMETER);
+        GeneralUtility::split(split_l2, l2, DELIMETER);
 
         int errors_1 = stoi(split_l1.back()), errors_2 = stoi(split_l2.back());
         // TODO check if the order is right:

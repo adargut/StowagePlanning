@@ -200,7 +200,7 @@ void SimpleAlgorithm::setRealDestinations(ContainersVector &containers)
         for (size_t i = m_ship.getCurrentPortIdx(); i < route.size(); ++i)
         {
             std::vector<string> split_line;
-            boost::algorithm::split(split_line, route[i], boost::is_any_of(UNDERSCORE));
+            GeneralUtility::split(split_line, route[i], UNDERSCORE);
             if(split_line[0] == destination)
             {
                 container->setPortCode(route[i]);

@@ -58,21 +58,21 @@ void Instruction::instructionToString(const Instruction &instruction, std::strin
         return;
     }
     result.append(instruction.opToString(instruction.getOp())); // New instruction to write
-    result.append(DELIMETER); // Put space to separate instructions
+    result.append(DELIMETER_STR); // Put space to separate instructions
     result.append(instruction.getContainerId());
-    result.append(DELIMETER);
+    result.append(DELIMETER_STR);
     result.append(std::to_string(instruction.getFloor()));
-    result.append(DELIMETER);
+    result.append(DELIMETER_STR);
     result.append(std::to_string(instruction.getCol()));
-    result.append(DELIMETER);
+    result.append(DELIMETER_STR);
     result.append(std::to_string(instruction.getRow()));
     if(instruction.getOp() == Move)
     {
-        result.append(DELIMETER);
+        result.append(DELIMETER_STR);
         result.append(std::to_string(instruction.getNewFloor()));
-        result.append(DELIMETER);
+        result.append(DELIMETER_STR);
         result.append(std::to_string(instruction.getNewCol()));
-        result.append(DELIMETER);
+        result.append(DELIMETER_STR);
         result.append(std::to_string(instruction.getNewRow()));
     }
 }

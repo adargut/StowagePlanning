@@ -1,8 +1,6 @@
 #ifndef EX2_INPUTUTILITY_H
 #define EX2_INPUTUTILITY_H
 
-#include <boost/algorithm/string/predicate.hpp>
-#include <boost/program_options.hpp>
 #include <filesystem>
 #include <iostream>
 #include <vector>
@@ -10,7 +8,6 @@
 #include <fstream>
 #include <string>
 #include <sstream>
-#include <boost/algorithm/string.hpp>
 #include <unordered_set>
 #include "AlgorithmError.h"
 #include "Port.h"
@@ -19,9 +16,9 @@
 #include "ISO_6346.h"
 
 // macros
-#define TRAVEL_OPTION "travel_path"
-#define ALGORITHM_OPTION "algorithm_path"
-#define OUTPUT_OPTION "output_path"
+#define TRAVEL_OPTION "-travel_path"
+#define ALGORITHM_OPTION "-algorithm_path"
+#define OUTPUT_OPTION "-output"
 #define TRAVEL_DESC "path to travel"
 #define ALGORITHM_DESC "path to algorithm"
 #define OUTPUT_DESC "path to output"
@@ -38,7 +35,6 @@
 typedef std::pair<int, int> pos;
 
 // namespace declarations
-namespace po = boost::program_options;
 namespace fs = std::filesystem;
 
 // using declarations
@@ -60,6 +56,7 @@ namespace InputUtility
     bool handleArgs(int argc, char **argv, std::vector<string> &travel_paths, string& algorithms_dir,
                     std::vector<string> &algorithm_names, string &output_path);
     string getFileName(const std::string& full_path_and_file_name);
+    bool parseArgs(int argc, char **argv, string& travelFolder, string& algorithmFolder, string& outputFolder);
 }
 
 

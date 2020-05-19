@@ -38,7 +38,7 @@ bool Simulation::initialize()
     for (const auto &file : DirectoryIterator(m_travelDir))
     {
         string file_path = file.path();
-        if (boost::algorithm::ends_with(file_path, ROUTE_SUFFIX))
+        if (file.path().extension() == ROUTE_SUFFIX)
         {
             route_file = std::move(file_path);
             break;
@@ -49,7 +49,7 @@ bool Simulation::initialize()
     for (const auto &file : DirectoryIterator(m_travelDir))
     {
         string file_path = file.path();
-        if (boost::algorithm::ends_with(file_path, PLAN_SUFFIX))
+        if (file.path().extension() == PLAN_SUFFIX)
         {
             plan_file = std::move(file_path);
             break;
@@ -339,7 +339,7 @@ void Simulation::setRealDestinations(const Route& route, int curr_idx, Container
         for (size_t i = curr_idx; i < route.size(); ++i)
         {
             std::vector<string> split_line;
-            boost::algorithm::split(split_line, route[i], boost::is_any_of(UNDERSCORE));
+            GeneralUtility::split(split_line, route[i], UNDERSCORE);
             if(split_line[0] == destination)
             {
                 container->setPortCode(route[i]);

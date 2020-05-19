@@ -1,10 +1,9 @@
-COMP = g++-8
+COMP = g++
 CommonDir = ../Common
 OBJS = main.o Simulation.o Error.o AlgorithmError.o Container.o DistanceToDestinationComparator.o GeneralUtility.o InputUtility.o ISO_6346.o OutputUtility.o Port.o Ship.o WeightBalanceCalculator.o AlgorithmManager.o AlgorithmRegistration.o Instruction.o
 EXEC = simulator
 CPP_COMP_FLAG = -std=c++2a -Wall -Wextra -Werror -pedantic-errors -DNDEBUG
-BOOST_ROOT := /usr/include/boost
-CPP_LINK_FLAG = -lstdc++fs -ldl -export-dynamic /usr/lib/x86_64-linux-gnu/libboost_program_options.so.1.71.0 -D_GLIBCXX_USE_CXX11_ABI=0 #(-rdynamic)
+CPP_LINK_FLAG = -lstdc++fs -ldl -export-dynamic #(-rdynamic)
 
 all: $(EXEC)
 

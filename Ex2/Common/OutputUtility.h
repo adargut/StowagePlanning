@@ -4,7 +4,6 @@
 #include "GeneralUtility.h"
 #include "Instruction.h"
 #include "AlgorithmError.h"
-#include <boost/algorithm/string.hpp>
 #include <fstream>
 #include <iostream>
 #include <filesystem>
