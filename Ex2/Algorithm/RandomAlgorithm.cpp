@@ -7,7 +7,9 @@ REGISTER_ALGORITHM(RandomAlgorithm)
 void RandomAlgorithm::generateAllTriplets(int x, int y, int z, int max_x, int max_y, int max_z, PossibleTriplets &res)
 {
     if (x > max_x || y > max_y || z > max_z) return;
-    res.insert(std::to_string(x) + std::to_string(y) + std::to_string(z));
+    string new_triplet = std::to_string(x) + std::to_string(y) + std::to_string(z); 
+    if (res.count(new_triplet) > 0) return;
+    res.insert(new_triplet);
     generateAllTriplets(x+1, y, z, max_x, max_y, max_z, res);
     generateAllTriplets(x, y+1, z, max_x, max_y, max_z, res);
     generateAllTriplets(x, y, z+1, max_x, max_y, max_z, res);
