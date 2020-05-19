@@ -34,7 +34,6 @@ typedef typename std::vector<std::vector<AlgorithmError>> AlgorithmErrors;
 typedef typename std::unordered_map<string, std::vector<string>> AlgorithmTravelResultsMap;
 typedef typename std::unordered_map<string, AlgorithmErrors> AlgorithmTravelErrors;
 // Map algorithm name to vector of results for all travels
-// TODO should this be shared? not sure
 typedef typename std::unordered_map<std::string, std::shared_ptr<Container>> PortContainers;
 typedef typename std::array<int, 3> Position;
 typedef typename std::unordered_map<std::string, std::pair<std::shared_ptr<Container>, Position>> ContainerMap;

@@ -15,7 +15,7 @@ bool verifyISO6346(const std::string& port_name)
 
 bool handleTravelArg(const string& travel_path, std::vector<string>& travel_paths) {
     if (!fs::exists(travel_path)) {
-        // TODO return fatal error and make sure travel stops
+        std::cout << "Could not run travel, bad travel_path argument\n";
         return false;
     }
 
@@ -27,8 +27,6 @@ bool handleTravelArg(const string& travel_path, std::vector<string>& travel_path
             for (const auto &file : DirectoryIterator(travel_directory)) {
                 string file_path = file.path();
                 if (boost::algorithm::ends_with(file_path, ROUTE_SUFFIX)) {
-                    //TODO parse route file
-                    //route_file = file_path;
                     if (valid_route_file)                     // Two or more route files
                     {
                         valid_route_file = false;
@@ -36,8 +34,6 @@ bool handleTravelArg(const string& travel_path, std::vector<string>& travel_path
                     }
                     valid_route_file = true;
                 } else if (boost::algorithm::ends_with(file_path, PLAN_SUFFIX)) {
-                    //TODO parse plan file
-                    //plan_file = file_path;
                     if (valid_plan_file)                    // Two or more plan files
                     {
                         valid_plan_file = false;
@@ -46,30 +42,26 @@ bool handleTravelArg(const string& travel_path, std::vector<string>& travel_path
                     valid_plan_file = true;
                 }
             }
-            if (valid_plan_file && valid_route_file) {
+            if (valid_plan_file && valid_route_file) 
+            {
                 travel_paths.push_back(std::move(travel_directory));
+            }
+            else
+            {
+                std::cout << "Could not run travel, travel_path is missing route or plan\n";
+                return false;
             }
         }
     }
     return !travel_paths.empty();
-    // TODO remove this?
-//    for (const auto& entry : DirectoryIterator(travel_path))
-//    {
-//        string file_path = entry.path();
-//        if (boost::algorithm::ends_with(file_path, CARGO_SUFFIX))
-//        {
-//            // TODO handle cargo found
-//        }
-//    }
 }
 
 bool handleAlgorithmArg(const string& algorithmDir, std::vector<string>& algorithm_paths)
 {
-    // TODO implement me
     if (!fs::exists(algorithmDir))
     {
-        // TODO error and ask what to do?
-        return false;
+        // If bad algorithms dir given as argument, create that folder
+        fs::create_directories(algorithmDir);
     }
 
     for (const auto& entry : DirectoryIterator(algorithmDir))
@@ -89,7 +81,7 @@ bool handleOutputArg(const string& path, string& output_path)
 {
     if (!fs::exists(path))
     {
-        fs::create_directory(path); // TODO maybe check if permissions work?
+        fs::create_directories(path);
     }
     output_path = path;
     return true;
@@ -120,16 +112,17 @@ InputUtility::handleArgs(int argc, char **argv, std::vector<string>& travel_path
                       .run(), vm);
     po::notify(vm);
 
+    bool valid_travel = true;
     // Parse path to travel folder
     if (vm.count(TRAVEL_OPTION))
     {
-        handleTravelArg(vm[TRAVEL_OPTION].as<string>(), travel_paths);
+        valid_travel = handleTravelArg(vm[TRAVEL_OPTION].as<string>(), travel_paths);
     }
     else
     {
-        // TODO return fatal error because no travel supplied and stop travel
         return false;
     }
+    if (!valid_travel) return false;
     // Parse path to algorithm folder
     if (vm.count(ALGORITHM_OPTION))
     {
@@ -386,6 +379,7 @@ bool InputUtility::readCraneInstructions(const string& full_path_and_file_name, 
 {
     if (!fs::exists(full_path_and_file_name))
     {
+        std::cout << "Failed reading crane instructions" << std::endl;
         return false;
     }
 

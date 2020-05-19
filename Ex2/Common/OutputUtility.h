@@ -13,7 +13,6 @@
 #define SUM "Sum"
 #define ERRORS "Num Errors"
 #define ERRORS_ALT "ERRORS,"
-#define EMPTY_TRAVEL "0" // TODO should this really be 0?
 
 namespace fs = std::filesystem;
 using ifstream = std::ifstream;

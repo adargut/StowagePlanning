@@ -5,14 +5,12 @@
 bool OutputUtility::writeCargoInstructions(const string &output_full_path_and_file_name, const Instructions &instructions)
 {
     // TODO make sure instructions in right format
-    // TODO what if file already exists?? delete it or write to it??
     ofstream write_file(output_full_path_and_file_name);
     if(!write_file.is_open()) return false;
     string line;
 
     for (auto &instruction : instructions)
     {
-        // TODO maybe make this non static member function?
         instruction.instructionToString(instruction, line);
         write_file << line << std::endl;
     }
@@ -24,8 +22,7 @@ static bool sortBuffer(std::vector<string>& file_buffer)
 {
     if (file_buffer.empty())
     {
-        // TODO better error?
-        std::cout << "File buffer cannot be empty";
+        std::cout << "File buffer cannot be empty\n";
         return false;
     }
     auto cmp = [](string l1, string l2)
@@ -55,8 +52,7 @@ static bool bufferToFile(const string &output_full_path_and_file_name, const std
     ofstream write_file(output_full_path_and_file_name);
     if (!write_file.is_open())
     {
-        // TODO add better error
-        std::cout << "Error opening file";
+        std::cout << "Error opening file in buffer\n";
         return false;
     }
     for (auto& line : file_buffer)

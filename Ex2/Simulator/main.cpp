@@ -1,4 +1,5 @@
 #include "../Common/InputUtility.h"
+#include "../Common/OutputUtility.h"
 #include "../Common/AlgorithmManager.h"
 #include "../Common/AlgorithmError.h"
 #include "Simulation.h"
@@ -45,7 +46,7 @@ int runSimulations(std::vector<string>& travelPaths, std::vector<string>& algori
         }
     }
     // TODO fix this function...
-    // OutputUtility::writeResults(outputPath, resultsMap, travelNames);
+    OutputUtility::writeResults(outputPath, resultsMap, travelNames);
     return 0;
 }
 
