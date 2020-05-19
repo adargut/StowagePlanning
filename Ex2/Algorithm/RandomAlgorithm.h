@@ -3,7 +3,7 @@
 
 #include "GenericAlgorithm.h"
 
-using PossibleTriplets = std::unordered_set<string>;
+using PossiblePairs = std::unordered_set<string>;
 
 class RandomAlgorithm : public GenericAlgorithm
 {
@@ -13,8 +13,8 @@ private:
 public:
     void getInstructionForLoadingContainer(std::shared_ptr<Container> container_to_load, Instructions& instructions) override;
 private:
-    int minFreeFloor(int x, int y, int z);
-    void generateAllTriplets(int x, int y, int z, int max_x, int max_y, int max_z, PossibleTriplets &res);
+    int minFreeFloor(int x, int y);
+    void generateAllPairs(int x, int y, int max_x, int max_y, PossiblePairs &res);
 };
 
 
