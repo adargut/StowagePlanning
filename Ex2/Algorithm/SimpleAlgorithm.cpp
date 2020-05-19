@@ -1,5 +1,4 @@
 #include "SimpleAlgorithm.h"
-#include "../Common/AlgorithmRegistration.h"
 
 REGISTER_ALGORITHM(SimpleAlgorithm)
 

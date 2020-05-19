@@ -19,7 +19,11 @@ void RandomAlgorithm::generateAllTriplets(int x, int y, int z, int max_x, int ma
 int RandomAlgorithm::minFreeFloor(int x, int y, int z)
 {
     const Plan &ship_plan = m_ship.getPlan();
-    while (z > 0 && ship_plan[z][y][x] == FREE_POS) z--; // TODO not sure here if should be 0 or 1?
+    while (z >= 0)
+    {
+        if (z == 0 || ship_plan[z-1][y][x] == ILLEGAL_POS) break;
+        --z;
+    } 
     return z;
 }
 
