@@ -15,7 +15,7 @@ bool verifyISO6346(const std::string& port_name)
 
 bool handleTravelArg(const string& travel_path, std::vector<string>& travel_paths) {
     if (!fs::exists(travel_path)) {
-        std::cout << "Could not run travel, bad travel_path argument\n";
+        std::cout << "Error: could not run travel, bad travel_path argument\n";
         return false;
     }
 
@@ -30,6 +30,7 @@ bool handleTravelArg(const string& travel_path, std::vector<string>& travel_path
                     //route_file = file_path;
                     if (valid_route_file)                     // Two or more route files
                     {
+                        std::cout << "Error: bad or missing route file given\n";
                         valid_route_file = false;
                         break;
                     }
@@ -39,6 +40,7 @@ bool handleTravelArg(const string& travel_path, std::vector<string>& travel_path
                     //plan_file = file_path;
                     if (valid_plan_file)                    // Two or more plan files
                     {
+                        std::cout << "Error: bad or missing plan file given\n";
                         valid_plan_file = false;
                         break;
                     }
@@ -51,7 +53,6 @@ bool handleTravelArg(const string& travel_path, std::vector<string>& travel_path
             }
             else
             {
-                std::cout << "Could not run travel, travel_path is missing route or plan\n";
                 return false;
             }
         }
@@ -63,8 +64,10 @@ bool handleAlgorithmArg(const string& algorithmDir, std::vector<string>& algorit
 {
     if (!fs::exists(algorithmDir))
     {
+        std::cout << "Error: bad algorithm directory given\n";
         // If bad algorithms dir given as argument, create that folder
-        fs::create_directories(algorithmDir);
+        // fs::create_directories(algorithmDir);
+        return false;
     }
 
     for (const auto& entry : DirectoryIterator(algorithmDir))
@@ -76,6 +79,11 @@ bool handleAlgorithmArg(const string& algorithmDir, std::vector<string>& algorit
             p.replace_extension();
             algorithm_paths.push_back(std::move(p));
         }
+    }
+    if (algorithm_paths.empty())
+    {
+        std::cout << "Error: no .so found files in algorithm directory\n";
+        return false;
     }
     return true;
 }
@@ -415,7 +423,7 @@ bool InputUtility::parseArgs(int argc, char** argv, string& travelFolder, string
     {
         return false; //TODO handle?
     }
-    if(arg_map.count(TRAVEL_OPTION))
+    if(arg_map.count(ALGORITHM_OPTION))
     {
         algorithmFolder = arg_map[ALGORITHM_OPTION];
     }

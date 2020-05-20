@@ -6,7 +6,11 @@ bool OutputUtility::writeCargoInstructions(const string &output_full_path_and_fi
 {
     // TODO make sure instructions in right format
     ofstream write_file(output_full_path_and_file_name);
-    if(!write_file.is_open()) return false;
+    if(!write_file.is_open()) 
+    {
+        std::cout << "Error opening cargo instructions\n";
+        return false;   
+    }
     string line;
 
     for (auto &instruction : instructions)
@@ -41,9 +45,9 @@ static bool sortBuffer(std::vector<string>& file_buffer)
         {
             int sum_1 = stoi(split_l1.end()[-2]), sum_2 = stoi(split_l2.end()[-2]);
             return sum_1 < sum_2; // TODO not sure about order? must check it..
-        }
+        }        
     };
-    std::sort(file_buffer.begin(), file_buffer.end(),cmp);
+    std::sort(file_buffer.begin()+1, file_buffer.end(),cmp);
     return true;
 }
 
@@ -89,15 +93,23 @@ bool OutputUtility::writeResults(const string &output_full_path_and_file_name, A
         line += result_pair.first + CSV_SEPERATOR;
         for (auto& numeric_result : results[result_pair.first])
         {
-            if (line_sum < 0) line_errors += 1;
-            else line_sum += std::stoi(numeric_result);
+            if (std::stoi(numeric_result) < 0) 
+            {
+                line_errors += 1;
+            }
+            else 
+            {
+                line_sum += std::stoi(numeric_result);
+            }
             line += numeric_result + CSV_SEPERATOR;
         }
         line += std::to_string(line_sum) + CSV_SEPERATOR;
+        std::cout << "line sum is: " << line_sum;
         line += std::to_string(line_errors);
         line += "\n";
         file_buffer.push_back(std::move(line));
     }
+
     if (!sortBuffer(file_buffer)) return false;
     return bufferToFile(output_full_path_and_file_name, file_buffer);
 }
