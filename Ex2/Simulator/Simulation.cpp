@@ -96,6 +96,7 @@ int Simulation::run()
         PortContainers original_containers(port.getContainers());
         const string& port_code = port.getCode();
         string cargo_file = m_travelDir + "/" + port_code + CARGO_SUFFIX;
+        if()
         string crane_instructions_file = crane_instructions_dir + "/" + port_code + CRANE_INSTRUCTIONS_SUFFIX;
         reported_errors = m_algorithm->getInstructionsForCargo(cargo_file, crane_instructions_file);
         Instructions instructions;

@@ -4,7 +4,11 @@
 
 bool verifyPortSymbol(const string& line)
 {
-    (void)(line);
+    if(line.length() != 5) return false;
+    for (auto& c : line)
+    {
+        if (!((c <= 'z' && c >= 'a') || (c <= 'Z' && c >= 'A'))) return false;
+    }
     return true;
 }
 
