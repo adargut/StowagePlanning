@@ -141,7 +141,7 @@ int Simulation::run()
         checkNoRoomForContainers(unloaded_containers, distance_to_dest, errors);
         m_ship.advanceCurrentPortIdx();
     }
-    // TODO: Save errors and number of operations to a file
+    // TODO: Save errors to a file
     (void)reported_errors;
     if(!errors.empty()) return -1;
     return number_of_operations;
