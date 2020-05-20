@@ -93,11 +93,18 @@ bool OutputUtility::writeResults(const string &output_full_path_and_file_name, A
         line += result_pair.first + CSV_SEPERATOR;
         for (auto& numeric_result : results[result_pair.first])
         {
-            if (line_sum < 0) line_errors += 1;
-            else line_sum += std::stoi(numeric_result);
+            if (std::stoi(numeric_result) < 0) 
+            {
+                line_errors += 1;
+            }
+            else 
+            {
+                line_sum += std::stoi(numeric_result);
+            }
             line += numeric_result + CSV_SEPERATOR;
         }
         line += std::to_string(line_sum) + CSV_SEPERATOR;
+        std::cout << "line sum is: " << line_sum;
         line += std::to_string(line_errors);
         line += "\n";
         file_buffer.push_back(std::move(line));
