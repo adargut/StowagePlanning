@@ -12,6 +12,7 @@
 #define SUM "Sum"
 #define ERRORS "Num Errors"
 #define ERRORS_ALT "ERRORS,"
+#define RESULTS_FILENAME "simulation.results"
 
 namespace fs = std::filesystem;
 using ifstream = std::ifstream;

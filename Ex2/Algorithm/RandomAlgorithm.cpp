@@ -12,7 +12,6 @@ void RandomAlgorithm::generateAllPairs(int x, int y, int max_x, int max_y, Possi
     res.insert(new_pair);
     generateAllPairs(x+1, y, max_x, max_y, res);
     generateAllPairs(x, y+1, max_x, max_y, res);
-    generateAllPairs(x, y, max_x, max_y, res);
 }
 
 // Find minimum Z value that is free for given <x, y>

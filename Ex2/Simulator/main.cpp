@@ -2,9 +2,8 @@
 #include "../Common/OutputUtility.h"
 #include "../Common/AlgorithmManager.h"
 #include "../Common/AlgorithmError.h"
+#include "../Common/GeneralUtility.h"
 #include "Simulation.h"
-//#include "../Algorithm/RandomAlgorithm.h"
-
 
 int registerAlgorithms(const string& algorithmDir, const std::vector<string>& algorithmNames)
 {
@@ -46,7 +45,7 @@ int runSimulations(std::vector<string>& travelPaths, std::vector<string>& algori
         }
     }
     // TODO fix this function...
-    //OutputUtility::writeResults(outputPath, resultsMap, travelNames);
+    OutputUtility::writeResults(outputPath + "/" + RESULTS_FILENAME, resultsMap, travelNames);
     return 0;
 }
 
