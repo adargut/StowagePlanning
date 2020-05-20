@@ -1,0 +1,1 @@
+./simulator -travel_path ../Travels_dir -algorithm_path ../Algorithm/ -output ./out
