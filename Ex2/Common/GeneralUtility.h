@@ -36,7 +36,6 @@ typedef typename std::vector<std::vector<std::vector<std::string>>> Plan;
 typedef typename std::vector<std::vector<AlgorithmError>> AlgorithmErrors;
 // Map algorithm name to vector of results for all travels
 typedef typename std::unordered_map<string, std::vector<string>> AlgorithmTravelResultsMap;
-typedef typename std::unordered_map<string, AlgorithmErrors> AlgorithmTravelErrors;
 // Map algorithm name to vector of results for all travels
 typedef typename std::unordered_map<std::string, std::shared_ptr<Container>> PortContainers;
 typedef typename std::array<int, 3> Position;

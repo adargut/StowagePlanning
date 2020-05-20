@@ -86,7 +86,7 @@ int Simulation::run()
     int number_of_operations = 0;
     int reported_errors;
     Errors errors;
-    string crane_instructions_dir = m_outputDir + "/" +m_algorithmName + "_" + m_travelName + "_crane_instructions";
+    string crane_instructions_dir = m_outputDir + "/" + m_algorithmName + "_" + m_travelName + "_crane_instructions";
     fs::create_directories(crane_instructions_dir);
     for (auto& port : m_ports)
     {
@@ -142,7 +142,9 @@ int Simulation::run()
         m_ship.advanceCurrentPortIdx();
     }
     // TODO: Save errors to a file
-    (void)reported_errors;
+    string crane_errors_path = m_outputDir + "/" + m_algorithmName + "_" + m_travelName + ".crane_errors";
+    OutputUtility::writeErrors(crane_errors_path, errors);
+    (void)reported_errors; // TODO why is this needed?
     if(!errors.empty()) return -1;
     return number_of_operations;
 }

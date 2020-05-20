@@ -1,7 +1,5 @@
 #include "OutputUtility.h"
 
-
-
 bool OutputUtility::writeCargoInstructions(const string &output_full_path_and_file_name, const Instructions &instructions)
 {
     // TODO make sure instructions in right format
@@ -104,7 +102,6 @@ bool OutputUtility::writeResults(const string &output_full_path_and_file_name, A
             line += numeric_result + CSV_SEPERATOR;
         }
         line += std::to_string(line_sum) + CSV_SEPERATOR;
-        std::cout << "line sum is: " << line_sum;
         line += std::to_string(line_errors);
         line += "\n";
         file_buffer.push_back(std::move(line));
@@ -114,35 +111,22 @@ bool OutputUtility::writeResults(const string &output_full_path_and_file_name, A
     return bufferToFile(output_full_path_and_file_name, file_buffer);
 }
 
-
-bool OutputUtility::writeErrors(const string &output_full_path_and_file_name, AlgorithmTravelErrors &algorithm_errors,
-                 const std::vector<string>& travels_seen)
+bool OutputUtility::writeErrors(const string &output_full_path_and_file_name, std::vector<Error> &algorithm_errors)
 {
-    std::vector<string> file_buffer;
-    string header = ERRORS_ALT;
-
-    // Write names of travels to first line
-    for(auto& travel_seen : travels_seen)
+    // TODO make sure errors in right format
+    ofstream write_file(output_full_path_and_file_name);
+    if(!write_file.is_open()) 
     {
-        header.append(travel_seen + CSV_SEPERATOR);
+        std::cout << "Error opening cargo errors\n";
+        return false;   
     }
-    header.pop_back();
-    header += "\n";
-    file_buffer.push_back(std::move(header));
 
-    // Write rest of data to errors
-    for(auto& result_pair : algorithm_errors)
+    for (auto &error : algorithm_errors)
     {
-        string line;
-        line += result_pair.first + CSV_SEPERATOR;
-        for (auto &error_string : result_pair.second)
-        {
-            line += AlgorithmError::errorsToString(error_string) + CSV_SEPERATOR;
-        }
-        line.pop_back();
-        line += "\n";
-        file_buffer.push_back(std::move(line));
+        // instruction.instructionToString(instruction, line);
+        write_file << error.errorToString() << std::endl;
     }
-    return bufferToFile(output_full_path_and_file_name, file_buffer);
+    write_file.close();
+    return true;
 }
 

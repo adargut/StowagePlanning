@@ -4,37 +4,49 @@
 
 #include "Error.h"
 
-Error::Error(Error::Type _type, Instruction _instruction) : type(_type),
-                                                            instruction(_instruction) {}
+Error::Error(Error::Type _type, Instruction _instruction, string _description) : type(_type),
+             instruction(_instruction), description(_description) {}
 
-Error::Type Error::getType() const {
+Error::Type Error::getType() const 
+{
     return type;
 }
 
-Instruction Error::getInstruction() const {
+Instruction Error::getInstruction() const 
+{
     return instruction;
 }
 
-std::string Error::errorToString(Error::Type type) {
-    switch (type) {
+std::string Error::errorToString() 
+{
+    string ans = "";
+    string inst = "";
+    Instruction::instructionToString(instruction, inst);
+
+    switch (type) 
+    {
         case IgnoredContainer:
-            return "Ignored Container";
+            ans = "Ignored Container";
+            break;
         case InvalidCommand:
-            return "Invalid Command";
+            ans = "Invalid Command";
+            break;
         case InvalidCraneOperation:
-            return "Invalid Crane Operation";
-    }
-    return "";
+            ans = "Invalid Crane Operation";
+            break;
+    };
+    return ans + " " + inst + " " + description ;
 }
 
-std::string Error::errorsToString(const Errors &errors) {
-    std::string result;
+// std::string Error::errorsToString(const Errors &errors) 
+// {
+//     std::string result;
 
-    for (auto &error : errors) {
-        result.append(Error::errorToString(error.getType())); // New error to write
-        result.append(" "); // Put space to separate errors
-        Instruction::instructionToString(error.instruction, result); // Append erroneous instruction
-        if (error.instruction.getOp() != Instruction::None) result.append(" ");
-    }
-    return result;
-}
+//     for (auto &error : errors) {
+//         result.append(Error::errorToString(error.getType())); // New error to write
+//         result.append(" "); // Put space to separate errors
+//         Instruction::instructionToString(error.instruction, result); // Append erroneous instruction
+//         if (error.instruction.getOp() != Instruction::None) result.append(" ");
+//     }
+//     return result;
+// }
