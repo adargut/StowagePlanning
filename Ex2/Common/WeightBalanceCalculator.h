@@ -2,8 +2,6 @@
 
 #pragma once
 
-#include <iostream> // TODO remove this??
-
 
 class WeightBalanceCalculator {
 public:

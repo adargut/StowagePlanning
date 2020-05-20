@@ -30,7 +30,7 @@ public:
     int getNewFloor() const;
     int getNewRow() const;
     int getNewCol() const;
-    // TODO Utility functions to convert instructions to string
+    // Utility functions to convert instructions to string
     static string opToString(Operation oper);
     static void instructionToString(const Instruction &instruction, std::string &result);
     static int countInstructions(const Instructions& instructions);

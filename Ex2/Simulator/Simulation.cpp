@@ -74,6 +74,8 @@ bool Simulation::initialize()
 
 
     //TODO check errors
+    auto wbc = WeightBalanceCalculator();
+    m_algorithm->setWeightBalanceCalculator(wbc);
     m_algorithm->readShipRoute(route_file);
     m_algorithm->readShipPlan(plan_file);
     return true;

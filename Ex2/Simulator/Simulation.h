@@ -12,6 +12,7 @@
 #include "../Common/InputUtility.h"
 #include "../Common/Instruction.h"
 #include "../Common/DistanceToDestinationComparator.h"
+#include "../Common/WeightBalanceCalculator.h"
 #include "Error.h"
 class Simulation {
     std::unique_ptr<AbstractAlgorithm> m_algorithm;

@@ -67,13 +67,13 @@ int main(int argc, char** argv)
 {
     (void)argc;
     (void)argv;
-    // TESTS TODO REMOVE
     std::vector<string> travel_paths;
     string algorithmDir;
     std::vector<string> algorithmNames;
     string output_path;
     InputUtility::handleArgs(argc, argv, travel_paths, algorithmDir, algorithmNames, output_path);
 //TODO create output dir if doesn't exist
+    // TESTS TODO REMOVE
     //return test_run();
     registerAlgorithms(algorithmDir, algorithmNames);
     runSimulations(travel_paths, algorithmNames, output_path);
