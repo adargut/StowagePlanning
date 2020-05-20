@@ -10,8 +10,7 @@ Port::Port(std::string code, const ContainersVector& containers) : m_code(std::m
 {
     for (auto& container : containers)
     {
-        PortContainers::value_type item(container->getId(), container);
-        m_containers.insert(item);
+        m_containers[container->getId()] = container;
     }
 }
 
@@ -25,9 +24,9 @@ std::shared_ptr<Container> Port::unloadContainer(const std::string& container_id
 
 bool Port::loadContainer(std::shared_ptr<Container> container)
 {
+    //Trying to load a container already on the port
     if (m_containers.count(container->getId()) > 0) return false;
-    PortContainers::value_type item(container->getId(), container);
-    m_containers.insert(item);
+    m_containers[container->getId()] = container;
     return true;
 }
 

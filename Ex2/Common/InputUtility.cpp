@@ -1,6 +1,5 @@
 #include "InputUtility.h"
 #include "Container.h"
-// TODO handle mid line spaces
 
 bool verifyPortSymbol(const string& line)
 {
@@ -108,7 +107,7 @@ InputUtility::handleArgs(int argc, char **argv, std::vector<string>& travel_path
     string travel_folder;
     if(!parseArgs(argc, argv, travel_folder, algorithms_dir, output_path))
     {
-        return false; //handle
+        return false; // TODO handle returning false (exit program)
     }
     // Parse path to travel folder
     if(!handleTravelArg(travel_folder, travel_paths))
@@ -163,6 +162,7 @@ ErrorSet InputUtility::readShipPlan(const std::string& full_path_and_file_name, 
 
     while (getline(in, line))
     {
+        split_line.clear();
         GeneralUtility::removeSpaces(line);
         // Ignore lines starting with #
         if (line[0] == COMMENT) continue;
@@ -175,6 +175,7 @@ ErrorSet InputUtility::readShipPlan(const std::string& full_path_and_file_name, 
             // First line MUST have correct format
             if (!verifyPlanLineFormat(split_line))
             {
+                std::cout << "Error: Badly formatted first line in plan file\n";
                 errors.insert(AlgorithmError::errorCode::BadPlanFile);
                 return errors;
             }
@@ -184,6 +185,7 @@ ErrorSet InputUtility::readShipPlan(const std::string& full_path_and_file_name, 
             dim_y = stoi(split_line[2]);
             if (dim_x < 1 || dim_y < 1 || dim_z < 1)
             {
+                std::cout << "Error: Badly formatted first line in plan file\n";
                 errors.insert(AlgorithmError::errorCode::BadPlanFile);
                 return errors;
             }
@@ -197,6 +199,7 @@ ErrorSet InputUtility::readShipPlan(const std::string& full_path_and_file_name, 
             // Line has bad format, we ignore it
             if (!verifyPlanLineFormat(split_line))
             {
+                std::cout << "Ignored badly formatted line in plan file\n";
                 errors.insert(AlgorithmError::errorCode::BadLineFormatOrDuplicateXY);
                 continue;
             }
@@ -210,23 +213,24 @@ ErrorSet InputUtility::readShipPlan(const std::string& full_path_and_file_name, 
             {
                 if (previous_positions[new_pos] != z)
                 {
-                    // Conflicting redefinition of X,Y so we quit
+                    std::cout << "Error: Conflicting redefinition of X,Y\n";
                     errors.insert(AlgorithmError::errorCode::ConflictingXY);
                     return errors;
                 }
-                // Non-conflicting redefinition of X,Y so we ignore
+                std::cout << "Error: Non-conflicting redefinition of X,Y\n";
                 errors.insert(AlgorithmError::errorCode::BadLineFormatOrDuplicateXY);
                 continue;
             }
             // Floor is too high
-            if (z >= dim_z)
+            if (z > dim_z)
             {
+                std::cout << "Error: Floor value exceeding ship's dimensions\n";
                 errors.insert(AlgorithmError::errorCode::ExceedingFloorValue);
                 continue;
             }
-            // X,Y dimensions are incorrect
-            if (x > dim_x || y > dim_y || x < 0 || y < 0)
+            if (x >= dim_x || y >= dim_y || x < 0 || y < 0)
             {
+                std::cout << "Error: X, Y values exceeding ship's dimensions\n";
                 errors.insert(AlgorithmError::errorCode::ExceedingXYValue);
                 continue;
             }
@@ -412,7 +416,11 @@ bool InputUtility::readCraneInstructions(const string& full_path_and_file_name, 
 
 bool InputUtility::parseArgs(int argc, char** argv, string& travelFolder, string& algorithmFolder, string& outputFolder)
 {
-    if(argc != 3 && argc != 5 && argc != 7) return false; //TODO handle?
+    if(argc != 3 && argc != 5 && argc != 7)
+    {
+        std::cout << "Wrong number of arguments\n";
+        return false;
+    }
     std::unordered_map<string, string> arg_map;
     for (int i = 1; i < argc; i+=2)
     {
@@ -425,7 +433,7 @@ bool InputUtility::parseArgs(int argc, char** argv, string& travelFolder, string
         travelFolder = arg_map[TRAVEL_OPTION];
     } else
     {
-        return false; //TODO handle?
+        return false;
     }
     if(arg_map.count(ALGORITHM_OPTION))
     {

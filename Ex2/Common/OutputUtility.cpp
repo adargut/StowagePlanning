@@ -2,7 +2,6 @@
 
 bool OutputUtility::writeCargoInstructions(const string &output_full_path_and_file_name, const Instructions &instructions)
 {
-    // TODO make sure instructions in right format
     ofstream write_file(output_full_path_and_file_name);
     if(!write_file.is_open()) 
     {
@@ -13,7 +12,7 @@ bool OutputUtility::writeCargoInstructions(const string &output_full_path_and_fi
 
     for (auto &instruction : instructions)
     {
-        instruction.instructionToString(instruction, line);
+        Instruction.instructionToString(instruction, line);
         write_file << line << std::endl;
     }
     write_file.close();
@@ -36,13 +35,12 @@ static bool sortBuffer(std::vector<string>& file_buffer)
         GeneralUtility::split(split_l2, l2, DELIMETER);
 
         int errors_1 = stoi(split_l1.back()), errors_2 = stoi(split_l2.back());
-        // TODO check if the order is right:
-        if (errors_2 < errors_1) return true; 
-        if (errors_1 < errors_2) return false;
+        if (errors_2 < errors_1) return false;
+        if (errors_1 < errors_2) return true;
         else
         {
             int sum_1 = stoi(split_l1.end()[-2]), sum_2 = stoi(split_l2.end()[-2]);
-            return sum_1 < sum_2; // TODO not sure about order? must check it..
+            return sum_1 < sum_2;
         }        
     };
     std::sort(file_buffer.begin()+1, file_buffer.end(),cmp);
@@ -113,7 +111,7 @@ bool OutputUtility::writeResults(const string &output_full_path_and_file_name, A
 
 bool OutputUtility::writeErrors(const string &output_full_path_and_file_name, std::vector<Error> &algorithm_errors)
 {
-    // TODO make sure errors in right format
+    if(algorithm_errors.empty()) return true; // No errors to report
     ofstream write_file(output_full_path_and_file_name);
     if(!write_file.is_open()) 
     {

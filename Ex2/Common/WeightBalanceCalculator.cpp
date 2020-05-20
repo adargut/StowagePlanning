@@ -1,7 +1,7 @@
 //
 // Created by Adar on 10/05/2020.
 //
-#include <iostream> // TODO remove this?
+#include <iostream>
 #include "WeightBalanceCalculator.h"
 
 int WeightBalanceCalculator::readShipPlan(const std::string& full_path_and_file_name)

@@ -7,13 +7,13 @@
 static bool isRangeValid(const Plan &plan, const Instruction &instruction)
 {
     if (instruction.getFloor() < 0 || instruction.getFloor() >= int(plan.size())) return false;
-    if (instruction.getRow() < 0 || instruction.getFloor() >= int(plan[0].size())) return false;
-    if (instruction.getCol() < 0 || instruction.getFloor() >= int(plan[0][0].size())) return false;
+    if (instruction.getRow() < 0 || instruction.getRow() >= int(plan[0].size())) return false;
+    if (instruction.getCol() < 0 || instruction.getCol() >= int(plan[0][0].size())) return false;
     if(instruction.getOp() == Instruction::Move)
     {
         if (instruction.getNewFloor() < 0 || instruction.getNewFloor() >= int(plan.size())) return false;
-        if (instruction.getNewRow() < 0 || instruction.getNewFloor() >= int(plan[0].size())) return false;
-        if (instruction.getNewCol() < 0 || instruction.getNewFloor() >= int(plan[0][0].size())) return false;
+        if (instruction.getNewRow() < 0 || instruction.getNewRow() >= int(plan[0].size())) return false;
+        if (instruction.getNewCol() < 0 || instruction.getNewCol() >= int(plan[0][0].size())) return false;
     }
     return true;
 }
@@ -96,7 +96,15 @@ int Simulation::run()
         PortContainers original_containers(port.getContainers());
         const string& port_code = port.getCode();
         string cargo_file = m_travelDir + "/" + port_code + CARGO_SUFFIX;
-        if()
+        if(!fs::exists(cargo_file))
+        {
+            std::ofstream temp(cargo_file);
+            if(!temp.is_open())
+            {
+                std::cout << "Error creating cargo file\n";
+            }
+            temp.close();
+        }
         string crane_instructions_file = crane_instructions_dir + "/" + port_code + CRANE_INSTRUCTIONS_SUFFIX;
         reported_errors = m_algorithm->getInstructionsForCargo(cargo_file, crane_instructions_file);
         Instructions instructions;
@@ -142,10 +150,9 @@ int Simulation::run()
         checkNoRoomForContainers(unloaded_containers, distance_to_dest, errors);
         m_ship.advanceCurrentPortIdx();
     }
-    // TODO: Save errors to a file
     string crane_errors_path = m_outputDir + "/" + m_algorithmName + "_" + m_travelName + ".crane_errors";
     OutputUtility::writeErrors(crane_errors_path, errors);
-    (void)reported_errors; // TODO why is this needed?
+    (void)reported_errors; // Unused
     if(!errors.empty()) return -1;
     return number_of_operations;
 }
@@ -156,7 +163,8 @@ void Simulation::handleUnloadOperation(Port &port, const Instruction &instructio
 {
     if (!isRangeValid(m_ship.getPlan(), instruction))
     {
-        errors.push_back(Error(Error::InvalidCommand, instruction));
+        errors.push_back(Error(Error::InvalidCommand, instruction,
+                    "Unload coordinates exceed ship's dimensions"));
     }
     else
     {
@@ -166,49 +174,53 @@ void Simulation::handleUnloadOperation(Port &port, const Instruction &instructio
         if (container == nullptr)
         {
             errors.push_back(
-                    Error(Error::InvalidCraneOperation, instruction));
+                    Error(Error::InvalidCraneOperation, instruction,
+                            "Failed unloading container from the ship"));
         }
-            //container ID mismatch
+        // Container ID mismatch
         else if (container->getId() != instruction.getContainerId())
         {
-            errors.push_back(Error(Error::InvalidCommand, instruction));
+            errors.push_back(Error(Error::InvalidCommand, instruction,
+                        "ID mismatch with container on ship"));
         }
-            //container already on the port
+        // Container already on the port
         else if (!port.loadContainer(container))
         {
             errors.push_back(
-                    Error(Error::InvalidCommand, instruction));
+                    Error(Error::InvalidCommand, instruction, "Container already on the port"));
         }
     }
 }
 
 void Simulation::handleLoadOperation(Port &port, const Instruction &instruction, Errors &errors)
 {
-    //TODO check container wasn't rejected before?
     if(!isRangeValid(m_ship.getPlan(), instruction))
     {
-        errors.push_back(Error(Error::InvalidCommand, instruction));
+        errors.push_back(Error(Error::InvalidCommand, instruction,
+                                "Load coordinates exceed ship's dimensions"));
     }
     else
     {
         std::shared_ptr<Container> container = port.unloadContainer(instruction.getContainerId());
         // No such container on port
-        if (container == nullptr) errors.push_back(Error(Error::InvalidCommand, instruction));
+        if (container == nullptr) errors.push_back(Error(Error::InvalidCommand, instruction,
+                                                        "Container not on port"));
             // Failed to load container to ship
         else if (!m_ship.loadContainer(instruction.getFloor(), instruction.getRow(),
                                      instruction.getCol(), container))
         {
             if (m_ship.getContainerMap().count(instruction.getContainerId()))
                 // ... because the container is already on the ship
-                errors.push_back(Error(Error::InvalidCommand, instruction));
+                errors.push_back(Error(Error::InvalidCommand, instruction, "Container already on ship"));
             else {
                 // because the position for loading is invalid
-                errors.push_back(Error(Error::InvalidCraneOperation, instruction));
+                errors.push_back(Error(Error::InvalidCraneOperation, instruction, "Invalid load position"));
             }
         } else {
             // Check if trying to load container with unreachable destination
             if (!isDestinationReachable(container))
-                errors.push_back(Error(Error::InvalidCommand, instruction));
+                errors.push_back(Error(Error::InvalidCommand, instruction,
+                                        "Loaded container with unreachable destination"));
         }
     }
 }
@@ -217,7 +229,8 @@ void Simulation::handleMoveOperation(const Instruction &instruction, Errors &err
 {
     if (!isRangeValid(m_ship.getPlan(), instruction))
     {
-        errors.push_back(Error(Error::InvalidCommand, instruction));
+        errors.push_back(Error(Error::InvalidCommand, instruction,
+                        "Move coordinates exceed ship's dimensions"));
     } else
     {
         std::shared_ptr<Container> container = m_ship.unloadContainer(instruction.getFloor(),
@@ -226,12 +239,13 @@ void Simulation::handleMoveOperation(const Instruction &instruction, Errors &err
         if (container == nullptr)
         {
             errors.push_back(
-                    Error(Error::InvalidCraneOperation, instruction));
+                    Error(Error::InvalidCraneOperation, instruction, "Failed unloading from ship"));
         }
             //container ID mismatch
         else if (container->getId() != instruction.getContainerId())
         {
-            errors.push_back(Error(Error::InvalidCommand, instruction));
+            errors.push_back(Error(Error::InvalidCommand, instruction,
+                                   "ID mismatch with container on ship"));
         }
         else
         {
@@ -241,11 +255,13 @@ void Simulation::handleMoveOperation(const Instruction &instruction, Errors &err
             {
                 if (m_ship.getContainerMap().count(instruction.getContainerId()))
                     // ... because the container is already on the ship
-                    errors.push_back(Error(Error::InvalidCommand, instruction));
+                    errors.push_back(Error(Error::InvalidCommand, instruction,
+                                "When loading, container is already on the ship"));
                 else
                 {
                     // because the position for loading is invalid
-                    errors.push_back(Error(Error::InvalidCraneOperation, instruction));
+                    errors.push_back(Error(Error::InvalidCraneOperation, instruction,
+                                            "Invalid load position"));
                 }
                 // Return the container to its original placement
                 m_ship.loadContainer(instruction.getFloor(),
@@ -258,10 +274,9 @@ void Simulation::handleMoveOperation(const Instruction &instruction, Errors &err
 void Simulation::handleRejectOperation(Port& port, const Instruction& instruction, Errors& errors,
                                        std::vector<string>& rejected)
 {
-    // TODO check container was not rejected twice?
     // Check container is currently on the port
-    if(port.getContainers().count(instruction.getContainerId()))
-        errors.push_back(Error(Error::InvalidCommand, instruction));
+    if(!port.getContainers().count(instruction.getContainerId()))
+        errors.push_back(Error(Error::InvalidCommand, instruction, "Rejected container not on port"));
     bool in_containers_to_load = false;
     // Check container was meant to be loaded
     for(auto& container : port.getContainersToLoad())
@@ -270,7 +285,8 @@ void Simulation::handleRejectOperation(Port& port, const Instruction& instructio
             in_containers_to_load = true;
     }
     // Rejecting container that was not meant to be loaded
-    if(!in_containers_to_load) errors.push_back(Error(Error::InvalidCommand, instruction));
+    if(!in_containers_to_load) errors.push_back(Error(Error::InvalidCommand, instruction,
+            "Rejecting container that wasn't meant to be loaded"));
     else rejected.push_back(instruction.getContainerId());
 }
 
@@ -279,7 +295,8 @@ void Simulation::checkContainersForgottenOnShip(Port& port, Errors& errors)
     for (auto &container : m_ship.getContainerMap())
     {
         if (container.second.first->getPortCode() == port.getCode())
-            errors.push_back(Error(Error::IgnoredContainer));
+            errors.push_back(Error(Error::IgnoredContainer, Instruction(),
+                    "A container destined for " + port.getCode() + " was forgotten on the ship"));
     }
 }
 
@@ -292,7 +309,9 @@ void Simulation::checkContainersLeftOnPort(Port& port, PortContainers& original_
             if (std::find(original_containers.begin(), original_containers.end(), container)
                 == original_containers.end())
             {
-                errors.push_back(Error(Error::IgnoredContainer));
+                errors.push_back(Error(Error::IgnoredContainer, Instruction(),
+                        "Container left on " + port.getCode() +
+                        " wasn't destined for that port nor originally on the port"));
             }
         }
     }
@@ -304,7 +323,8 @@ void Simulation::checkUnloadedRejected(PortContainers& unloaded_containers, std:
     for (auto &container: unloaded_containers)
     {
         if (std::find(rejected.begin(), rejected.end(), container.second->getId()) == rejected.end())
-            errors.push_back(Error(Error::IgnoredContainer));
+            errors.push_back(Error(Error::IgnoredContainer, Instruction(),
+                    "Container that wasn't loaded didn't get rejected"));
     }
 }
 
@@ -323,7 +343,8 @@ void Simulation::checkLatestDestinationsRejected(Port& port, PortContainers& unl
         for (auto &container : unloaded_containers) {
             int distance = distance_to_dest.distanceToDestination(container.second);
             if (distance < minimum_distance) {
-                errors.push_back(Error(Error::IgnoredContainer));
+                errors.push_back(Error(Error::IgnoredContainer, Instruction(),
+                                "Could reject a container with further destination (" + port.getCode() + ")"));
             }
         }
     }
@@ -333,8 +354,13 @@ void Simulation::checkNoRoomForContainers(PortContainers& unloaded_containers,
                                           DistanceToDestinationComparator& distance_to_dest, Errors& errors)
 {
     for (auto& container : unloaded_containers)
-        if(distance_to_dest.distanceToDestination(container.second) < INT_MAX && !m_ship.isShipFull())
-            errors.push_back(Error(Error::IgnoredContainer));
+        if(distance_to_dest.distanceToDestination(container.second) < INT_MAX && !m_ship.isShipFull()
+        && !m_ship.hasContainer(container.first))
+        {
+            errors.push_back(Error(Error::IgnoredContainer, Instruction(),
+                                   container.first + " which could be loaded was left on port while "
+                                   "there's still room on the ship"));
+        }
 }
 
 void Simulation::setRealDestinations(const Route& route, int curr_idx, ContainersVector& containers)

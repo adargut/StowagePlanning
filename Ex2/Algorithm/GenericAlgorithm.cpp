@@ -59,7 +59,6 @@ void GenericAlgorithm::getInstructionsForUnloading(Instructions& instructions)
     for (auto &container_to_unload : containers_to_unload) {
         tmp_instructions.clear();
         containers_to_return.clear();
-        // TODO implement rollback/backup mechanism
         auto container_pos = ship_map.find(container_to_unload)->second.second;
         int z = container_pos[0];
         int y = container_pos[1];
@@ -75,7 +74,6 @@ void GenericAlgorithm::getInstructionsForUnloading(Instructions& instructions)
                 tmp_instructions.push_back(Instruction(Instruction::Unload, container_above_id, z_above, y, x));
             }
         }
-        // TODO check weight balancer before
         m_ship.unloadContainer(z, y, x); // Unload container originally intended for unloading
         tmp_instructions.push_back(Instruction(Instruction::Unload, container_to_unload, z, y, x));
 
@@ -93,48 +91,6 @@ void GenericAlgorithm::getInstructionsForUnloading(Instructions& instructions)
         }
     }
 }
-
-// void GenericAlgorithm::getInstructionForLoadingContainer(std::shared_ptr<Container> container_to_load, Instructions &result) {
-//     const Plan &ship_plan = m_ship.getPlan();
-//     bool destination_in_route = false;
-//     for (int i = m_ship.getCurrentPortIdx() + 1; i < int(m_ship.getRoute().size()); ++i)
-//     {
-//         if (container_to_load->getPortCode() == m_ship.getRoute()[i]) destination_in_route = true;
-//     }
-
-//     // Container destination unreachable
-//     if (!destination_in_route)
-//     {
-//         result.push_back(Instruction(Instruction::Reject,
-//                                      container_to_load->getId(), -1, -1, -1));
-//         return;
-//     }
-
-//     // Container already on the ship
-//     if(m_ship.getContainerMap().count(container_to_load->getId()))
-//     {
-//         result.push_back(Instruction(Instruction::Reject, container_to_load->getId(), -1, -1, -1));
-//         return;
-//     }
-//     for (int z = 0; z < int(ship_plan.size()); z++)
-//     { // TODO optimize this n^3 loop
-//         for (int y = 0; y < int(ship_plan[0].size()); y++)
-//         {
-//             for (int x = 0; x < int(ship_plan[0][0].size()); x++)
-//             {
-//                 if (ship_plan[z][y][x] == FREE_POS)
-//                 {
-//                     // TODO check calculator
-//                     // Check if container destination still in route (beyond the current port)
-//                     m_ship.loadContainer(z, y, x, container_to_load);
-//                     result.push_back(Instruction(Instruction::Load, container_to_load->getId(), z, y, x));
-//                     return;
-//                 }
-//             }
-//         }
-//     }
-//     result.push_back(Instruction(Instruction::Reject, container_to_load->getId(), -1, -1, -1));
-// }
 
 int GenericAlgorithm::getInstructionsForCargo(const std::string& input_full_path_and_file_name,
                                              const std::string& output_full_path_and_file_name)
