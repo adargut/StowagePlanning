@@ -44,8 +44,7 @@ bool Simulation::initialize()
             break;
         }
     }
-    errors = InputUtility::readShipRoute(route_file, ship_route);
-    //TODO report errors - we assume at this point that the file is valid (can be run)
+    InputUtility::readShipRoute(route_file, ship_route);
     for (const auto &file : DirectoryIterator(m_travelDir))
     {
         string file_path = file.path();
@@ -55,8 +54,7 @@ bool Simulation::initialize()
             break;
         }
     }
-    errors = InputUtility::readShipPlan(plan_file, ship_plan);
-    //TODO report errors - we assume at this point that the file is valid (can be run)
+    InputUtility::readShipPlan(plan_file, ship_plan);
     m_ship.setRoute(ship_route);
     m_ship.setPlan(ship_plan);
 
@@ -66,31 +64,30 @@ bool Simulation::initialize()
         auto& port = ship_route[i];
         ContainersVector port_containers;
         string port_file = m_travelDir + "/" + port + CARGO_SUFFIX;
-        errors = InputUtility::readCargo(port_file, port_containers);
-        // TODO maybe report errors here...
+        InputUtility::readCargo(port_file, port_containers);
         setRealDestinations(ship_route, i, port_containers);
         m_ports.emplace_back(port, port_containers);
     }
 
-
     uint32_t err = 0;
     auto wbc = WeightBalanceCalculator();
     err = m_algorithm->setWeightBalanceCalculator(wbc);
+    if (err) m_algorithmErrors.emplace_back(err);
     err = m_algorithm->readShipRoute(route_file);
-    AlgorithmError alg_init_errors = AlgorithmError{err};
+    if (err) m_algorithmErrors.emplace_back(err);
+    AlgorithmError alg_init_errors = AlgorithmError(err);
     if(alg_init_errors.getBit(AlgorithmError::BadTravelFile)
        || alg_init_errors.getBit(AlgorithmError::SinglePortTravel))
     {
         m_canRun = false;
-        //TODO report error code to errors file
     }
     err = m_algorithm->readShipPlan(plan_file);
-    alg_init_errors = AlgorithmError{err};
+    if (err) m_algorithmErrors.push_back(AlgorithmError(err));
+    alg_init_errors = AlgorithmError(err);
     if(alg_init_errors.getBit(AlgorithmError::BadPlanFile)
           || alg_init_errors.getBit(AlgorithmError::ConflictingXY))
     {
         m_canRun = false;
-        //TODO report error code to errors file
     }
 
     return true;
@@ -99,7 +96,7 @@ bool Simulation::initialize()
 int Simulation::run()
 {
     int number_of_operations = 0;
-    int reported_errors;
+    uint32_t reported_errors;
     Errors errors;
     string crane_instructions_dir = m_outputDir + "/" + m_algorithmName + "_" + m_travelName + "_crane_instructions";
     fs::create_directories(crane_instructions_dir);
@@ -119,6 +116,7 @@ int Simulation::run()
         string cargo_file = m_travelDir + "/" + port_code + CARGO_SUFFIX;
         string crane_instructions_file = crane_instructions_dir + "/" + port_code + CRANE_INSTRUCTIONS_SUFFIX;
         reported_errors = m_algorithm->getInstructionsForCargo(cargo_file, crane_instructions_file);
+        if (reported_errors) m_algorithmErrors.emplace_back(reported_errors);
         Instructions instructions;
         if(!InputUtility::readCraneInstructions(crane_instructions_file, instructions))
         {
@@ -163,14 +161,13 @@ int Simulation::run()
         checkNoRoomForContainers(unloaded_containers, distance_to_dest, errors);
         m_ship.advanceCurrentPortIdx();
     }
-    string crane_errors_path = m_outputDir + "/" + m_algorithmName + "_" + m_travelName + ".crane_errors";
+    string crane_errors_path = m_outputDir + "/" + ERRORS_DIR + "/" + m_algorithmName + "_" + m_travelName + ".crane_errors";
+    string algorithm_errors_path = m_outputDir + "/" + ERRORS_DIR + "/" + m_algorithmName + "_" + m_travelName + ".alg_errors";
     OutputUtility::writeErrors(crane_errors_path, errors);
-    (void)reported_errors; // TODO document this too in the errors file
+    OutputUtility::writeAlgorithmErrors(algorithm_errors_path, m_algorithmErrors);
     if(!errors.empty()) return -1;
     return number_of_operations;
 }
-
-
 
 void Simulation::handleUnloadOperation(Port &port, const Instruction &instruction, Errors &errors)
 {

@@ -1,0 +1,25 @@
+3, 2, 2, d
+# floors, x, y
+
+2, 1, 2
+# exceeds dimensions
+
+0, 2, 2, 2
+# exceeds dimensions + extra parameter
+
+0, 2
+
+-1
+2, 2
+# bad format
+
+1, 1, 2, 10
+1, 1, 2
+# duplicate similar data
+
+0, 0, 1
+0, 1, 0
+1, 0, 3
+1, 1, 2
+# acutal data
+# 6 available spots

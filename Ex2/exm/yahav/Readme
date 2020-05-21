@@ -1,0 +1,8 @@
+Travel info:
+Ship plan: 3 floors, 2x2 size, total available space: 6 containers
+Route: AAAAA, BBBBB, CCCCC, DDDDD, EEEEE, AAAAA
+Bad files: Readme, DDDDD.cargo_data
+Extra cargo_data files (not used): AAAAA_3.cargo_data, BBBBB_5.cargo_data
+Irrelevant cargo_data files (not on route): FFFFF_1.cargo_data
+
+* Container ID starts with the name of port it was loaded in.

@@ -17,6 +17,7 @@
 #include "Error.h"
 class Simulation {
     std::unique_ptr<AbstractAlgorithm> m_algorithm;
+    std::vector<AlgorithmError> m_algorithmErrors;
     const string m_algorithmName;
     const string m_travelName;
     const string m_travelDir;

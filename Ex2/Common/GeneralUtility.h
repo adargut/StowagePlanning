@@ -51,6 +51,7 @@ typedef typename std::vector<Error> Errors;
 namespace GeneralUtility
 {
     void split(std::vector<string>& result, const std::string &s, char delim);
+    void trim(std::string& s, const string t = " \t\n\r\f\v");
     void removeLeadingAndTrailingSpaces(std::vector<string> &split_line);
 }
 

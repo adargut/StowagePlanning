@@ -8,10 +8,12 @@
 #include <cstdint>
 #include <string>
 #include <vector>
+#include <iostream>
 
 using string = std::string;
 
-class AlgorithmError {
+class AlgorithmError 
+{
 private:
     uint32_t m_errorCode;
 public:
@@ -22,16 +24,17 @@ public:
         // Errors related travel route
         SamePortConsecutively=5, BadPortSymbol=6, BadTravelFile=7, SinglePortTravel=8, Reserved=9,
         // Errors related to containers
-        DuplicateContainerOnPort=10, DuplicateContainerOnShip=11, BadPortWeight=12, BadPortDest=13, MissingPortID=14, BadPortID=15,
-        BadCargoFile=16, LastPortNotEmpty=17, ContainersExceedingCapacity=18
+        DuplicateContainerOnPort=10, DuplicateContainerOnShip=11, BadContainerWeight=12, BadContainerDest=13, 
+        MissingContainerID=14, BadContainerID=15, BadCargoFile=16, LastPortNotEmpty=17, ContainersExceedingCapacity=18
     };
     explicit AlgorithmError(uint32_t errorCode=0);
+    operator bool() const { return m_errorCode > 0; }
     bool setBit(uint32_t bit);
     bool getBit(uint32_t bit) const;
     int getAndClear();
     errorCode getErrorCode();
+    string errorToString();
     static string getErrorDescription(errorCode code);
-    static string errorsToString(std::vector<AlgorithmError> algorithm_errors);
 };
 
 

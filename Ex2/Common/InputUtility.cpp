@@ -32,14 +32,16 @@ bool isRouteFileValid(const string& file_path)
              || errors.getBit(AlgorithmError::SinglePortTravel));
 }
 
-bool handleTravelArg(const string& travel_path, std::vector<string>& travel_paths) {
+bool handleTravelArg(const string& travel_path, std::vector<string>& travel_paths) 
+{
     if (!fs::exists(travel_path)) {
         std::cout << "Error: could not run travel, bad travel_path argument\n";
         return false;
     }
 
     // Check if travel path contains both route and plan files
-    for (const auto &entry : DirectoryIterator(travel_path)) {
+    for (const auto &entry : DirectoryIterator(travel_path)) 
+    {
         bool valid_route_file = false, valid_plan_file = false, route_file_found = false, plan_file_found = false;
         if (entry.is_directory()) {
             string travel_directory = entry.path();
@@ -61,7 +63,6 @@ bool handleTravelArg(const string& travel_path, std::vector<string>& travel_path
                 {
                     // Check plan file (check validity)
                     valid_plan_file = isPlanFileValid(file.path());
-                    //plan_file = file_path;
                     if (plan_file_found)                    // Two or more plan files
                     {
                         std::cout << "Error: Two or more plan files\n";
@@ -136,10 +137,10 @@ InputUtility::handleArgs(int argc, char **argv, std::vector<string>& travel_path
     {
         return false;
     }
-    // Parse path to algorithm folder
-    handleAlgorithmArg(algorithms_dir, algorithm_names);
     // Parse path to output folder
     handleOutputArg(output_path);
+    // Parse path to algorithm folder
+    handleAlgorithmArg(algorithms_dir, algorithm_names);
     return true;
 }
 
@@ -186,7 +187,7 @@ AlgorithmError InputUtility::readShipPlan(const std::string& full_path_and_file_
     {
         split_line.clear();
         // Ignore lines starting with #
-        if (line[0] == COMMENT) continue;
+        if (line.empty() || line[0] == COMMENT) continue;
         // Split line by "," delimeter
         GeneralUtility::split(split_line, line, DELIMETER);
         GeneralUtility::removeLeadingAndTrailingSpaces(split_line);
@@ -197,7 +198,6 @@ AlgorithmError InputUtility::readShipPlan(const std::string& full_path_and_file_
             // First line MUST have correct format
             if (!verifyPlanLineFormat(split_line))
             {
-                std::cout << "raaah\n";//dbug
                 std::cout << "Error: Badly formatted first line in plan file\n";
                 errors.setBit(AlgorithmError::errorCode::BadPlanFile);
                 return errors;
@@ -296,7 +296,7 @@ AlgorithmError InputUtility::readCargo(const string &full_path_and_file_name, Co
             string& id = split_line[0];
             if (!verifyISO6346((id)))
             {
-                errors.setBit(AlgorithmError::errorCode::BadPortID);
+                errors.setBit(AlgorithmError::BadContainerID);
             }
             container->setId(id);
         }
@@ -346,6 +346,8 @@ AlgorithmError InputUtility::readShipRoute(const std::string& full_path_and_file
 
     while (getline(in, line))
     {
+        GeneralUtility::trim(line);
+        if (line.empty() || line[0] == COMMENT) continue;
         // Same port appearing twice in a row
         if (!route.empty() && route.back() == line)
         {

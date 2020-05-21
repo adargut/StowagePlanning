@@ -1,12 +1,15 @@
 #ifndef __GENERICALGORITHM_H__
 #define __GENERICALGORITHM_H__
 
+#define BAD_WEIGHT -1
+
 #include <string>
 #include <memory>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include "../Common/ISO_6346.h"
 #include "../Common/AbstractAlgorithm.h"
 #include "../Common/AlgorithmError.h"
 #include "../Common/InputUtility.h"

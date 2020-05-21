@@ -8,7 +8,7 @@
 #include "../Common/Instruction.h"
 #include "../Common/GeneralUtility.h"
 
-// Errors detected by the simulation
+// Errors occurring in the run
 class Error 
 {
 public:

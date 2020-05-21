@@ -1,7 +1,3 @@
-//
-// Created by adargut on 5/12/20.
-//
-
 #include "GenericAlgorithm.h"
 #include "../Common/AlgorithmRegistration.h"
 
@@ -89,7 +85,7 @@ void GenericAlgorithm::getInstructionsForUnloading(Instructions& instructions)
 }
 
 int GenericAlgorithm::getInstructionsForCargo(const std::string& input_full_path_and_file_name,
-                                             const std::string& output_full_path_and_file_name)
+                                              const std::string& output_full_path_and_file_name)
 {
     //TODO changes to comply with proper error reporting, reject all invalid containers first, check weight is valid
     using Cmp = DistanceToDestinationComparator;
@@ -113,18 +109,49 @@ int GenericAlgorithm::getInstructionsForCargo(const std::string& input_full_path
     std::unordered_set<string> containers_seen;
     m_algorithmErrors = InputUtility::readCargo(input_full_path_and_file_name, containers_to_load);
     string port_name = m_ship.getRoute()[m_ship.getCurrentPortIdx()];
-    getInstructionsForUnloading(instructions);
     setRealDestinations(containers_to_load);
-    std::sort(containers_to_load.begin(), containers_to_load.end(), distance_to_destination);
+    ContainersVector valid_containers_to_load;
+
+    // Check ISO, format and valid destination for containers on port
     for (auto& container : containers_to_load)
     {
         bool was_rejected = false;
+        // ISO check
+        if (!ISO_6346::isValidId(container->getId()))
+        {
+            m_algorithmErrors.setBit(AlgorithmError::BadContainerID);
+            instructions.push_back(Instruction(Instruction::Reject, container->getId(), -1, -1, -1));
+            was_rejected = true;
+        }
+        // Weight check
+        if (container->getWeight() == BAD_WEIGHT)
+        {
+            m_algorithmErrors.setBit(AlgorithmError::BadContainerWeight);
+            if (!was_rejected) // Make sure we don't reject the same container twice
+            {
+                instructions.push_back(Instruction(Instruction::Reject, container->getId(), -1, -1, -1));
+                was_rejected = true;
+            }
+        }
+        // Destination reachable check
+        if (container->getPortCode() == BAD_DESTINATION)
+        {
+            m_algorithmErrors.setBit(AlgorithmError::BadContainerDest);
+            if (!was_rejected) // Make sure we don't reject the same container twice
+            {
+                instructions.push_back(Instruction(Instruction::Reject, container->getId(), -1, -1, -1));
+                was_rejected = true;
+            }
+        }
         // Reject container already on ship
         if (m_ship.hasContainer(container->getId()))
         {
             m_algorithmErrors.setBit(AlgorithmError::errorCode::DuplicateContainerOnShip);
-            instructions.push_back(Instruction(Instruction::Reject, container->getId(), -1, -1, -1));
-            was_rejected = true;
+            if (!was_rejected)
+            {
+                instructions.push_back(Instruction(Instruction::Reject, container->getId(), -1, -1, -1));
+                was_rejected = true;
+            }
         }
         // Reject duplicate container on port
         if (containers_seen.count(container->getId()) > 0) 
@@ -136,17 +163,24 @@ int GenericAlgorithm::getInstructionsForCargo(const std::string& input_full_path
                 instructions.push_back(Instruction(Instruction::Reject, container->getId(), -1, -1, -1));
             }
         }
-        else if (!was_rejected)
-        {
-            // Check ship is full and report error
-            if(m_ship.isShipFull())
-            {
-                m_algorithmErrors.setBit(AlgorithmError::ContainersExceedingCapacity);
-                instructions.push_back(Instruction(Instruction::Reject, container->getId()));
-            }
-            else getInstructionForLoadingContainer(container, instructions);
-        }
+        // We only care about valid containers
+        if (!was_rejected) valid_containers_to_load.push_back(container);
+        // Mark container as seen
         containers_seen.insert(container->getId());
+    }
+
+    getInstructionsForUnloading(instructions);
+    std::sort(valid_containers_to_load.begin(), valid_containers_to_load.end(), distance_to_destination);
+
+    for (auto& container : valid_containers_to_load)
+    {        
+        // Check ship is full and report error
+        if(m_ship.isShipFull())
+        {
+            m_algorithmErrors.setBit(AlgorithmError::ContainersExceedingCapacity);
+            instructions.push_back(Instruction(Instruction::Reject, container->getId()));
+        }
+        else getInstructionForLoadingContainer(container, instructions);
     }
     m_ship.advanceCurrentPortIdx();
 

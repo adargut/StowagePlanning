@@ -111,11 +111,11 @@ bool OutputUtility::writeResults(const string &output_full_path_and_file_name, A
 
 bool OutputUtility::writeErrors(const string &output_full_path_and_file_name, std::vector<Error> &algorithm_errors)
 {
-    if(algorithm_errors.empty()) return true; // No errors to report
+    if (algorithm_errors.empty()) return true; // No errors to report
     ofstream write_file(output_full_path_and_file_name);
     if(!write_file.is_open()) 
     {
-        std::cout << "Error opening cargo errors\n";
+        std::cout << "Error opening cargo/general errors\n";
         return false;   
     }
 
@@ -128,3 +128,20 @@ bool OutputUtility::writeErrors(const string &output_full_path_and_file_name, st
     return true;
 }
 
+bool OutputUtility::writeAlgorithmErrors(const string &output_full_path_and_file_name, std::vector<AlgorithmError> &errors)
+{
+    if (errors.empty()) return true; // No errors to report
+    ofstream write_file(output_full_path_and_file_name);
+    if(!write_file.is_open()) 
+    {
+        std::cout << "Error opening algorithm errors\n";
+        return false;   
+    }
+
+    for (auto &error : errors)
+    {
+        write_file << error.errorToString() << std::endl;
+    }
+    write_file.close();
+    return true;
+}

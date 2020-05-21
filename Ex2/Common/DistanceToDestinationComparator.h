@@ -8,8 +8,10 @@
 #include <climits>
 #include "GeneralUtility.h"
 #include "Container.h"
+#include "ISO_6346.h"
 
-class DistanceToDestinationComparator {
+class DistanceToDestinationComparator 
+{
 private:
     int current_port_idx;
     const Route &route;
