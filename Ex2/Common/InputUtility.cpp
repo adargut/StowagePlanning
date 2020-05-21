@@ -133,7 +133,6 @@ bool verifyPlanLineFormat(const std::vector<string>& line)
     // Check if line has a non-number string
     for (auto &number : line)
     {
-        // std::cout << "number in line: " << number;
         // Check if first line has a non-number string
         if (number.find_first_not_of("0123456789") != string::npos) 
         {
@@ -177,6 +176,7 @@ ErrorSet InputUtility::readShipPlan(const std::string& full_path_and_file_name, 
             // First line MUST have correct format
             if (!verifyPlanLineFormat(split_line))
             {
+                std::cout << "raaah\n";//dbug
                 std::cout << "Error: Badly formatted first line in plan file\n";
                 errors.insert(AlgorithmError::errorCode::BadPlanFile);
                 return errors;
