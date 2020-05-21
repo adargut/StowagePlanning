@@ -121,7 +121,6 @@ bool OutputUtility::writeErrors(const string &output_full_path_and_file_name, st
 
     for (auto &error : algorithm_errors)
     {
-        // instruction.instructionToString(instruction, line);
         write_file << error.errorToString() << std::endl;
     }
     write_file.close();
@@ -131,6 +130,8 @@ bool OutputUtility::writeErrors(const string &output_full_path_and_file_name, st
 bool OutputUtility::writeAlgorithmErrors(const string &output_full_path_and_file_name, std::vector<AlgorithmError> &errors)
 {
     if (errors.empty()) return true; // No errors to report
+    fs::path p(output_full_path_and_file_name);
+    fs::create_directory(p.parent_path());
     ofstream write_file(output_full_path_and_file_name);
     if(!write_file.is_open()) 
     {

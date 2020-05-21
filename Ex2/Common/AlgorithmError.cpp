@@ -83,10 +83,10 @@ string AlgorithmError::errorToString()
 {
     string res;
     uint32_t mask = 1;
-    for (size_t i = 0; i < 18; i++)
+    for (size_t i = 0; i < 19; i++)
     {
-        if (mask & m_errorCode) res += AlgorithmError::getErrorDescription(errorCode(mask)) + " ";
-        mask >>= 1;
+        if (mask & m_errorCode) res += AlgorithmError::getErrorDescription(errorCode(i)) + " ";
+        mask <<= 1;
     }
 
     if (!res.empty()) res.pop_back();

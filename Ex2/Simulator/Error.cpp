@@ -18,16 +18,3 @@ std::string Error::errorToString()
     Instruction::instructionToString(instruction, inst);
     return ans + " " + inst + " " + description ;
 }
-
-// std::string Error::errorsToString(const Errors &errors) 
-// {
-//     std::string result;
-
-//     for (auto &error : errors) {
-//         result.append(Error::errorToString(error.getType())); // New error to write
-//         result.append(" "); // Put space to separate errors
-//         Instruction::instructionToString(error.instruction, result); // Append erroneous instruction
-//         if (error.instruction.getOp() != Instruction::None) result.append(" ");
-//     }
-//     return result;
-// }
