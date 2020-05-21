@@ -26,6 +26,9 @@ class GenericAlgorithm : public AbstractAlgorithm
 protected:
     AlgorithmError m_algorithmErrors;
     Ship m_ship;
+    bool m_plan_initialized = false;
+    bool m_route_initialized = false;
+    bool m_balance_calculator_initialized = false;
 public:
     int readShipPlan(const std::string& full_path_and_file_name) override;
     int readShipRoute(const std::string& full_path_and_file_name) override;

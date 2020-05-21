@@ -21,11 +21,6 @@ void SimpleAlgorithm::getInstructionForLoadingContainer(std::shared_ptr<Containe
     }
 
     // Container already on the ship
-    if(m_ship.getContainerMap().count(container_to_load->getId()))
-    {
-        result.push_back(Instruction(Instruction::Reject, container_to_load->getId(), -1, -1, -1));
-        return;
-    }
     for (int z = 0; z < int(ship_plan.size()); z++)
     {
         for (int y = 0; y < int(ship_plan[0].size()); y++)

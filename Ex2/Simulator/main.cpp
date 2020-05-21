@@ -12,7 +12,7 @@ int registerAlgorithms(const string& algorithmDir, const std::vector<string>& al
     {
         if(!AlgorithmManager::getInstance().registerAlgorithm(algorithmName))
         {
-            // TODO maybe handle?
+            std::cout << algorithmName << " failed to register\n";
         }
     }
     return 0;
@@ -69,7 +69,8 @@ int main(int argc, char** argv)
     string algorithmDir;
     std::vector<string> algorithmNames;
     string output_path;
-    InputUtility::handleArgs(argc, argv, travel_paths, algorithmDir, algorithmNames, output_path);
+    if(!InputUtility::handleArgs(argc, argv, travel_paths, algorithmDir, algorithmNames, output_path))
+        return -1;
     registerAlgorithms(algorithmDir, algorithmNames);
     runSimulations(travel_paths, algorithmNames, output_path);
     return 0;

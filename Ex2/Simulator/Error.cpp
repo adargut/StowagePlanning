@@ -4,13 +4,7 @@
 
 #include "Error.h"
 
-Error::Error(Error::Type _type, Instruction _instruction, string _description) : type(_type),
-             instruction(_instruction), description(_description) {}
-
-Error::Type Error::getType() const 
-{
-    return type;
-}
+Error::Error(string _description, Instruction _instruction) : description(_description), instruction(_instruction) {}
 
 Instruction Error::getInstruction() const 
 {
@@ -22,19 +16,6 @@ std::string Error::errorToString()
     string ans = "";
     string inst = "";
     Instruction::instructionToString(instruction, inst);
-
-    switch (type) 
-    {
-        case IgnoredContainer:
-            ans = "Ignored Container";
-            break;
-        case InvalidCommand:
-            ans = "Invalid Command";
-            break;
-        case InvalidCraneOperation:
-            ans = "Invalid Crane Operation";
-            break;
-    };
     return ans + " " + inst + " " + description ;
 }
 
