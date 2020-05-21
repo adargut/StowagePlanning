@@ -21,6 +21,7 @@
 #include <map>
 #include <algorithm>
 #include <sstream>
+#include <regex>
 
 // Forward declarations
 class Container;
@@ -50,7 +51,7 @@ typedef typename std::vector<Error> Errors;
 namespace GeneralUtility
 {
     void split(std::vector<string>& result, const std::string &s, char delim);
-    void removeSpaces(string& input);
+    void removeLeadingAndTrailingSpaces(std::vector<string> &split_line);
 }
 
 
