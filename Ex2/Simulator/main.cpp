@@ -13,6 +13,7 @@ int registerAlgorithms(const string& algorithmDir, const std::vector<string>& al
         if(!AlgorithmManager::getInstance().registerAlgorithm(algorithmName))
         {
             std::cout << algorithmName << " failed to register\n";
+            InputUtility::input_errors.emplace_back(algorithmName + " failed to register");
         }
     }
     return 0;
@@ -36,10 +37,7 @@ int runSimulations(std::vector<string>& travelPaths, std::vector<string>& algori
             auto algorithm = AlgorithmManager::getInstance().getAlgorithmInstance(algorithmName);
             if(algorithm == nullptr) continue; // algorithm didn't register
             Simulation simulation(std::move(algorithm), algorithmName, travelName, travel, outputPath);
-            if(!simulation.initialize())
-            {
-                // TODO handle
-            }
+            simulation.initialize();
             if(!resultsMap.count(algorithmName)) resultsMap[algorithmName] = std::vector<string>();
             resultsMap[algorithmName].push_back(std::to_string(simulation.run()));
         }
@@ -65,6 +63,7 @@ int main(int argc, char** argv)
 {
     (void)argc;
     (void)argv;
+    std::vector<Error> general_errors; // Errors that do not belong to simulation/algorithm
     std::vector<string> travel_paths;
     string algorithmDir;
     std::vector<string> algorithmNames;
@@ -73,5 +72,9 @@ int main(int argc, char** argv)
         return -1;
     registerAlgorithms(algorithmDir, algorithmNames);
     runSimulations(travel_paths, algorithmNames, output_path);
+    string general_errors_path = "/";
+    general_errors_path.append(ERRORS_DIR);
+    general_errors_path.append("/general_errors.errors");
+    OutputUtility::writeErrors(general_errors_path, general_errors);
     return 0;
 }

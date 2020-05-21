@@ -19,23 +19,27 @@ bool verifyISO6346(const std::string& port_name)
 bool isPlanFileValid(const string& file_path)
 {
     Plan temp_plan;
-    AlgorithmError errors = InputUtility::readShipPlan(file_path, temp_plan);
-    return !(errors.getBit(AlgorithmError::BadPlanFile)
-       || errors.getBit(AlgorithmError::ConflictingXY));
+    AlgorithmError error = InputUtility::readShipPlan(file_path, temp_plan);
+    InputUtility::input_errors.emplace_back(error.errorToString() + " in " + file_path);
+    return !(error.getBit(AlgorithmError::BadPlanFile)
+       || error.getBit(AlgorithmError::ConflictingXY));
 }
 
 bool isRouteFileValid(const string& file_path)
 {
     Route temp_route;
-    AlgorithmError errors = InputUtility::readShipRoute(file_path, temp_route);
-    return !(errors.getBit(AlgorithmError::BadTravelFile)
-             || errors.getBit(AlgorithmError::SinglePortTravel));
+    AlgorithmError error = InputUtility::readShipRoute(file_path, temp_route);
+    InputUtility::input_errors.emplace_back(error.errorToString() + " in " + file_path);
+    return !(error.getBit(AlgorithmError::BadTravelFile)
+             || error.getBit(AlgorithmError::SinglePortTravel));
 }
 
 bool handleTravelArg(const string& travel_path, std::vector<string>& travel_paths) 
 {
-    if (!fs::exists(travel_path)) {
+    if (!fs::exists(travel_path)) 
+    {
         std::cout << "Error: could not run travel, bad travel_path argument\n";
+        InputUtility::input_errors.emplace_back("Could not run travel, bad travel_path argument");
         return false;
     }
 
@@ -54,6 +58,7 @@ bool handleTravelArg(const string& travel_path, std::vector<string>& travel_path
                     if (route_file_found)                     // Two or more route files
                     {
                         std::cout << "Error: Two or more route files\n";
+                        InputUtility::input_errors.emplace_back("Two or more route files in " + travel_path);
                         valid_route_file = false;
                         break;
                     }
@@ -66,6 +71,7 @@ bool handleTravelArg(const string& travel_path, std::vector<string>& travel_path
                     if (plan_file_found)                    // Two or more plan files
                     {
                         std::cout << "Error: Two or more plan files\n";
+                        InputUtility::input_errors.emplace_back("Two or more plan files in " + travel_path);
                         valid_plan_file = false;
                         break;
                     }
@@ -74,6 +80,7 @@ bool handleTravelArg(const string& travel_path, std::vector<string>& travel_path
             }
             if (valid_plan_file && valid_route_file)
             {
+                // TODO Check all ports exist in route....
                 travel_paths.push_back(std::move(travel_directory));
             }
         }
@@ -81,6 +88,7 @@ bool handleTravelArg(const string& travel_path, std::vector<string>& travel_path
     if(travel_paths.empty())
     {
         std::cout << "No valid travels found\n";
+        InputUtility::input_errors.emplace_back("No valid travels found");
         return false;
     }
     return true;
@@ -91,8 +99,7 @@ bool handleAlgorithmArg(const string& algorithmDir, std::vector<string>& algorit
     if (!fs::exists(algorithmDir))
     {
         std::cout << "Error: bad algorithm directory given\n";
-        // If bad algorithms dir given as argument, create that folder
-        // fs::create_directories(algorithmDir);
+        InputUtility::input_errors.emplace_back("Bad algorithm directory given");
         return false;
     }
 
@@ -109,6 +116,7 @@ bool handleAlgorithmArg(const string& algorithmDir, std::vector<string>& algorit
     if (algorithm_paths.empty())
     {
         std::cout << "Error: no .so found files in algorithm directory\n";
+        InputUtility::input_errors.emplace_back("No .so found files in algorithm directory");
         return false;
     }
     return true;
@@ -123,8 +131,7 @@ static bool handleOutputArg(string& output_path)
     return true;
 }
 
-bool
-InputUtility::handleArgs(int argc, char **argv, std::vector<string>& travel_paths, string& algorithms_dir,
+bool InputUtility::handleArgs(int argc, char **argv, std::vector<string>& travel_paths, string& algorithms_dir,
                          std::vector<string>& algorithm_names, string& output_path)
 {
     string travel_folder;
@@ -445,9 +452,11 @@ bool InputUtility::readCraneInstructions(const string& full_path_and_file_name, 
 
 bool InputUtility::parseArgs(int argc, char** argv, string& travelFolder, string& algorithmFolder, string& outputFolder)
 {
+    outputFolder = CWD; // temporarily set as CWD
     if(argc != 3 && argc != 5 && argc != 7)
     {
         std::cout << "Wrong number of arguments\n";
+        input_errors.emplace_back("Wrong number of arguments");
         return false;
     }
     std::unordered_map<string, string> arg_map;
@@ -463,6 +472,7 @@ bool InputUtility::parseArgs(int argc, char** argv, string& travelFolder, string
     } else
     {
         std::cout << "No travel_path argument supplied\n";
+        input_errors.emplace_back("No travel_path argument supplied");
         return false;
     }
     if(arg_map.count(ALGORITHM_OPTION))
