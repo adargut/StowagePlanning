@@ -12,7 +12,7 @@ bool OutputUtility::writeCargoInstructions(const string &output_full_path_and_fi
 
     for (auto &instruction : instructions)
     {
-        Instruction.instructionToString(instruction, line);
+        Instruction::instructionToString(instruction, line);
         write_file << line << std::endl;
     }
     write_file.close();
@@ -29,10 +29,10 @@ static bool sortBuffer(std::vector<string>& file_buffer)
     auto cmp = [](string l1, string l2)
     {
         std::vector<string> split_l1, split_l2;
-        GeneralUtility::removeSpaces(l1);
-        GeneralUtility::removeSpaces(l2);
         GeneralUtility::split(split_l1, l1, DELIMETER);
+        GeneralUtility::removeLeadingAndTrailingSpaces(split_l1);
         GeneralUtility::split(split_l2, l2, DELIMETER);
+        GeneralUtility::removeLeadingAndTrailingSpaces(split_l2);
 
         int errors_1 = stoi(split_l1.back()), errors_2 = stoi(split_l2.back());
         if (errors_2 < errors_1) return false;

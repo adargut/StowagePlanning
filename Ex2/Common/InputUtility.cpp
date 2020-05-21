@@ -133,8 +133,10 @@ bool verifyPlanLineFormat(const std::vector<string>& line)
     // Check if line has a non-number string
     for (auto &number : line)
     {
+        // std::cout << "number in line: " << number;
         // Check if first line has a non-number string
-        if (number.find_first_not_of("0123456789") != string::npos) {
+        if (number.find_first_not_of("0123456789") != string::npos) 
+        {
             return false;
         }
     }
@@ -163,11 +165,11 @@ ErrorSet InputUtility::readShipPlan(const std::string& full_path_and_file_name, 
     while (getline(in, line))
     {
         split_line.clear();
-        GeneralUtility::removeSpaces(line);
         // Ignore lines starting with #
         if (line[0] == COMMENT) continue;
         // Split line by "," delimeter
         GeneralUtility::split(split_line, line, DELIMETER);
+        GeneralUtility::removeLeadingAndTrailingSpaces(split_line);
         // Treat first line differently
         if (first_line)
         {
@@ -256,10 +258,10 @@ ErrorSet InputUtility::readCargo(const string &full_path_and_file_name, Containe
     string line;
     while (getline(in, line))
     {
-        GeneralUtility::removeSpaces(line);
         if (line[0] == COMMENT) continue;
         std::vector<string> split_line;
         GeneralUtility::split(split_line, line, DELIMETER);
+        GeneralUtility::removeLeadingAndTrailingSpaces(split_line);
         int bound = split_line.size();
         auto container = std::make_shared<Container>();
         // ID
@@ -369,10 +371,10 @@ bool InputUtility::readCraneInstructions(const string& full_path_and_file_name, 
 
     while (getline(in, line))
     {
-        GeneralUtility::removeSpaces(line);
         if ((line)[0] == COMMENT) continue;
         std::vector<string> split_line;
         GeneralUtility::split(split_line, line, DELIMETER);
+        GeneralUtility::removeLeadingAndTrailingSpaces(split_line);
         if(split_line.size() < 2) return false;
         string& container_id = split_line[1];
         if(split_line[0] == "R")
