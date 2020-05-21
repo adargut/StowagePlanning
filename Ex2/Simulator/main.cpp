@@ -63,7 +63,6 @@ int main(int argc, char** argv)
 {
     (void)argc;
     (void)argv;
-    std::vector<Error> general_errors; // Errors that do not belong to simulation/algorithm
     std::vector<string> travel_paths;
     string algorithmDir;
     std::vector<string> algorithmNames;
@@ -75,6 +74,6 @@ int main(int argc, char** argv)
     string general_errors_path = "/";
     general_errors_path.append(ERRORS_DIR);
     general_errors_path.append("/general_errors.errors");
-    OutputUtility::writeErrors(general_errors_path, general_errors);
+    OutputUtility::writeErrors(general_errors_path, InputUtility::input_errors);
     return 0;
 }
