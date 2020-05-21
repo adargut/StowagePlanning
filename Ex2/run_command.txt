@@ -1,1 +1,1 @@
-./simulator -travel_path ../test_travel -algorithm_path ../Algorithm/ -output ../out
+./simulator -travel_path ../exm -algorithm_path ../Algorithm/ -output ../exm/out

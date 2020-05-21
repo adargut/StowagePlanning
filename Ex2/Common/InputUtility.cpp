@@ -108,7 +108,7 @@ bool handleAlgorithmArg(const string& algorithmDir, std::vector<string>& algorit
     }
     if (algorithm_paths.empty())
     {
-        std::cout << "Error: no .so found files in algorithm directory\n";
+        std::cout << "Error: no .so files found in algorithm directory\n";
         return false;
     }
     return true;
