@@ -32,7 +32,7 @@ bool Simulation::initialize()
     Route ship_route;
     string plan_file;
     string route_file;
-    ErrorSet errors;
+    AlgorithmError errors;
 
     // Set ship initial configuration
     for (const auto &file : DirectoryIterator(m_travelDir))
@@ -45,7 +45,7 @@ bool Simulation::initialize()
         }
     }
     errors = InputUtility::readShipRoute(route_file, ship_route);
-    //TODO handle errors
+    //TODO report errors - we assume at this point that the file is valid (can be run)
     for (const auto &file : DirectoryIterator(m_travelDir))
     {
         string file_path = file.path();
@@ -56,7 +56,7 @@ bool Simulation::initialize()
         }
     }
     errors = InputUtility::readShipPlan(plan_file, ship_plan);
-    //TODO handle errors
+    //TODO report errors - we assume at this point that the file is valid (can be run)
     m_ship.setRoute(ship_route);
     m_ship.setPlan(ship_plan);
 
@@ -67,17 +67,32 @@ bool Simulation::initialize()
         ContainersVector port_containers;
         string port_file = m_travelDir + "/" + port + CARGO_SUFFIX;
         errors = InputUtility::readCargo(port_file, port_containers);
-        //TODO handle errors
+        // TODO maybe report errors here...
         setRealDestinations(ship_route, i, port_containers);
         m_ports.emplace_back(port, port_containers);
     }
 
 
-    //TODO check errors
+    uint32_t err = 0;
     auto wbc = WeightBalanceCalculator();
-    m_algorithm->setWeightBalanceCalculator(wbc);
-    m_algorithm->readShipRoute(route_file);
-    m_algorithm->readShipPlan(plan_file);
+    err = m_algorithm->setWeightBalanceCalculator(wbc);
+    err = m_algorithm->readShipRoute(route_file);
+    AlgorithmError alg_init_errors = AlgorithmError{err};
+    if(alg_init_errors.getBit(AlgorithmError::BadTravelFile)
+       || alg_init_errors.getBit(AlgorithmError::SinglePortTravel))
+    {
+        m_canRun = false;
+        //TODO report error code to errors file
+    }
+    err = m_algorithm->readShipPlan(plan_file);
+    alg_init_errors = AlgorithmError{err};
+    if(alg_init_errors.getBit(AlgorithmError::BadPlanFile)
+          || alg_init_errors.getBit(AlgorithmError::ConflictingXY))
+    {
+        m_canRun = false;
+        //TODO report error code to errors file
+    }
+
     return true;
 }
 
@@ -88,6 +103,12 @@ int Simulation::run()
     Errors errors;
     string crane_instructions_dir = m_outputDir + "/" + m_algorithmName + "_" + m_travelName + "_crane_instructions";
     fs::create_directories(crane_instructions_dir);
+    if(!m_canRun)
+    {
+        errors.push_back(Error(Error::InvalidCommand, Instruction(),
+                "Algorithm failed to init properly, wasn't run for this travel"));
+    }
+    else
     for (auto& port : m_ports)
     {
         using Cmp = DistanceToDestinationComparator;
@@ -96,21 +117,13 @@ int Simulation::run()
         PortContainers original_containers(port.getContainers());
         const string& port_code = port.getCode();
         string cargo_file = m_travelDir + "/" + port_code + CARGO_SUFFIX;
-        if(!fs::exists(cargo_file))
-        {
-            std::ofstream temp(cargo_file);
-            if(!temp.is_open())
-            {
-                std::cout << "Error creating cargo file\n";
-            }
-            temp.close();
-        }
         string crane_instructions_file = crane_instructions_dir + "/" + port_code + CRANE_INSTRUCTIONS_SUFFIX;
         reported_errors = m_algorithm->getInstructionsForCargo(cargo_file, crane_instructions_file);
         Instructions instructions;
         if(!InputUtility::readCraneInstructions(crane_instructions_file, instructions))
         {
-            // TODO handle error while loading instructions from instructions file
+            errors.push_back(Error(Error::InvalidCommand, Instruction(),
+                    "Bad/Missing crane instructions file for port " + port.getCode()));
         }
         number_of_operations+=Instruction::countInstructions(instructions);
         for (auto& instruction : instructions)
@@ -152,7 +165,7 @@ int Simulation::run()
     }
     string crane_errors_path = m_outputDir + "/" + m_algorithmName + "_" + m_travelName + ".crane_errors";
     OutputUtility::writeErrors(crane_errors_path, errors);
-    (void)reported_errors; // Unused
+    (void)reported_errors; // TODO document this too in the errors file
     if(!errors.empty()) return -1;
     return number_of_operations;
 }

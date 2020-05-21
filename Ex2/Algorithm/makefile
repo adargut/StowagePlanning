@@ -1,6 +1,6 @@
 COMP = g++
 CommonDir = ../Common
-OBJS = AlgorithmError.o Container.o DistanceToDestinationComparator.o GeneralUtility.o InputUtility.o Instruction.o ISO_6346.o OutputUtility.o Ship.o Instruction.o WeightBalanceCalculator.o GenericAlgorithm.o
+OBJS = AlgorithmError.o Container.o DistanceToDestinationComparator.o GeneralUtility.o InputUtility.o Instruction.o ISO_6346.o OutputUtility.o Ship.o Instruction.o GenericAlgorithm.o
 RANDOM_OBJS = RandomAlgorithm.o
 SIMPLE_OBJS = SimpleAlgorithm.o
 SHARED_OBJS = SimpleAlgorithm.so RandomAlgorithm.so
@@ -51,7 +51,5 @@ OutputUtility.o: $(CommonDir)/OutputUtility.cpp
 Ship.o: $(CommonDir)/Ship.cpp
 	$(COMP) $(CPP_COMP_FLAG) -c $(CommonDir)/$*.cpp
 	
-WeightBalanceCalculator.o: $(CommonDir)/WeightBalanceCalculator.cpp
-	$(COMP) $(CPP_COMP_FLAG) -c $(CommonDir)/$*.cpp
 clean:
 	rm -f $(OBJS) $(SHARED_OBJS) $(SIMPLE_OBJS) $(RANDOM_OBJS)

@@ -8,34 +8,30 @@
 int GenericAlgorithm::readShipPlan(const std::string& full_path_and_file_name)
 {
     Plan plan;
-    ErrorSet errors;
-    errors = InputUtility::readShipPlan(full_path_and_file_name, plan);
+    AlgorithmError errors;
+    m_algorithmErrors = InputUtility::readShipPlan(full_path_and_file_name, plan);
     m_ship.setPlan(plan);
 
-    for (auto& error : errors)
-    {
-        m_algorithmErrors.setBit(error);
-    }
+    if(!(m_algorithmErrors.getBit(AlgorithmError::errorCode::BadPlanFile)
+    || m_algorithmErrors.getBit(AlgorithmError::errorCode::ConflictingXY))) m_plan_initialized = true;
     return m_algorithmErrors.getAndClear();
 }
 
 int GenericAlgorithm::readShipRoute(const std::string& full_path_and_file_name)
 {
     Route route;
-    ErrorSet errors;
-    errors = InputUtility::readShipRoute(full_path_and_file_name, route);
+    m_algorithmErrors = InputUtility::readShipRoute(full_path_and_file_name, route);
     m_ship.setRoute(route);
 
-    for (auto& error : errors)
-    {
-        m_algorithmErrors.setBit(error);
-    }
+    if(!(m_algorithmErrors.getBit(AlgorithmError::errorCode::BadTravelFile)
+    || m_algorithmErrors.getBit(AlgorithmError::errorCode::SinglePortTravel))) m_route_initialized = true;
     return m_algorithmErrors.getAndClear();
 }
 
 int GenericAlgorithm::setWeightBalanceCalculator(WeightBalanceCalculator& calculator)
 {
     (void)calculator;
+    m_balance_calculator_initialized = true;
     return 0;
 }
 
@@ -95,16 +91,28 @@ void GenericAlgorithm::getInstructionsForUnloading(Instructions& instructions)
 int GenericAlgorithm::getInstructionsForCargo(const std::string& input_full_path_and_file_name,
                                              const std::string& output_full_path_and_file_name)
 {
-    // TODO check algorithm is properly initialized
+    //TODO changes to comply with proper error reporting, reject all invalid containers first, check weight is valid
     using Cmp = DistanceToDestinationComparator;
     Cmp distance_to_destination(m_ship.getCurrentPortIdx(), m_ship.getRoute());
     (void)output_full_path_and_file_name;
-    ErrorSet errors;
     ContainersVector containers_to_load;
     Instructions instructions;
+    // Check algorithm is properly initialized
+    if(!m_route_initialized)
+    {
+        m_algorithmErrors.setBit(AlgorithmError::errorCode::BadTravelFile);
+        OutputUtility::writeCargoInstructions(output_full_path_and_file_name, instructions);
+        return m_algorithmErrors.getAndClear();
+    }
+    if(!m_plan_initialized)
+    {
+        m_algorithmErrors.setBit(AlgorithmError::errorCode::BadPlanFile);
+        OutputUtility::writeCargoInstructions(output_full_path_and_file_name, instructions);
+        return m_algorithmErrors.getAndClear();
+    }
     std::unordered_set<string> containers_seen;
-    errors = InputUtility::readCargo(input_full_path_and_file_name, containers_to_load);
-    string port_name = InputUtility::getFileName(input_full_path_and_file_name);
+    m_algorithmErrors = InputUtility::readCargo(input_full_path_and_file_name, containers_to_load);
+    string port_name = m_ship.getRoute()[m_ship.getCurrentPortIdx()];
     getInstructionsForUnloading(instructions);
     setRealDestinations(containers_to_load);
     std::sort(containers_to_load.begin(), containers_to_load.end(), distance_to_destination);
@@ -114,32 +122,34 @@ int GenericAlgorithm::getInstructionsForCargo(const std::string& input_full_path
         // Reject container already on ship
         if (m_ship.hasContainer(container->getId()))
         {
-            errors.insert(AlgorithmError::errorCode::DuplicateContainerOnShip);
+            m_algorithmErrors.setBit(AlgorithmError::errorCode::DuplicateContainerOnShip);
             instructions.push_back(Instruction(Instruction::Reject, container->getId(), -1, -1, -1));
             was_rejected = true;
         }
         // Reject duplicate container on port
         if (containers_seen.count(container->getId()) > 0) 
         {
-            errors.insert(AlgorithmError::errorCode::DuplicateContainerOnPort);
+            m_algorithmErrors.setBit(AlgorithmError::errorCode::DuplicateContainerOnPort);
             // Make sure container wasn't already rejected
             if (!m_ship.hasContainer(container->getId()))
             {
                 instructions.push_back(Instruction(Instruction::Reject, container->getId(), -1, -1, -1));
             }
-
         }
         else if (!was_rejected)
         {
-            getInstructionForLoadingContainer(container, instructions);
+            // Check ship is full and report error
+            if(m_ship.isShipFull())
+            {
+                m_algorithmErrors.setBit(AlgorithmError::ContainersExceedingCapacity);
+                instructions.push_back(Instruction(Instruction::Reject, container->getId()));
+            }
+            else getInstructionForLoadingContainer(container, instructions);
         }
+        containers_seen.insert(container->getId());
     }
     m_ship.advanceCurrentPortIdx();
 
-    for (auto& error : errors)
-    {
-        m_algorithmErrors.setBit(error);
-    }
     OutputUtility::writeCargoInstructions(output_full_path_and_file_name, instructions);
     return m_algorithmErrors.getAndClear();
 }

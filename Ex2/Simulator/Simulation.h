@@ -23,6 +23,7 @@ class Simulation {
     const string m_outputDir;
     Ship m_ship;
     Ports m_ports;
+    bool m_canRun = true;
 public:
     Simulation(std::unique_ptr<AbstractAlgorithm> algorithm, string algorithm_name, string travel_name,
                string travel_dir, string output_dir) :

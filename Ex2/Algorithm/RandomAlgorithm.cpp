@@ -42,13 +42,6 @@ void RandomAlgorithm::getInstructionForLoadingContainer(std::shared_ptr<Containe
         return;
     }
 
-    // Container already on the ship
-    if(m_ship.getContainerMap().count(container_to_load->getId()))
-    {
-        result.push_back(Instruction(Instruction::Reject, container_to_load->getId(), -1, -1, -1));
-        return;
-    }
-
     int max_y = int(ship_plan[0].size()) - 1, max_x = int(ship_plan[0][0].size()) - 1;
     PossiblePairs pairs;
     generateAllPairs(0, 0, max_x, max_y, pairs);

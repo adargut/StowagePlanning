@@ -16,6 +16,22 @@ bool verifyISO6346(const std::string& port_name)
     return ISO_6346::isValidId(port_name);
 }
 
+bool isPlanFileValid(const string& file_path)
+{
+    Plan temp_plan;
+    AlgorithmError errors = InputUtility::readShipPlan(file_path, temp_plan);
+    return !(errors.getBit(AlgorithmError::BadPlanFile)
+       || errors.getBit(AlgorithmError::ConflictingXY));
+}
+
+bool isRouteFileValid(const string& file_path)
+{
+    Route temp_route;
+    AlgorithmError errors = InputUtility::readShipRoute(file_path, temp_route);
+    return !(errors.getBit(AlgorithmError::BadTravelFile)
+             || errors.getBit(AlgorithmError::SinglePortTravel));
+}
+
 bool handleTravelArg(const string& travel_path, std::vector<string>& travel_paths) {
     if (!fs::exists(travel_path)) {
         std::cout << "Error: could not run travel, bad travel_path argument\n";
@@ -24,33 +40,38 @@ bool handleTravelArg(const string& travel_path, std::vector<string>& travel_path
 
     // Check if travel path contains both route and plan files
     for (const auto &entry : DirectoryIterator(travel_path)) {
-        bool valid_route_file = false, valid_plan_file = false;
+        bool valid_route_file = false, valid_plan_file = false, route_file_found = false, plan_file_found = false;
         if (entry.is_directory()) {
             string travel_directory = entry.path();
             for (const auto &file : DirectoryIterator(travel_directory))
             {
-                if (file.path().extension() == ROUTE_SUFFIX) {
-                    //route_file = file_path;
-                    if (valid_route_file)                     // Two or more route files
+                if (file.path().extension() == ROUTE_SUFFIX)
+                {
+                    // Check route file (check validity)
+                    valid_route_file = isRouteFileValid(file.path());
+                    if (route_file_found)                     // Two or more route files
                     {
-                        std::cout << "Error: bad or missing route file given\n";
+                        std::cout << "Error: Two or more route files\n";
                         valid_route_file = false;
                         break;
                     }
-                    valid_route_file = true;
-                } else if (file.path().extension() ==  PLAN_SUFFIX) {
-                    //TODO parse plan file (check validity)
+                    route_file_found = true;
+                }
+                else if (file.path().extension() ==  PLAN_SUFFIX)
+                {
+                    // Check plan file (check validity)
+                    valid_plan_file = isRouteFileValid(file.path());
                     //plan_file = file_path;
-                    if (valid_plan_file)                    // Two or more plan files
+                    if (plan_file_found)                    // Two or more plan files
                     {
-                        std::cout << "Error: bad or missing plan file given\n";
+                        std::cout << "Error: Two or more plan files\n";
                         valid_plan_file = false;
                         break;
                     }
-                    valid_plan_file = true;
+                    plan_file_found = true;
                 }
             }
-            if (valid_plan_file && valid_route_file) 
+            if (valid_plan_file && valid_route_file)
             {
                 travel_paths.push_back(std::move(travel_directory));
             }
@@ -143,16 +164,16 @@ bool verifyPlanLineFormat(const std::vector<string>& line)
     return true;
 }
 
-ErrorSet InputUtility::readShipPlan(const std::string& full_path_and_file_name, Plan &plan)
+AlgorithmError InputUtility::readShipPlan(const std::string& full_path_and_file_name, Plan &plan)
 {
     // Store accumulated errors
-    ErrorSet errors;
+    AlgorithmError errors;
     // Store previous positions found for error checking
     std::map<pos, int> previous_positions{};
 
     if (!fs::exists(full_path_and_file_name))
     {
-        errors.insert(AlgorithmError::errorCode::BadPlanFile);
+        errors.setBit(AlgorithmError::errorCode::BadPlanFile);
         return errors;
     }
     ifstream in(full_path_and_file_name);
@@ -178,7 +199,7 @@ ErrorSet InputUtility::readShipPlan(const std::string& full_path_and_file_name, 
             if (!verifyPlanLineFormat(split_line))
             {
                 std::cout << "Error: Badly formatted first line in plan file\n";
-                errors.insert(AlgorithmError::errorCode::BadPlanFile);
+                errors.setBit(AlgorithmError::errorCode::BadPlanFile);
                 return errors;
             }
 
@@ -188,7 +209,7 @@ ErrorSet InputUtility::readShipPlan(const std::string& full_path_and_file_name, 
             if (dim_x < 1 || dim_y < 1 || dim_z < 1)
             {
                 std::cout << "Error: Badly formatted first line in plan file\n";
-                errors.insert(AlgorithmError::errorCode::BadPlanFile);
+                errors.setBit(AlgorithmError::errorCode::BadPlanFile);
                 return errors;
             }
             plan = std::vector<std::vector<std::vector<std::string>>>
@@ -202,7 +223,7 @@ ErrorSet InputUtility::readShipPlan(const std::string& full_path_and_file_name, 
             if (!verifyPlanLineFormat(split_line))
             {
                 std::cout << "Ignored badly formatted line in plan file\n";
-                errors.insert(AlgorithmError::errorCode::BadLineFormatOrDuplicateXY);
+                errors.setBit(AlgorithmError::errorCode::BadLineFormatOrDuplicateXY);
                 continue;
             }
             x = stoi(split_line[0]);
@@ -216,24 +237,24 @@ ErrorSet InputUtility::readShipPlan(const std::string& full_path_and_file_name, 
                 if (previous_positions[new_pos] != z)
                 {
                     std::cout << "Error: Conflicting redefinition of X,Y\n";
-                    errors.insert(AlgorithmError::errorCode::ConflictingXY);
+                    errors.setBit(AlgorithmError::errorCode::ConflictingXY);
                     return errors;
                 }
                 std::cout << "Error: Non-conflicting redefinition of X,Y\n";
-                errors.insert(AlgorithmError::errorCode::BadLineFormatOrDuplicateXY);
+                errors.setBit(AlgorithmError::errorCode::BadLineFormatOrDuplicateXY);
                 continue;
             }
             // Floor is too high
             if (z > dim_z)
             {
                 std::cout << "Error: Floor value exceeding ship's dimensions\n";
-                errors.insert(AlgorithmError::errorCode::ExceedingFloorValue);
+                errors.setBit(AlgorithmError::errorCode::ExceedingFloorValue);
                 continue;
             }
             if (x >= dim_x || y >= dim_y || x < 0 || y < 0)
             {
                 std::cout << "Error: X, Y values exceeding ship's dimensions\n";
-                errors.insert(AlgorithmError::errorCode::ExceedingXYValue);
+                errors.setBit(AlgorithmError::errorCode::ExceedingXYValue);
                 continue;
             }
 
@@ -243,15 +264,20 @@ ErrorSet InputUtility::readShipPlan(const std::string& full_path_and_file_name, 
             }
         }
     }
+    if(first_line)
+    {
+        std::cout << "Error: Empty plan file\n";
+        errors.setBit(AlgorithmError::errorCode::BadPlanFile);
+    }
     return errors;
 }
 
-ErrorSet InputUtility::readCargo(const string &full_path_and_file_name, ContainersVector &containers_to_load)
+AlgorithmError InputUtility::readCargo(const string &full_path_and_file_name, ContainersVector &containers_to_load)
 {
-    ErrorSet errors;
+    AlgorithmError errors;
     if (!fs::exists(full_path_and_file_name))
     {
-        errors.insert(AlgorithmError::errorCode::BadCargoFile);
+        errors.setBit(AlgorithmError::errorCode::BadCargoFile);
         return errors;
     }
     ifstream in(full_path_and_file_name);
@@ -270,8 +296,7 @@ ErrorSet InputUtility::readCargo(const string &full_path_and_file_name, Containe
             string& id = split_line[0];
             if (!verifyISO6346((id)))
             {
-                errors.insert(AlgorithmError::errorCode::BadPortID);
-                bound = 0; // Container would be invalidated by having no destination
+                errors.setBit(AlgorithmError::errorCode::BadPortID);
             }
             container->setId(id);
         }
@@ -294,7 +319,7 @@ ErrorSet InputUtility::readCargo(const string &full_path_and_file_name, Containe
         }
         containers_to_load.push_back(container);
     }
-    return ErrorSet();
+    return errors;
 }
 
 string InputUtility::getFileName(const string &full_path_and_file_name)
@@ -305,15 +330,15 @@ string InputUtility::getFileName(const string &full_path_and_file_name)
     return p.string();
 }
 
-ErrorSet InputUtility::readShipRoute(const std::string& full_path_and_file_name, Route& route)
+AlgorithmError InputUtility::readShipRoute(const std::string& full_path_and_file_name, Route& route)
 {
     std::unordered_map<string, int> port_map;
     // Store accumulated errors
-    ErrorSet errors;
+    AlgorithmError errors;
 
     if (!fs::exists(full_path_and_file_name))
     {
-        errors.insert(AlgorithmError::errorCode::BadTravelFile);
+        errors.setBit(AlgorithmError::errorCode::BadTravelFile);
         return errors;
     }
     ifstream in(full_path_and_file_name);
@@ -324,13 +349,13 @@ ErrorSet InputUtility::readShipRoute(const std::string& full_path_and_file_name,
         // Same port appearing twice in a row
         if (!route.empty() && route.back() == line)
         {
-            errors.insert(AlgorithmError::errorCode::SamePortConsecutively);
+            errors.setBit(AlgorithmError::errorCode::SamePortConsecutively);
             continue;
         }
         // Incorrect port symbol formatting
         if (!verifyPortSymbol(line))
         {
-            errors.insert(AlgorithmError::errorCode::BadPortSymbol);
+            errors.setBit(AlgorithmError::errorCode::BadPortSymbol);
             continue;
         }
         if (port_map.count(line))
@@ -348,12 +373,12 @@ ErrorSet InputUtility::readShipRoute(const std::string& full_path_and_file_name,
     // Route must have length > 1
     if (route.size() == 1)
     {
-        errors.insert(AlgorithmError::errorCode::SinglePortTravel);
+        errors.setBit(AlgorithmError::errorCode::SinglePortTravel);
     }
     // Route cannot be empty
     if (route.size() == 0)
     {
-        errors.insert(AlgorithmError::errorCode::BadTravelFile);
+        errors.setBit(AlgorithmError::errorCode::BadTravelFile);
     }
     return errors;
 }
