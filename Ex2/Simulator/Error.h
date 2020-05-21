@@ -12,18 +12,12 @@
 class Error 
 {
 public:
-    enum Type 
-    {
-        IgnoredContainer, InvalidCommand, InvalidCraneOperation
-    };
 private:
-    Type type;
-    Instruction instruction;
     string description;
+    Instruction instruction;
 public:
-    Type getType() const;
     Instruction getInstruction() const;
-    explicit Error(Type _type, Instruction _instruction = Instruction(), string _description = "");
+    explicit Error(string _description = "", Instruction _instruction = Instruction());
     std::string errorToString();
     // std::string errorsToString(const Errors &errors);
 };

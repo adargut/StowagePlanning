@@ -6,7 +6,7 @@ bool verifyPortSymbol(const string& line)
     if(line.length() != 5) return false;
     for (auto& c : line)
     {
-        if (!((c <= 'z' && c >= 'a') || (c <= 'Z' && c >= 'A'))) return false;
+        if (!(c <= 'Z' && c >= 'A')) return false;
     }
     return true;
 }
@@ -60,7 +60,7 @@ bool handleTravelArg(const string& travel_path, std::vector<string>& travel_path
                 else if (file.path().extension() ==  PLAN_SUFFIX)
                 {
                     // Check plan file (check validity)
-                    valid_plan_file = isRouteFileValid(file.path());
+                    valid_plan_file = isPlanFileValid(file.path());
                     //plan_file = file_path;
                     if (plan_file_found)                    // Two or more plan files
                     {
