@@ -39,7 +39,7 @@ bool handleTravelArg(const string& travel_path, std::vector<string>& travel_path
                     }
                     valid_route_file = true;
                 } else if (file.path().extension() ==  PLAN_SUFFIX) {
-                    //TODO parse plan file
+                    //TODO parse plan file (check validity)
                     //plan_file = file_path;
                     if (valid_plan_file)                    // Two or more plan files
                     {
@@ -54,13 +54,14 @@ bool handleTravelArg(const string& travel_path, std::vector<string>& travel_path
             {
                 travel_paths.push_back(std::move(travel_directory));
             }
-            else
-            {
-                return false;
-            }
         }
     }
-    return !travel_paths.empty();
+    if(travel_paths.empty())
+    {
+        std::cout << "No valid travels found\n";
+        return false;
+    }
+    return true;
 }
 
 bool handleAlgorithmArg(const string& algorithmDir, std::vector<string>& algorithm_paths)
@@ -107,13 +108,12 @@ InputUtility::handleArgs(int argc, char **argv, std::vector<string>& travel_path
     string travel_folder;
     if(!parseArgs(argc, argv, travel_folder, algorithms_dir, output_path))
     {
-        return false; // TODO handle returning false (exit program)
+        return false;
     }
     // Parse path to travel folder
     if(!handleTravelArg(travel_folder, travel_paths))
     {
         return false;
-        //TODO handle
     }
     // Parse path to algorithm folder
     handleAlgorithmArg(algorithms_dir, algorithm_names);
@@ -424,7 +424,7 @@ bool InputUtility::parseArgs(int argc, char** argv, string& travelFolder, string
     std::unordered_map<string, string> arg_map;
     for (int i = 1; i < argc; i+=2)
     {
-        if(arg_map.count(argv[i])) return false; // Same argument pass twice, TODO check if correct behaviour
+        if(arg_map.count(argv[i])) return false; // Same argument passed twice, TODO check if correct behaviour
         arg_map[argv[i]] = argv[i+1];
     }
 
@@ -433,6 +433,7 @@ bool InputUtility::parseArgs(int argc, char** argv, string& travelFolder, string
         travelFolder = arg_map[TRAVEL_OPTION];
     } else
     {
+        std::cout << "No travel_path argument supplied\n";
         return false;
     }
     if(arg_map.count(ALGORITHM_OPTION))
