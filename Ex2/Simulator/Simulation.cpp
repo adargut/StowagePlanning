@@ -162,8 +162,11 @@ int Simulation::run()
         checkNoRoomForContainers(unloaded_containers, distance_to_dest, errors);
         m_ship.advanceCurrentPortIdx();
     }
-    string crane_errors_path = m_outputDir + "/" + ERRORS_DIR + "/" + m_algorithmName + "_" + m_travelName + ".crane_errors";
-    string algorithm_errors_path = m_outputDir + "/" + ERRORS_DIR + "/" + m_algorithmName + "_" + m_travelName + ".alg_errors";
+    string crane_errors_path = m_outputDir + "/" + ERRORS_DIR + "/" + m_algorithmName + UNDERSCORE + 
+                               m_travelName + SIMULATION_ERRORS_SUFFIX;
+    string algorithm_errors_path = m_outputDir + "/" + ERRORS_DIR + "/" + m_algorithmName + UNDERSCORE + 
+                                   m_travelName + ALG_ERRORS_SUFFIX;
+    // Flush errors into file
     OutputUtility::writeErrors(crane_errors_path, errors);
     OutputUtility::writeAlgorithmErrors(algorithm_errors_path, m_algorithmErrors);
     if(!errors.empty()) return -1;

@@ -10,6 +10,10 @@
 #include <filesystem>
 
 #define RESULTS "RESULTS,"
+#define GENERAL_ERRORS_SUFFIX ".general_errors"
+#define SIMULATION_ERRORS_SUFFIX ".crane_errors"
+#define ALG_ERRORS_SUFFIX ".alg_errors"
+#define LINE_SEPERATOR "=====================================================\n";
 #define SUM "Sum"
 #define ERRORS "Num Errors"
 #define ERRORS_ALT "ERRORS,"

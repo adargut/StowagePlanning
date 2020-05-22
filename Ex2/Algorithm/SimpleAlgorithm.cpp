@@ -2,7 +2,6 @@
 
 REGISTER_ALGORITHM(SimpleAlgorithm)
 
-
 void SimpleAlgorithm::getInstructionForLoadingContainer(std::shared_ptr<Container> container_to_load, Instructions &result) 
 {
     const Plan &ship_plan = m_ship.getPlan();
