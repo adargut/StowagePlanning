@@ -1,0 +1,20 @@
+
+AANU1234560, 3, BBBBB
+# 3 legal (capacity: 3 taken out of 6 total)
+
+EAAU7575435, 5, AAAAA
+# bad port (same as current)
+
+EAAU7575435, 5, CCCCC
+EAAU7575435, 6, DDDDD
+# duplicate id, should be rejected
+
+AASU1234569, 10, DDDDD
+AAPU1234568, 10, DDDDD
+AANU1234560, 10, DDDDD
+# legal, but should be rejected because bottom 3 are closer (no space for all)
+
+GAAU7575437, 10, CCCCC
+DAAU7575434, 3, CCCCC
+AAAU7575430, 5, CCCCC, extra parameter
+# 3 legal (6 of 6, full capacity)

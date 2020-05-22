@@ -1,0 +1,8 @@
+The following errors were detected on travel 'out':
+	[Ship Plan Fatal Error] File contains no data, or couldn't be read (E3)
+	[Travel Fatal Error] Travel 'out' has an invalid Ship Plan, or it doesn't exists, skipping travel (E26)
+-----------------------------------------------------------------
+The following errors were detected during the simulator initialization:
+	[Dynamic Load Error] Error while loading SO file: '_313452781_a.so', can't load algorithm (E57)
+	[Dynamic Load Error] Error while loading SO file: '_313452781_b.so', can't load algorithm (E57)
+	[Dynamic Load Fatal Error] No algorithm was loaded successfully (E61)

@@ -1,0 +1,5 @@
+The following errors were detected during the initialization of the Simulator and the Algorithm:
+	[Algorithm Error] Algorithm failed to initialize, although the Ship Plan and Route files are valid (E50)
+	[Cargo Data Error] Port 'DDDDD' has cargo_data files, but doesn't appear in the Route, ignoring (E28)
+	[Simulator Report] The Simulator reported the following errors: E28, E50
+	[Algorithm Report] The Algorithm reported the following errors: E6, E8

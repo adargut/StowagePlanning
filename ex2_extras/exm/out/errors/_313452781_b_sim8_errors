@@ -1,0 +1,16 @@
+The following errors were detected during the initialization of the Simulator and the Algorithm:
+	[Travel Error] Travel contains an invalid file ('res3.txt'), ignoring (E27)
+	[Travel Error] Travel contains an invalid file ('res.txt'), ignoring (E27)
+	[Travel Error] Travel contains an invalid file ('BBBBB_0.cargo_data'), ignoring (E27)
+	[Travel Error] Travel contains an invalid file ('AAAAA_0.instructions'), ignoring (E27)
+	[Travel Error] Travel contains an invalid file ('res2.txt'), ignoring (E27)
+	[Travel Error] Travel contains an invalid file ('AAAAA_0.cargo_data'), ignoring (E27)
+	[Simulator Report] The Simulator reported the following errors: E27
+-----------------------------------------------------------------
+The following errors were detected on visit number 1 in port 'AAAAA', which is stop number 1 since the beginning of the journey:
+	[Containers At Port Error] Container with ID 'FTJU5436354' has bad destination port: not exists, ot invalid format, expecting to receive a reject (E13)
+	[Simulator Report] The Simulator reported the following errors: E13
+	[Algorithm Report] The Algorithm reported the following errors: E13
+-----------------------------------------------------------------
+The following errors were detected after the travel was finished:
+	[Cargo Data Error] Port 'BBBBB' has 1 cargo_data files remaining, ignoring (E29)

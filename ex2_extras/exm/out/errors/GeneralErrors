@@ -1,0 +1,8 @@
+The following errors were detected on travel 'out':
+	[Ship Plan Fatal Error] File contains no data, or couldn't be read (E3)
+	[Travel Fatal Error] Travel 'out' has an invalid Ship Plan, or it doesn't exists, skipping travel (E26)
+-----------------------------------------------------------------
+The following errors were detected on travel 'sim2':
+	[Ship Plan Error] Line 3: number of floors (8) is greater than the number of floors provided in the first line (3), ignoring (E0)
+	[Ship Plan Fatal Error] Line 4: duplicate data about position (1, 0) (E4)
+	[Travel Fatal Error] Travel 'sim2' has an invalid Ship Plan, or it doesn't exists, skipping travel (E26)

@@ -1,0 +1,3 @@
+The following errors were detected during the initialization of the Simulator and the Algorithm:
+	[Travel Error] Travel contains an invalid file ('AAAAA_0.cargo_data'), ignoring (E27)
+	[Simulator Report] The Simulator reported the following errors: E27

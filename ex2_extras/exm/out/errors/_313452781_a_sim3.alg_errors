@@ -1,0 +1,6 @@
+The following errors were reported by the algorithm:
+=====================================================
+	SamePortConsecutively BadPortSymbol
+	ContainersExceedingCapacity
+	BadContainerDest
+	LastPortNotEmpty

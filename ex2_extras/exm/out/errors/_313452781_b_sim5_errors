@@ -1,0 +1,26 @@
+The following errors were detected during the initialization of the Simulator and the Algorithm:
+	[Ship Route Error] Line 5: invalid port symbol ('# COMMENT'), ignoring (E6)
+	[Travel Error] Travel contains an invalid file ('CCCCC_0.instructions'), ignoring (E27)
+	[Travel Error] Travel contains an invalid file ('BBBBB_0.cargo_data'), ignoring (E27)
+	[Travel Error] Travel contains an invalid file ('Expect.txt'), ignoring (E27)
+	[Travel Error] Travel contains an invalid file ('AAAAA_0.instructions'), ignoring (E27)
+	[Travel Error] Travel contains an invalid file ('AAAAA_0.cargo_data'), ignoring (E27)
+	[Travel Error] Travel contains an invalid file ('BBBBB_0.instructions'), ignoring (E27)
+	[Simulator Report] The Simulator reported the following errors: E6, E27
+-----------------------------------------------------------------
+The following errors were detected on visit number 1 in port 'AAAAA', which is stop number 1 since the beginning of the journey:
+	[Containers At Port Error] Container with ID 'SZTZ1516805', ID is not in ISO 6346 format, expecting to receive a reject (E15)
+	[Containers At Port Error] Ship is at full capacity, container with ID 'RAKU1586918' was rejected (E18)
+	[Containers At Port Error] Ship is at full capacity, container with ID 'ADYJ4668820' was rejected (E18)
+	[Simulator Report] The Simulator reported the following errors: E15, E18
+	[Algorithm Report] The Algorithm reported the following errors: E15, E18
+-----------------------------------------------------------------
+The following errors were detected on visit number 1 in port 'BBBBB', which is stop number 2 since the beginning of the journey:
+	[Containers At Port Error] Container with ID 'JQMJ9570428' has bad destination port: 'AAAAA', which is not on the ship route, expecting to receive a reject (E13)
+	[Simulator Report] The Simulator reported the following errors: E13
+	[Algorithm Report] The Algorithm reported the following errors: E13
+-----------------------------------------------------------------
+The following errors were detected on visit number 1 in port 'CCCCC', which is stop number 3 since the beginning of the journey:
+	[Containers At Port Error] Last port in route has awaiting containers, ignoring (E17)
+	[Simulator Report] The Simulator reported the following errors: E17
+	[Algorithm Report] The Algorithm reported the following errors: E17
