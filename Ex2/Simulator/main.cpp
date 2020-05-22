@@ -65,6 +65,7 @@ int main(int argc, char** argv)
 {
     (void)argc;
     (void)argv;
+    std::cout << "-----PROGRAM STARTED------\n";
     std::vector<string> travel_paths;
     string algorithmDir;
     std::vector<string> algorithmNames;
@@ -72,8 +73,11 @@ int main(int argc, char** argv)
     InputUtility::handleArgs(argc, argv, travel_paths, algorithmDir, algorithmNames, output_path);
     registerAlgorithms(algorithmDir, algorithmNames);
     runSimulations(travel_paths, algorithmNames, output_path);
-    string general_errors_path = output_path + "/" + ERRORS_DIR + "/general_errors.errors";
+    string errors_path = output_path + "/" + ERRORS_DIR;
+    string general_errors_path = errors_path + "/general_errors.errors";
     //TODO https://moodle.tau.ac.il/mod/forum/discuss.php?d=98197
     OutputUtility::writeErrors(general_errors_path, InputUtility::input_errors);
+    std::cout << "-----PROGRAM FINISHED------\n";
+    std::cout << "See errors (if any) in " << errors_path << " and results in: " << output_path << std::endl;
     return 0;
 }

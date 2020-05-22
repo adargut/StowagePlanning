@@ -114,6 +114,7 @@ bool OutputUtility::writeErrors(const string &output_full_path_and_file_name, st
     if (algorithm_errors.empty()) return true; // No errors to report
     fs::path p(output_full_path_and_file_name);
     fs::create_directory(p.parent_path());
+
     ofstream write_file(output_full_path_and_file_name);
     if(!write_file.is_open()) 
     {
@@ -121,9 +122,22 @@ bool OutputUtility::writeErrors(const string &output_full_path_and_file_name, st
         return false;   
     }
 
+    // Write header to make file look nicer
+    string header;
+    if (p.extension() == SIMULATION_ERRORS_SUFFIX)
+    {
+        header = "The following errors were reported by the simulation:\n";
+    }
+    else
+    {
+        header = "The following general errors were found:\n";
+    }
+    write_file << header;
+    write_file << LINE_SEPERATOR;
+
     for (auto &error : algorithm_errors)
     {
-        write_file << error.errorToString() << std::endl;
+        write_file << "\t" + error.errorToString() << std::endl;
     }
     write_file.close();
     return true;
@@ -141,9 +155,14 @@ bool OutputUtility::writeAlgorithmErrors(const string &output_full_path_and_file
         return false;   
     }
 
+    // Write header to make file look nicer
+    string header = "The following errors were reported by the algorithm:\n";
+    write_file << header;
+    write_file << LINE_SEPERATOR;
+
     for (auto &error : errors)
     {
-        write_file << error.errorToString() << std::endl;
+        write_file << "\t" + error.errorToString() << std::endl;
     }
     write_file.close();
     return true;
