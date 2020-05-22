@@ -34,21 +34,62 @@ bool isRouteFileValid(const string& file_path)
              || error.getBit(AlgorithmError::SinglePortTravel));
 }
 
-bool handleTravelArg(const string& travel_path, std::vector<string>& travel_paths) 
+static bool reportCargoDataErrors(const string& travel_path, const string& route_file)
 {
-    if (!fs::exists(travel_path)) 
+    std::vector<string> route;
+    InputUtility::readShipRoute(route_file, route);
+    const string& last_port = route.back();
+    std::unordered_set<string> ports_set(route.begin(), route.end());
+    for (const auto &file : DirectoryIterator(travel_path))
     {
-        std::cout << "Error: could not run travel, bad travel_path argument\n";
-        InputUtility::input_errors.emplace_back("Could not run travel, bad travel_path argument");
+        auto& cargo_data_file = file.path();
+        if (cargo_data_file.extension() == CARGO_SUFFIX)
+        {
+            if(!ports_set.count(cargo_data_file.filename().replace_extension("")))
+            {
+                InputUtility::input_errors.emplace_back(
+                        cargo_data_file.string() + " is not a part of the travel " + travel_path);
+            }
+            else
+            {
+                ports_set.erase(cargo_data_file.filename().replace_extension(""));
+                ContainersVector temp;
+                AlgorithmError error = InputUtility::readCargo(cargo_data_file, temp);
+                if (error) InputUtility::input_errors.emplace_back(
+                        error.errorToString() + " in " + cargo_data_file.string());
+                if(last_port == cargo_data_file.filename().replace_extension(""))
+                {
+                    if(!temp.empty()) InputUtility::input_errors.emplace_back(
+                            cargo_data_file.string() + " has cargo data even though it's the last port");
+                }
+            }
+        }
+    }
+    if(!ports_set.empty())
+    {
+        for (auto& port : ports_set)
+        {
+            InputUtility::input_errors.emplace_back(travel_path + ": Missing cargo file for " + port);
+        }
+    }
+    return true;
+}
+
+bool handleTravelArg(const string& travels_folder_path, std::vector<string>& travel_paths)
+{
+    if (!fs::exists(travels_folder_path))
+    {
+        InputUtility::input_errors.emplace_back("Bad travel_path argument");
         return false;
     }
 
     // Check if travel path contains both route and plan files
-    for (const auto &entry : DirectoryIterator(travel_path)) 
+    for (const auto &entry : DirectoryIterator(travels_folder_path))
     {
         bool valid_route_file = false, valid_plan_file = false, route_file_found = false, plan_file_found = false;
         if (entry.is_directory()) {
             string travel_directory = entry.path();
+            string route_file;
             for (const auto &file : DirectoryIterator(travel_directory))
             {
                 if (file.path().extension() == ROUTE_SUFFIX)
@@ -57,12 +98,12 @@ bool handleTravelArg(const string& travel_path, std::vector<string>& travel_path
                     valid_route_file = isRouteFileValid(file.path());
                     if (route_file_found)                     // Two or more route files
                     {
-                        std::cout << "Error: Two or more route files\n";
-                        InputUtility::input_errors.emplace_back("Two or more route files in " + travel_path);
+                        InputUtility::input_errors.emplace_back("Two or more route files in " + travels_folder_path);
                         valid_route_file = false;
                         break;
                     }
                     route_file_found = true;
+                    route_file = file.path();
                 }
                 else if (file.path().extension() ==  PLAN_SUFFIX)
                 {
@@ -70,8 +111,7 @@ bool handleTravelArg(const string& travel_path, std::vector<string>& travel_path
                     valid_plan_file = isPlanFileValid(file.path());
                     if (plan_file_found)                    // Two or more plan files
                     {
-                        std::cout << "Error: Two or more plan files\n";
-                        InputUtility::input_errors.emplace_back("Two or more plan files in " + travel_path);
+                        InputUtility::input_errors.emplace_back("Two or more plan files in " + travels_folder_path);
                         valid_plan_file = false;
                         break;
                     }
@@ -80,7 +120,7 @@ bool handleTravelArg(const string& travel_path, std::vector<string>& travel_path
             }
             if (valid_plan_file && valid_route_file)
             {
-                // TODO Check all ports exist in route....
+                reportCargoDataErrors(travel_directory, route_file);
                 travel_paths.push_back(std::move(travel_directory));
             }
         }
@@ -205,7 +245,6 @@ AlgorithmError InputUtility::readShipPlan(const std::string& full_path_and_file_
             // First line MUST have correct format
             if (!verifyPlanLineFormat(split_line))
             {
-                std::cout << "Error: Badly formatted first line in plan file\n";
                 errors.setBit(AlgorithmError::errorCode::BadPlanFile);
                 return errors;
             }
@@ -215,7 +254,6 @@ AlgorithmError InputUtility::readShipPlan(const std::string& full_path_and_file_
             dim_y = stoi(split_line[2]);
             if (dim_x < 1 || dim_y < 1 || dim_z < 1)
             {
-                std::cout << "Error: Badly formatted first line in plan file\n";
                 errors.setBit(AlgorithmError::errorCode::BadPlanFile);
                 return errors;
             }
@@ -282,7 +320,9 @@ AlgorithmError InputUtility::readShipPlan(const std::string& full_path_and_file_
 
 AlgorithmError InputUtility::readCargo(const string &full_path_and_file_name, ContainersVector &containers_to_load)
 {
+    //TODO check and report same ID appearing twice
     AlgorithmError errors;
+    std::unordered_set<string> seen_ids;
     if (!fs::exists(full_path_and_file_name))
     {
         errors.setBit(AlgorithmError::errorCode::BadCargoFile);
@@ -308,6 +348,13 @@ AlgorithmError InputUtility::readCargo(const string &full_path_and_file_name, Co
                 errors.setBit(AlgorithmError::BadContainerID);
             }
             container->setId(id);
+            if(seen_ids.count(id))
+            {
+                errors.setBit(AlgorithmError::DuplicateContainerOnPort);
+            } else
+            {
+                seen_ids.insert(id);
+            }
         }
         // Weight
         if (bound > 1)
