@@ -1,7 +1,8 @@
 //
 // Created by adargut on 5/12/20.
 //
-
+/* Class to manage error codes used by the algorithm
+ * Also used by the simulation to report errors in input files */
 #ifndef EX2_ALGORITHMERROR_H
 #define EX2_ALGORITHMERROR_H
 

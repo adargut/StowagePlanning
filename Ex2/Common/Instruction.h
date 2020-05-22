@@ -1,9 +1,11 @@
 //
 // Created by nir on 15/05/2020.
 //
+/* A class to represent crane instructions provided by the algorithm */
 
 #ifndef EX2_INSTRUCTION_H
 #define EX2_INSTRUCTION_H
+
 #include "GeneralUtility.h"
 
 class Instruction {

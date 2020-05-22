@@ -1,7 +1,7 @@
 //
 // Created by osboxes on 5/14/20.
 //
-
+/* Class to represent the ship's state */
 #ifndef EX2_SHIP_H
 #define EX2_SHIP_H
 

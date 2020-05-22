@@ -1,7 +1,7 @@
 //
 // Created by nir on 16/05/2020.
 //
-
+/* Used to compare the distance of different containers to their destination */
 #ifndef EX2_DISTANCETODESTINATIONCOMPARATOR_H
 #define EX2_DISTANCETODESTINATIONCOMPARATOR_H
 

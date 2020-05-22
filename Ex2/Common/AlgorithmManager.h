@@ -1,6 +1,7 @@
+/* Class to manage the registration of algorithms (factories) */
+
 #ifndef EX2_ALGORITHMMANAGER_H
 #define EX2_ALGORITHMMANAGER_H
-
 #include <vector>
 #include <functional>
 #include <memory>

@@ -1,5 +1,5 @@
 // AlgorithmRegistration.h
-
+/* A class used by the loaded algorithms to communicate with the algorithm manager during registration */
 #pragma once
 
 #include <functional>
