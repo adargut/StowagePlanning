@@ -1,5 +1,0 @@
-# ship was full, we unloaded 3 containers - now we have 3 places
-
-BBBU0000020, 5, AAAAA
-BBBU0000036, 2, AAAAA
-# should reject, the same ID is already on ship (loaded at BBBBB_1)

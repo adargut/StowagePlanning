@@ -1,1 +1,0 @@
-./simulator -travel_path ../exm -algorithm_path ../Algorithm/ -output ../exm/out
