@@ -20,7 +20,7 @@ public:
     void setRoute(const Route &mRoute);
     const Plan &getPlan() const;
     void setPlan(const Plan &mPlan);
-    int getCurrentPortIdx() const;
+    size_t getCurrentPortIdx() const;
     void setCurrentPortIdx(int mCurrentPortIdx);
     const ContainerMap& getContainerMap() const;
     // Unload the top container in this position, returns nullptr if none exists

@@ -24,7 +24,7 @@ void Ship::setPlan(const Plan &mPlan)
     m_plan = mPlan;
 }
 
-int Ship::getCurrentPortIdx() const
+size_t Ship::getCurrentPortIdx() const
 {
     return m_currentPortIdx;
 }

@@ -20,7 +20,7 @@ bool isPlanFileValid(const string& file_path)
 {
     Plan temp_plan;
     AlgorithmError error = InputUtility::readShipPlan(file_path, temp_plan);
-    InputUtility::input_errors.emplace_back(error.errorToString() + " in " + file_path);
+    if(error) InputUtility::input_errors.emplace_back(error.errorToString() + " in " + file_path);
     return !(error.getBit(AlgorithmError::BadPlanFile)
        || error.getBit(AlgorithmError::ConflictingXY));
 }
@@ -29,7 +29,7 @@ bool isRouteFileValid(const string& file_path)
 {
     Route temp_route;
     AlgorithmError error = InputUtility::readShipRoute(file_path, temp_route);
-    InputUtility::input_errors.emplace_back(error.errorToString() + " in " + file_path);
+    if(error) InputUtility::input_errors.emplace_back(error.errorToString() + " in " + file_path);
     return !(error.getBit(AlgorithmError::BadTravelFile)
              || error.getBit(AlgorithmError::SinglePortTravel));
 }
@@ -252,7 +252,7 @@ AlgorithmError InputUtility::readShipPlan(const std::string& full_path_and_file_
                 continue;
             }
             // Floor is too high
-            if (z > dim_z)
+            if (z > dim_z || z < 0)
             {
                 std::cout << "Error: Floor value exceeding ship's dimensions\n";
                 errors.setBit(AlgorithmError::errorCode::ExceedingFloorValue);
@@ -265,10 +265,11 @@ AlgorithmError InputUtility::readShipPlan(const std::string& full_path_and_file_
                 continue;
             }
 
-            for (int i = 0; i < z; i++)
+            for (int i = 0; i < dim_z-z; i++)
             {
                 plan[i][y][x] = ILLEGAL_POS;
             }
+            previous_positions[new_pos] = z;
         }
     }
     if(first_line)
@@ -295,6 +296,7 @@ AlgorithmError InputUtility::readCargo(const string &full_path_and_file_name, Co
         std::vector<string> split_line;
         GeneralUtility::split(split_line, line, DELIMETER);
         GeneralUtility::removeLeadingAndTrailingSpaces(split_line);
+        if(!split_line.empty() && split_line[0].empty()) continue; // Empty line
         int bound = split_line.size();
         auto container = std::make_shared<Container>();
         // ID
@@ -356,7 +358,7 @@ AlgorithmError InputUtility::readShipRoute(const std::string& full_path_and_file
         GeneralUtility::trim(line);
         if (line.empty() || line[0] == COMMENT) continue;
         // Same port appearing twice in a row
-        if (!route.empty() && route.back() == line)
+        if (!route.empty() && route.back().substr(0, 5) == line)
         {
             errors.setBit(AlgorithmError::errorCode::SamePortConsecutively);
             continue;

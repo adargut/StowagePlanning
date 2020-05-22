@@ -3,16 +3,16 @@ CommonDir = ../Common
 OBJS = AlgorithmError.o Container.o DistanceToDestinationComparator.o GeneralUtility.o InputUtility.o Instruction.o ISO_6346.o OutputUtility.o Ship.o Instruction.o GenericAlgorithm.o
 RANDOM_OBJS = RandomAlgorithm.o
 SIMPLE_OBJS = SimpleAlgorithm.o
-SHARED_OBJS = SimpleAlgorithm.so RandomAlgorithm.so
+SHARED_OBJS = _313452781_a.so _313452781_b.so
 CPP_COMP_FLAG = -std=c++2a -Wall -Wextra -Werror -pedantic-errors -DNDEBUG -fPIC -fvisibility=hidden
 CPP_LINK_FLAG = -lstdc++fs -shared
 
 all: $(SHARED_OBJS)
 
-SimpleAlgorithm.so: $(OBJS) $(SIMPLE_OBJS)
+_313452781_a.so: $(OBJS) $(SIMPLE_OBJS)
 	$(COMP) $(CPP_LINK_FLAG) -o $@ $^
 	
-RandomAlgorithm.so: $(OBJS) $(RANDOM_OBJS)
+_313452781_b.so: $(OBJS) $(RANDOM_OBJS)
 	$(COMP) $(CPP_LINK_FLAG) -o $@ $^
 
 SimpleAlgorithm.o: SimpleAlgorithm.cpp

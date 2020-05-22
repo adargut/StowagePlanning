@@ -76,7 +76,7 @@ string AlgorithmError::getErrorDescription(errorCode code)
     case ContainersExceedingCapacity:
         return "ContainersExceedingCapacity";
     }
-    return "";
+    return std::to_string(code);
 }
 
 string AlgorithmError::errorToString() 

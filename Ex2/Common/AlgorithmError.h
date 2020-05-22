@@ -28,7 +28,7 @@ public:
         MissingContainerID=14, BadContainerID=15, BadCargoFile=16, LastPortNotEmpty=17, ContainersExceedingCapacity=18
     };
     explicit AlgorithmError(uint32_t errorCode=0);
-    operator bool() const { return m_errorCode > 0; }
+    explicit operator bool() const { return m_errorCode > 0; }
     bool setBit(uint32_t bit);
     bool getBit(uint32_t bit) const;
     int getAndClear();

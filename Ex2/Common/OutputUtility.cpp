@@ -112,10 +112,12 @@ bool OutputUtility::writeResults(const string &output_full_path_and_file_name, A
 bool OutputUtility::writeErrors(const string &output_full_path_and_file_name, std::vector<Error> &algorithm_errors)
 {
     if (algorithm_errors.empty()) return true; // No errors to report
+    fs::path p(output_full_path_and_file_name);
+    fs::create_directory(p.parent_path());
     ofstream write_file(output_full_path_and_file_name);
     if(!write_file.is_open()) 
     {
-        std::cout << "Error opening cargo/general errors\n";
+        std::cout << "Error opening cargo/general errors file: "+ output_full_path_and_file_name + "\n";
         return false;   
     }
 

@@ -66,6 +66,7 @@ bool Simulation::initialize()
         string port_file = m_travelDir + "/" + port + CARGO_SUFFIX;
         InputUtility::readCargo(port_file, port_containers);
         setRealDestinations(ship_route, i, port_containers);
+        if(i == ship_route.size() - 1) port_containers.clear(); //Ignoring containers at the last port
         m_ports.emplace_back(port, port_containers);
     }
 

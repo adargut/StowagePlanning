@@ -48,7 +48,7 @@ using string = std::string;
 using ifstream = std::ifstream;
 namespace InputUtility
 {
-    static std::vector<Error> input_errors;
+    extern std::vector<Error> input_errors;
     AlgorithmError readShipPlan(const std::string& full_path_and_file_name, Plan& plan);
     AlgorithmError readShipRoute(const std::string& full_path_and_file_name, Route& route);
     AlgorithmError readCargo(const std::string& full_path_and_file_name, ContainersVector &containers_to_load);

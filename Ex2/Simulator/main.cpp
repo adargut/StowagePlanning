@@ -5,6 +5,8 @@
 #include "../Common/GeneralUtility.h"
 #include "Simulation.h"
 
+std::vector<Error> InputUtility::input_errors;
+
 int registerAlgorithms(const string& algorithmDir, const std::vector<string>& algorithmNames)
 {
     AlgorithmManager::getInstance().setAlgorithmsPath(algorithmDir);
@@ -67,13 +69,10 @@ int main(int argc, char** argv)
     string algorithmDir;
     std::vector<string> algorithmNames;
     string output_path;
-    if(!InputUtility::handleArgs(argc, argv, travel_paths, algorithmDir, algorithmNames, output_path))
-        return -1;
+    InputUtility::handleArgs(argc, argv, travel_paths, algorithmDir, algorithmNames, output_path);
     registerAlgorithms(algorithmDir, algorithmNames);
     runSimulations(travel_paths, algorithmNames, output_path);
-    string general_errors_path = "/";
-    general_errors_path.append(ERRORS_DIR);
-    general_errors_path.append("/general_errors.errors");
+    string general_errors_path = output_path + "/" + ERRORS_DIR + "/general_errors.errors";
     //TODO https://moodle.tau.ac.il/mod/forum/discuss.php?d=98197
     OutputUtility::writeErrors(general_errors_path, InputUtility::input_errors);
     return 0;

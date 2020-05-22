@@ -87,7 +87,6 @@ void GenericAlgorithm::getInstructionsForUnloading(Instructions& instructions)
 int GenericAlgorithm::getInstructionsForCargo(const std::string& input_full_path_and_file_name,
                                               const std::string& output_full_path_and_file_name)
 {
-    //TODO changes to comply with proper error reporting, reject all invalid containers first, check weight is valid
     using Cmp = DistanceToDestinationComparator;
     Cmp distance_to_destination(m_ship.getCurrentPortIdx(), m_ship.getRoute());
     (void)output_full_path_and_file_name;
@@ -108,6 +107,14 @@ int GenericAlgorithm::getInstructionsForCargo(const std::string& input_full_path
     }
     std::unordered_set<string> containers_seen;
     m_algorithmErrors = InputUtility::readCargo(input_full_path_and_file_name, containers_to_load);
+    if(m_ship.getCurrentPortIdx() == m_ship.getRoute().size()-1) //At last port
+    {
+        if(!containers_to_load.empty())
+        {
+            containers_to_load.clear();
+            m_algorithmErrors.setBit(AlgorithmError::errorCode::LastPortNotEmpty);
+        }
+    }
     string port_name = m_ship.getRoute()[m_ship.getCurrentPortIdx()];
     setRealDestinations(containers_to_load);
     ContainersVector valid_containers_to_load;
