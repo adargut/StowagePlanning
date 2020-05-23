@@ -4,7 +4,10 @@
 #include "../common/Instruction.h"
 #include "../common/GeneralUtility.h"
 
-// Errors occurring in the run
+/**
+ * @brief Error.h represents an error that occurred in the run of the simulation
+ * 
+ */
 class Error 
 {
 public:
@@ -15,7 +18,6 @@ public:
     Instruction getInstruction() const;
     explicit Error(string _description = "", Instruction _instruction = Instruction());
     std::string errorToString();
-    // std::string errorsToString(const Errors &errors);
 };
 
 

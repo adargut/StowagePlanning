@@ -33,7 +33,6 @@ public:
     bool setBit(uint32_t bit);
     bool getBit(uint32_t bit) const;
     int getAndClear();
-    errorCode getErrorCode();
     string errorToString();
     static string getErrorDescription(errorCode code);
 };

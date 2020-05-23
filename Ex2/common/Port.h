@@ -1,4 +1,3 @@
-/* Class to represent a port's state */
 #ifndef EX2_PORT_H
 #define EX2_PORT_H
 
@@ -7,7 +6,10 @@
 #include <memory>
 #include "GeneralUtility.h"
 
-
+/**
+ * @brief Port.h represent a port's state
+ * 
+ */
 class Port
 {
 private:
@@ -15,11 +17,11 @@ private:
     PortContainers m_containers; // Containers currently on the port (map of id->container)
     ContainersVector m_containersToLoad; // Containers originally meant to be loaded from that port
 public:
-    Port(std::string code, const ContainersVector& containers);
-    const std::string &getCode() const;
+    Port(const string& code, const ContainersVector& containers);
+    const string &getCode() const;
     const PortContainers &getContainers() const;
     const ContainersVector &getContainersToLoad() const;
-    std::shared_ptr<Container> unloadContainer(const std::string& container_id);
+    std::shared_ptr<Container> unloadContainer(const string& container_id);
     bool loadContainer(std::shared_ptr<Container> container);
 };
 

@@ -1,8 +1,9 @@
 
 #include "BadAlgorithm.h"
-#include <time.h>
+
 REGISTER_ALGORITHM(BadAlgorithm)
 
+// Intentionally generate a bad load/unload/reject instruction by tossing coins
 void BadAlgorithm::getInstructionForLoadingContainer(std::shared_ptr<Container> container_to_load, Instructions &result) 
 {
     const Plan &ship_plan = m_ship.getPlan();

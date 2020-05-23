@@ -1,7 +1,3 @@
-//
-// Created by osboxes on 5/14/20.
-//
-/* Class that represents a container */
 #ifndef EX2_CONTAINER_H
 #define EX2_CONTAINER_H
 
@@ -10,7 +6,10 @@
 #include <memory>
 #include "GeneralUtility.h"
 
-
+/**
+ * @brief Container.h represents a container
+ * 
+ */
 class Container
 {
 private:

@@ -1,6 +1,7 @@
 #include "InputUtility.h"
 #include "Container.h"
 
+// Checks port symbol is legal
 bool verifyPortSymbol(const string& line)
 {
     if(line.length() != 5) return false;
@@ -11,11 +12,13 @@ bool verifyPortSymbol(const string& line)
     return true;
 }
 
+// Checks conforming to ISO6346 
 bool verifyISO6346(const std::string& port_name)
 {
     return ISO_6346::isValidId(port_name);
 }
 
+// Check line of plan is valid
 bool verifyPlanLineFormat(const std::vector<string>& line)
 {
     // Check if line has number of arguments != 3
@@ -36,6 +39,7 @@ bool verifyPlanLineFormat(const std::vector<string>& line)
     return true;
 }
 
+// Utility for reading ship plan
 AlgorithmError InputUtility::readShipPlan(const std::string& full_path_and_file_name, Plan &plan)
 {
     // Store accumulated errors
@@ -92,7 +96,6 @@ AlgorithmError InputUtility::readShipPlan(const std::string& full_path_and_file_
             // Line has bad format, we ignore it
             if (!verifyPlanLineFormat(split_line))
             {
-                std::cout << "Ignored badly formatted line in plan file\n";
                 errors.setBit(AlgorithmError::errorCode::BadLineFormatOrDuplicateXY);
                 continue;
             }
@@ -106,24 +109,20 @@ AlgorithmError InputUtility::readShipPlan(const std::string& full_path_and_file_
             {
                 if (previous_positions[new_pos] != z)
                 {
-                    std::cout << "Error: Conflicting redefinition of X,Y\n";
                     errors.setBit(AlgorithmError::errorCode::ConflictingXY);
                     return errors;
                 }
-                std::cout << "Error: Non-conflicting redefinition of X,Y\n";
                 errors.setBit(AlgorithmError::errorCode::BadLineFormatOrDuplicateXY);
                 continue;
             }
             // Floor is too high
             if (z > dim_z || z < 0)
             {
-                std::cout << "Error: Floor value exceeding ship's dimensions\n";
                 errors.setBit(AlgorithmError::errorCode::ExceedingFloorValue);
                 continue;
             }
             if (x >= dim_x || y >= dim_y || x < 0 || y < 0)
             {
-                std::cout << "Error: X, Y values exceeding ship's dimensions\n";
                 errors.setBit(AlgorithmError::errorCode::ExceedingXYValue);
                 continue;
             }
@@ -137,12 +136,12 @@ AlgorithmError InputUtility::readShipPlan(const std::string& full_path_and_file_
     }
     if(first_line)
     {
-        std::cout << "Error: Empty plan file\n";
         errors.setBit(AlgorithmError::errorCode::BadPlanFile);
     }
     return errors;
 }
 
+// Utility for reading cargo from file
 AlgorithmError InputUtility::readCargo(const string &full_path_and_file_name, ContainersVector &containers_to_load)
 {
     //TODO check and report same ID appearing twice
@@ -153,6 +152,7 @@ AlgorithmError InputUtility::readCargo(const string &full_path_and_file_name, Co
         errors.setBit(AlgorithmError::errorCode::BadCargoFile);
         return errors;
     }
+
     ifstream in(full_path_and_file_name);
     string line;
     while (getline(in, line))
@@ -203,6 +203,7 @@ AlgorithmError InputUtility::readCargo(const string &full_path_and_file_name, Co
     return errors;
 }
 
+// Get file name
 string InputUtility::getFileName(const string &full_path_and_file_name)
 {
     std::filesystem::path p = full_path_and_file_name;
@@ -211,6 +212,7 @@ string InputUtility::getFileName(const string &full_path_and_file_name)
     return p.string();
 }
 
+// Utility for reading ship route
 AlgorithmError InputUtility::readShipRoute(const std::string& full_path_and_file_name, Route& route)
 {
     std::unordered_map<string, int> port_map;
@@ -266,17 +268,16 @@ AlgorithmError InputUtility::readShipRoute(const std::string& full_path_and_file
     return errors;
 }
 
+// Utility for reading crane instructions
 bool InputUtility::readCraneInstructions(const string& full_path_and_file_name, Instructions& instructions)
 {
     if (!fs::exists(full_path_and_file_name))
     {
-        std::cout << "Failed reading crane instructions" << std::endl;
         return false;
     }
 
     ifstream in(full_path_and_file_name);
     std::string line;
-
     while (getline(in, line))
     {
         if ((line)[0] == COMMENT) continue;
@@ -291,23 +292,23 @@ bool InputUtility::readCraneInstructions(const string& full_path_and_file_name, 
             continue;
         }
         else if (split_line.size() < 5) return false;
-        if(split_line[2].find_first_not_of("0123456789") != string::npos) return false;
+        if (split_line[2].find_first_not_of("0123456789") != string::npos) return false;
         int z = stoi(split_line[2]);
-        if(split_line[3].find_first_not_of("0123456789") != string::npos) return false;
+        if (split_line[3].find_first_not_of("0123456789") != string::npos) return false;
         int x = stoi(split_line[3]);
-        if(split_line[4].find_first_not_of("0123456789") != string::npos) return false;
+        if (split_line[4].find_first_not_of("0123456789") != string::npos) return false;
         int y = stoi(split_line[4]);
-        if(split_line[0] == "L")
+        if (split_line[0] == "L")
         {
             instructions.emplace_back(Instruction::Load, container_id, z, y, x);
             continue;
         }
-        if(split_line[0] == "U")
+        if (split_line[0] == "U")
         {
             instructions.emplace_back(Instruction::Unload, container_id, z, y, x);
             continue;
         }
-        if(split_line[0] == "M")
+        if (split_line[0] == "M")
         {
             if(split_line.size() < 8) return false;
             if(split_line[5].find_first_not_of("0123456789") != string::npos) return false;

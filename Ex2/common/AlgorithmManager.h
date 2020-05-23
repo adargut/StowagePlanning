@@ -1,7 +1,6 @@
-/* Class to manage the registration of algorithms (factories) */
-
 #ifndef EX2_ALGORITHMMANAGER_H
 #define EX2_ALGORITHMMANAGER_H
+
 #include <vector>
 #include <functional>
 #include <memory>
@@ -15,11 +14,16 @@ using AlgorithmFactory = std::function<std::unique_ptr<AbstractAlgorithm>()>;
 
 struct DLCloser
 {
-    void operator()(void* dlhandle) const noexcept {
-        dlclose(dlhandle); //TODO check what happens if opening the dl failed
+    void operator()(void* dlhandle) const noexcept 
+    {
+        dlclose(dlhandle); 
     }
 };
 
+/**
+ * @brief AlgorithmManager.h manages the registration of algorithms (factories)
+ * 
+ */
 class AlgorithmManager
 {
 private:
@@ -34,11 +38,8 @@ public:
     static AlgorithmManager& getInstance() {
         static AlgorithmManager instance; //Singleton
         return instance; }
-    // Set the path of the algorithms directory
     void setAlgorithmsPath(const string& algorithmsPath);
-    // To be called by the simulator for registering an algorithm (without .so suffix)
     bool registerAlgorithm(const string& algorithmName);
-    // Called during algorithm registration (when the algorithm .so file is loaded)
     void registerFactory(const std::function<std::unique_ptr<AbstractAlgorithm>()>& factory);
     std::unique_ptr<AbstractAlgorithm> getAlgorithmInstance(const string& algorithmName);
 };

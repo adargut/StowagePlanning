@@ -1,7 +1,9 @@
 #include "AlgorithmError.h"
 
+// constructor
 AlgorithmError::AlgorithmError(uint32_t errorCode) : m_errorCode(errorCode) {}
 
+// Flip the of the error that occurred from 0 to 1
 bool AlgorithmError::setBit(uint32_t bit)
 {
     if (bit > 18)
@@ -12,6 +14,7 @@ bool AlgorithmError::setBit(uint32_t bit)
     return true;
 }
 
+// Check if certain bit is turned on or not
 bool AlgorithmError::getBit(uint32_t bit) const
 {
     if (bit > 18)
@@ -21,6 +24,7 @@ bool AlgorithmError::getBit(uint32_t bit) const
     return m_errorCode & uint32_t(1) << bit;
 }
 
+// Fetches int corresponding to the errors that happened, then clears it
 int AlgorithmError::getAndClear()
 {
     uint32_t tmpErrorCode = m_errorCode;
@@ -28,57 +32,54 @@ int AlgorithmError::getAndClear()
     return tmpErrorCode;
 }
 
-AlgorithmError::errorCode AlgorithmError::getErrorCode() 
-{
-    return static_cast<AlgorithmError::errorCode>(m_errorCode);
-}
-
+// Converts the error code to its string description (just one bit)
 string AlgorithmError::getErrorDescription(errorCode code)
 {
     switch (code)
     {
     case ExceedingFloorValue:
-        return "ExceedingFloorValue";
+        return "Exceeding Floor Value";
     case ExceedingXYValue:
-        return "ExceedingXYValue";
+        return "Exceeding XY Value";
     case BadLineFormatOrDuplicateXY:
-        return "BadLineFormatOrDuplicateXY";
+        return "Bad Line Format Or Duplicate XY";
     case BadPlanFile:
-        return "BadPlanFile";
+        return "Bad Plan File";
     case ConflictingXY:
-        return "ConflictingXY";
+        return "Conflicting XY";
     case SamePortConsecutively:
-        return "SamePortConsecutively";
+        return "Same Port Consecutively";
     case BadPortSymbol:
-        return "BadPortSymbol";
+        return "Bad Port Symbol";
     case BadTravelFile:
-        return "BadTravelFile";
+        return "Bad Travel File";
     case SinglePortTravel:
-        return "SinglePortTravel";
+        return "Single Port Travel";
     case Reserved:
         return "Reserved";
     case DuplicateContainerOnPort:
-        return "DuplicateContainerOnPort";
+        return "Duplicate Container On Port";
     case DuplicateContainerOnShip:
-        return "DuplicateContainerOnShip";
+        return "Duplicate Container On Ship";
     case BadContainerWeight:
-        return "BadContainerWeight";
+        return "Bad Container Weight";
     case BadContainerDest:
-        return "BadContainerDest";
+        return "Bad Container Dest";
     case MissingContainerID:
-        return "MissingContainerID";
+        return "Missing Container ID";
     case BadContainerID:
-        return "BadContainerID";
+        return "Bad Container ID";
     case BadCargoFile:
-        return "BadCargoFile";
+        return "Bad Cargo File";
     case LastPortNotEmpty:
-        return "LastPortNotEmpty";
+        return "Last Port Not Empty";
     case ContainersExceedingCapacity:
-        return "ContainersExceedingCapacity";
+        return "Containers Exceeding Capacity";
     }
     return std::to_string(code);
 }
 
+// Convert an error int to its string (all the bits together)
 string AlgorithmError::errorToString() 
 {
     string res;

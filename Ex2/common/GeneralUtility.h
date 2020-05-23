@@ -1,7 +1,3 @@
-//
-// Created by adargut on 5/12/20.
-//
-
 #ifndef EX2_GENERALUTILITY_H
 #define EX2_GENERALUTILITY_H
 
@@ -47,7 +43,10 @@ typedef typename std::vector<Port> Ports;
 typedef typename std::vector<Instruction> Instructions;
 typedef typename std::vector<Error> Errors;
 
-
+/**
+ * @brief GeneralUtility.h provides general use utility functions
+ * 
+ */
 namespace GeneralUtility
 {
     void split(std::vector<string>& result, const std::string &s, char delim);

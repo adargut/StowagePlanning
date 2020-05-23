@@ -1,10 +1,13 @@
-/* Class to represent the ship's state */
 #ifndef EX2_SHIP_H
 #define EX2_SHIP_H
 
 #include "GeneralUtility.h"
 #include "Container.h"
 
+/**
+ * @brief Ship.h represents the ship's state
+ * 
+ */
 class Ship
 {
 private:
@@ -20,17 +23,14 @@ public:
     size_t getCurrentPortIdx() const;
     void setCurrentPortIdx(int mCurrentPortIdx);
     const ContainerMap& getContainerMap() const;
-    // Unload the top container in this position, returns nullptr if none exists
-    /* return false if no position is available, and true otherwise */
     bool loadContainer(int floor, int row, int col, std::shared_ptr<Container> container_to_load);
     std::shared_ptr<Container> unloadContainer(int floor, int row, int col);
     void advanceCurrentPortIdx();
     bool isShipFull();
     bool hasContainer(const std::string &container_id);
-
 private:
-    void updatePlan(int floor, int row, int col, const std::string& val);
-    void insertContainerMap(int floor, int row, int col, const std::string& id, std::shared_ptr<Container> container);
+    void updatePlan(int floor, int row, int col, const string& val);
+    void insertContainerMap(int floor, int row, int col, const string& id, std::shared_ptr<Container> container);
     void eraseContainerMap(int floor, int row, int col);
 };
 

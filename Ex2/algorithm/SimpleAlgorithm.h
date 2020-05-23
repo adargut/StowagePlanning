@@ -3,6 +3,10 @@
 
 #include "GenericAlgorithm.h"
 
+/**
+ * @brief SimpleAlgorithm.h implements a determinstic algorithm for loading containers
+ * 
+ */
 class SimpleAlgorithm : public GenericAlgorithm
 {
 public:

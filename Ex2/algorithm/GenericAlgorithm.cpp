@@ -1,6 +1,7 @@
 #include "GenericAlgorithm.h"
 #include "../common/AlgorithmRegistration.h"
 
+// Read plan for usage of algorithm
 int GenericAlgorithm::readShipPlan(const std::string& full_path_and_file_name)
 {
     Plan plan;
@@ -13,6 +14,7 @@ int GenericAlgorithm::readShipPlan(const std::string& full_path_and_file_name)
     return m_algorithmErrors.getAndClear();
 }
 
+// Read route for usage of simulation
 int GenericAlgorithm::readShipRoute(const std::string& full_path_and_file_name)
 {
     Route route;
@@ -24,6 +26,7 @@ int GenericAlgorithm::readShipRoute(const std::string& full_path_and_file_name)
     return m_algorithmErrors.getAndClear();
 }
 
+// Initialize weight balance calculator for simulation
 int GenericAlgorithm::setWeightBalanceCalculator(WeightBalanceCalculator& calculator)
 {
     (void)calculator;
@@ -31,6 +34,7 @@ int GenericAlgorithm::setWeightBalanceCalculator(WeightBalanceCalculator& calcul
     return 0;
 }
 
+// Updates instructions for unloading cargo
 void GenericAlgorithm::getInstructionsForUnloading(Instructions& instructions)
 {
     Instructions tmp_instructions;
@@ -84,6 +88,7 @@ void GenericAlgorithm::getInstructionsForUnloading(Instructions& instructions)
     }
 }
 
+// Fetch instructions for cargo
 int GenericAlgorithm::getInstructionsForCargo(const std::string& input_full_path_and_file_name,
                                               const std::string& output_full_path_and_file_name)
 {
@@ -195,6 +200,7 @@ int GenericAlgorithm::getInstructionsForCargo(const std::string& input_full_path
     return m_algorithmErrors.getAndClear();
 }
 
+// Adds _* for * an integer representing cargo_* as the container destination
 void GenericAlgorithm::setRealDestinations(ContainersVector &containers)
 {
     const Route& route = m_ship.getRoute();

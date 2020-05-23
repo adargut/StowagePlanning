@@ -1,16 +1,17 @@
-//
-// Created by nir on 16/05/2020.
-//
 
 #include "DistanceToDestinationComparator.h"
+
+// Constructor
 DistanceToDestinationComparator::DistanceToDestinationComparator(int currentPortIdx, const Route &route)
         : current_port_idx(currentPortIdx), route(route) {}
 
+// Comparator
 bool DistanceToDestinationComparator::operator()(std::shared_ptr<Container> c1, std::shared_ptr<Container> c2)
 {
     return distanceToDestination(c1) < distanceToDestination(c2);
 }
 
+// Compute distance container has until destination
 int DistanceToDestinationComparator::distanceToDestination(std::shared_ptr<Container> container)
 {
     // Invalid containers should be placed last in the sort order

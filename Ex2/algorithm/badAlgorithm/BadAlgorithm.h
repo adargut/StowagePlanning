@@ -5,6 +5,10 @@
 
 using PossiblePairs = std::unordered_set<string>;
 
+/**
+ * @brief BadAlgorithm.h implements a purposefully bad algorithm for error showcasing
+ * 
+ */
 class BadAlgorithm : public GenericAlgorithm
 {
 public:

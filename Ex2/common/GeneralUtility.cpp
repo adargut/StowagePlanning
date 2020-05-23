@@ -1,9 +1,6 @@
-//
-// Created by adargut on 5/12/20.
-//
-
 #include "GeneralUtility.h"
 
+// Split string by delimeter, stores outpit in result
 void GeneralUtility::split(std::vector<string>& result, const string &s, char delim)
 {
     std::stringstream ss(s);
@@ -15,24 +12,26 @@ void GeneralUtility::split(std::vector<string>& result, const string &s, char de
     }
 }
 
-// trim from left
+// Trim whitespaces from the left
 void ltrim(std::string& s, const string t = " \t\n\r\f\v")
 {
     s.erase(0, s.find_first_not_of(t));
 }
 
-// trim from right
+// Trim whitespaces from right
 void rtrim(std::string& s, const string t = " \t\n\r\f\v")
 {
     s.erase(s.find_last_not_of(t) + 1);
 }
 
+// Trim whitespaces from left & right
 void GeneralUtility::trim(std::string& s, const string t)
 {
     rtrim(s, t);
     ltrim(s, t);
 }
 
+// Trim all whitespaces from vector of strings
 void GeneralUtility::removeLeadingAndTrailingSpaces(std::vector<string> &split_line)
 {
     for (size_t i = 0; i < split_line.size(); i++)

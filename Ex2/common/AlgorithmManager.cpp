@@ -1,13 +1,12 @@
 #include "AlgorithmManager.h"
 
-
-//AlgorithmManager AlgorithmManager::instance;
-
+// Called during algorithm registration (when the algorithm .so file is loaded)
 void AlgorithmManager::registerFactory(const std::function<std::unique_ptr<AbstractAlgorithm>()>& factory)
 {
     factoryBuffer = std::make_unique<AlgorithmFactory>(factory);
 }
 
+// Convert buffer to map
 bool AlgorithmManager::bufferToMap(const string &algorithmName)
 {
     if (!factoryBuffer) return false;
@@ -15,16 +14,19 @@ bool AlgorithmManager::bufferToMap(const string &algorithmName)
     return true;
 }
 
-void AlgorithmManager::setAlgorithmsPath(const string &algorithmsPath) {
+// Setter for algorithm path
+void AlgorithmManager::setAlgorithmsPath(const string &algorithmsPath) 
+{
     m_algorithmsPath = algorithmsPath;
 }
 
-bool AlgorithmManager::registerAlgorithm(const string &algorithmName) {
+// To be called by the simulator for registering an algorithm (without .so suffix)
+bool AlgorithmManager::registerAlgorithm(const string &algorithmName) 
+{
     std::string SoPath = m_algorithmsPath + "/" + algorithmName + SO_SUFFIX;
     std::unique_ptr<void, DLCloser> handle(dlopen(SoPath.c_str(), RTLD_LAZY));
     if(!handle)
     {
-        std::cout << "failed loading: " << SoPath << dlerror() << std::endl;
         return false;
     } else
     {
@@ -37,6 +39,7 @@ bool AlgorithmManager::registerAlgorithm(const string &algorithmName) {
     return true;
 }
 
+// Get an instance of algorithm
 std::unique_ptr<AbstractAlgorithm> AlgorithmManager::getAlgorithmInstance(const string& algorithmName)
 {
     if(!factoryMap.count(algorithmName)) return nullptr;

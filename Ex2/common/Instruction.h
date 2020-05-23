@@ -1,10 +1,12 @@
-/* A class to represent crane instructions provided by the algorithm */
-
 #ifndef EX2_INSTRUCTION_H
 #define EX2_INSTRUCTION_H
 
 #include "GeneralUtility.h"
 
+/**
+ * @brief Instruction.h represents crane instructions provided by the algorithm
+ * 
+ */
 class Instruction {
 public:
     enum Operation { Load, Unload, Move, Reject, None };

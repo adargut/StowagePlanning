@@ -1,9 +1,7 @@
-//
-// Created by nir on 22/05/2020.
-//
 
 #include "SimulationUtility.h"
 
+// Checks if plan file is valid
 static bool isPlanFileValid(const string& file_path)
 {
     Plan temp_plan;
@@ -13,6 +11,7 @@ static bool isPlanFileValid(const string& file_path)
              || error.getBit(AlgorithmError::ConflictingXY));
 }
 
+// Checks if route file is valid
 static bool isRouteFileValid(const string& file_path)
 {
     Route temp_route;
@@ -22,13 +21,15 @@ static bool isRouteFileValid(const string& file_path)
              || error.getBit(AlgorithmError::SinglePortTravel));
 }
 
+// Checks if cargo errors occurred
 static bool reportCargoDataErrors(const string& travel_path, const string& route_file)
 {
     std::vector<string> route;
     InputUtility::readShipRoute(route_file, route);
     const string& last_port = route.back();
     std::unordered_set<string> ports_set(route.begin(), route.end());
-    for (const auto &file : DirectoryIterator(travel_path))
+    std::error_code rc;
+    for (const auto &file : DirectoryIterator(travel_path, rc))
     {
         auto& cargo_data_file = file.path();
         if (cargo_data_file.extension() == CARGO_SUFFIX)
@@ -63,6 +64,7 @@ static bool reportCargoDataErrors(const string& travel_path, const string& route
     return true;
 }
 
+// Handle -travel argument given by command line
 bool handleTravelArg(const string& travels_folder_path, std::vector<string>& travel_paths)
 {
     if (!fs::exists(travels_folder_path))
@@ -72,13 +74,15 @@ bool handleTravelArg(const string& travels_folder_path, std::vector<string>& tra
     }
 
     // Check if travel path contains both route and plan files
-    for (const auto &entry : DirectoryIterator(travels_folder_path))
+    std::error_code rc;
+    for (const auto &entry : DirectoryIterator(travels_folder_path, rc))
     {
         bool valid_route_file = false, valid_plan_file = false, route_file_found = false, plan_file_found = false;
         if (entry.is_directory()) {
             string travel_directory = entry.path();
             string route_file;
-            for (const auto &file : DirectoryIterator(travel_directory))
+            std::error_code rc;
+            for (const auto &file : DirectoryIterator(travel_directory, rc))
             {
                 if (file.path().extension() == ROUTE_SUFFIX)
                 {
@@ -115,23 +119,23 @@ bool handleTravelArg(const string& travels_folder_path, std::vector<string>& tra
     }
     if(travel_paths.empty())
     {
-        std::cout << "No valid travels found\n";
         SimulationUtility::general_errors.emplace_back("No valid travels found");
         return false;
     }
     return true;
 }
 
+// Handles -algorithm argument given by command line
 bool handleAlgorithmArg(const string& algorithmDir, std::vector<string>& algorithm_paths)
 {
     if (!fs::exists(algorithmDir))
     {
-        std::cout << "Error: bad algorithm directory given\n";
         SimulationUtility::general_errors.emplace_back("Bad algorithm directory given");
         return false;
     }
 
-    for (const auto& entry : DirectoryIterator(algorithmDir))
+    std::error_code rc;
+    for (const auto& entry : DirectoryIterator(algorithmDir, rc))
     {
         std::filesystem::path p = entry.path();
         if (p.extension() == SO_SUFFIX)
@@ -143,13 +147,13 @@ bool handleAlgorithmArg(const string& algorithmDir, std::vector<string>& algorit
     }
     if (algorithm_paths.empty())
     {
-        std::cout << "Error: no .so files found in algorithm directory\n";
         SimulationUtility::general_errors.emplace_back("No .so files found in algorithm directory");
         return false;
     }
     return true;
 }
 
+// Handle -output arg given by command line
 static bool handleOutputArg(string& output_path)
 {
     if (!fs::exists(output_path))
@@ -159,8 +163,9 @@ static bool handleOutputArg(string& output_path)
     return true;
 }
 
+// Handle all command line args
 bool SimulationUtility::handleArgs(int argc, char **argv, std::vector<string>& travel_paths, string& algorithms_dir,
-                              std::vector<string>& algorithm_names, string& output_path)
+                                   std::vector<string>& algorithm_names, string& output_path)
 {
     string travel_folder;
     if(!parseArgs(argc, argv, travel_folder, algorithms_dir, output_path))
@@ -179,12 +184,12 @@ bool SimulationUtility::handleArgs(int argc, char **argv, std::vector<string>& t
     return true;
 }
 
+// Parse command line arg
 bool SimulationUtility::parseArgs(int argc, char** argv, string& travelFolder, string& algorithmFolder, string& outputFolder)
 {
     outputFolder = CWD; // temporarily set as CWD
     if(argc != 3 && argc != 5 && argc != 7)
     {
-        std::cout << "Wrong number of arguments\n";
         SimulationUtility::general_errors.emplace_back("Wrong number of arguments");
         return false;
     }
@@ -200,7 +205,6 @@ bool SimulationUtility::parseArgs(int argc, char** argv, string& travelFolder, s
         travelFolder = arg_map[TRAVEL_OPTION];
     } else
     {
-        std::cout << "No travel_path argument supplied\n";
         SimulationUtility::general_errors.emplace_back("No travel_path argument supplied");
         return false;
     }

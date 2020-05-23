@@ -25,6 +25,7 @@ int RandomAlgorithm::minFreeFloor(int x, int y)
     return -1;
 }
 
+// Instructions for loading containers
 void RandomAlgorithm::getInstructionForLoadingContainer(std::shared_ptr<Container> container_to_load, Instructions &result) 
 {
     const Plan &ship_plan = m_ship.getPlan();

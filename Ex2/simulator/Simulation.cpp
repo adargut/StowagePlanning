@@ -1,9 +1,6 @@
-//
-// Created by nir on 12/05/2020.
-//
-// TODO: https://moodle.tau.ac.il/mod/forum/discuss.php?d=94564#p132961
 #include "Simulation.h"
 
+// Checks if instruction is in valid range for plan
 static bool isRangeValid(const Plan &plan, const Instruction &instruction)
 {
     if (instruction.getFloor() < 0 || instruction.getFloor() >= int(plan.size())) return false;
@@ -18,6 +15,7 @@ static bool isRangeValid(const Plan &plan, const Instruction &instruction)
     return true;
 }
 
+// Checks if container has destination reachable for ship
 bool Simulation::isDestinationReachable(std::shared_ptr<const Container> container)
 {
     for (int i = m_ship.getCurrentPortIdx(); i < int(m_ship.getRoute().size()); i++) {
@@ -26,6 +24,7 @@ bool Simulation::isDestinationReachable(std::shared_ptr<const Container> contain
     return false;
 }
 
+// Initialize simulation
 bool Simulation::initialize()
 {
     Plan ship_plan;
@@ -35,7 +34,8 @@ bool Simulation::initialize()
     AlgorithmError errors;
 
     // Set ship initial configuration
-    for (const auto &file : DirectoryIterator(m_travelDir))
+    std::error_code rc;
+    for (const auto &file : DirectoryIterator(m_travelDir, rc))
     {
         string file_path = file.path();
         if (file.path().extension() == ROUTE_SUFFIX)
@@ -45,7 +45,7 @@ bool Simulation::initialize()
         }
     }
     InputUtility::readShipRoute(route_file, ship_route);
-    for (const auto &file : DirectoryIterator(m_travelDir))
+    for (const auto &file : DirectoryIterator(m_travelDir, rc))
     {
         string file_path = file.path();
         if (file.path().extension() == PLAN_SUFFIX)
@@ -94,6 +94,7 @@ bool Simulation::initialize()
     return true;
 }
 
+// Run simulation
 int Simulation::run()
 {
     int number_of_operations = 0;
@@ -173,6 +174,7 @@ int Simulation::run()
     return number_of_operations;
 }
 
+// Handle unload operation
 void Simulation::handleUnloadOperation(Port &port, const Instruction &instruction, Errors &errors)
 {
     if (!isRangeValid(m_ship.getPlan(), instruction))
@@ -206,6 +208,7 @@ void Simulation::handleUnloadOperation(Port &port, const Instruction &instructio
     }
 }
 
+// Handle load operation
 void Simulation::handleLoadOperation(Port &port, const Instruction &instruction, Errors &errors)
 {
     if(!isRangeValid(m_ship.getPlan(), instruction))
@@ -239,13 +242,15 @@ void Simulation::handleLoadOperation(Port &port, const Instruction &instruction,
     }
 }
 
+// Handle move operation
 void Simulation::handleMoveOperation(const Instruction &instruction, Errors &errors)
 {
     if (!isRangeValid(m_ship.getPlan(), instruction))
     {
         errors.push_back(Error(
                 "Move coordinates exceed ship's dimensions", instruction));
-    } else
+    } 
+    else
     {
         std::shared_ptr<Container> container = m_ship.unloadContainer(instruction.getFloor(),
                                                                      instruction.getRow(), instruction.getCol());
@@ -285,6 +290,7 @@ void Simulation::handleMoveOperation(const Instruction &instruction, Errors &err
     }
 }
 
+// Handle reject operation
 void Simulation::handleRejectOperation(Port& port, const Instruction& instruction, Errors& errors,
                                        std::vector<string>& rejected)
 {
@@ -304,6 +310,7 @@ void Simulation::handleRejectOperation(Port& port, const Instruction& instructio
     else rejected.push_back(instruction.getContainerId());
 }
 
+// Check if we left a container on ship that could've been unloaded
 void Simulation::checkContainersForgottenOnShip(Port& port, Errors& errors)
 {
     for (auto &container : m_ship.getContainerMap())
@@ -314,6 +321,7 @@ void Simulation::checkContainersForgottenOnShip(Port& port, Errors& errors)
     }
 }
 
+// Check if we left a container on port that could've been loaded
 void Simulation::checkContainersLeftOnPort(Port& port, PortContainers& original_containers, Errors& errors)
 {
     for (auto &container : port.getContainers())
@@ -331,6 +339,7 @@ void Simulation::checkContainersLeftOnPort(Port& port, PortContainers& original_
     }
 }
 
+// Check if algorithm didn't load a container, but forgot to reject it
 void Simulation::checkUnloadedRejected(PortContainers& unloaded_containers, std::vector<std::string>& rejected,
                                        Errors& errors)
 {
@@ -342,6 +351,7 @@ void Simulation::checkUnloadedRejected(PortContainers& unloaded_containers, std:
     }
 }
 
+// Check if containers rejected are actually the farthest, as in the soritng by distance works
 void Simulation::checkLatestDestinationsRejected(Port& port, PortContainers& unloaded_containers,
                                                  DistanceToDestinationComparator& distance_to_dest, Errors& errors)
 {
@@ -364,6 +374,7 @@ void Simulation::checkLatestDestinationsRejected(Port& port, PortContainers& unl
     }
 }
 
+// Check if we left a container on port but the ship isn't full
 void Simulation::checkNoRoomForContainers(PortContainers& unloaded_containers,
                                           DistanceToDestinationComparator& distance_to_dest, Errors& errors)
 {
@@ -377,6 +388,7 @@ void Simulation::checkNoRoomForContainers(PortContainers& unloaded_containers,
         }
 }
 
+// Sets the container's <PORT_NAME>_* for * the real integer representing the visit number for its unload
 void Simulation::setRealDestinations(const Route& route, int curr_idx, ContainersVector& containers)
 {
     for (auto& container : containers)
@@ -395,5 +407,3 @@ void Simulation::setRealDestinations(const Route& route, int curr_idx, Container
         }
     }
 }
-
-

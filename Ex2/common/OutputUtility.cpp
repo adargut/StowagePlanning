@@ -1,11 +1,11 @@
 #include "OutputUtility.h"
 
+// Write instructions for cargo to file
 bool OutputUtility::writeCargoInstructions(const string &output_full_path_and_file_name, const Instructions &instructions)
 {
     ofstream write_file(output_full_path_and_file_name);
     if(!write_file.is_open()) 
     {
-        std::cout << "Error opening cargo instructions\n";
         return false;   
     }
     string line;
@@ -19,13 +19,14 @@ bool OutputUtility::writeCargoInstructions(const string &output_full_path_and_fi
     return true;
 }
 
+// Sorts rows based on num errors, tiebreaking by number of operations
 static bool sortBuffer(std::vector<string>& file_buffer)
 {
     if (file_buffer.empty())
     {
-        std::cout << "File buffer cannot be empty\n";
         return false;
     }
+    // Custom comparator
     auto cmp = [](string l1, string l2)
     {
         std::vector<string> split_l1, split_l2;
@@ -43,26 +44,29 @@ static bool sortBuffer(std::vector<string>& file_buffer)
             return sum_1 < sum_2;
         }        
     };
+
     std::sort(file_buffer.begin()+1, file_buffer.end(),cmp);
     return true;
 }
 
+// Pours buffer of rows corresponding to an entire program run into a file
 static bool bufferToFile(const string &output_full_path_and_file_name, const std::vector<string>& file_buffer)
 {
     ofstream write_file(output_full_path_and_file_name);
     if (!write_file.is_open())
     {
-        std::cout << "Error opening file in buffer\n";
         return false;
     }
     for (auto& line : file_buffer)
     {
         write_file << line;
     }
+
     write_file.close();
     return true;
 }
 
+// Writes simulation results into a file
 bool OutputUtility::writeResults(const string &output_full_path_and_file_name, AlgorithmTravelResultsMap &results,
                                  const std::vector<string> &travels_seen)
 {
@@ -109,16 +113,16 @@ bool OutputUtility::writeResults(const string &output_full_path_and_file_name, A
     return bufferToFile(output_full_path_and_file_name, file_buffer);
 }
 
+// Writes errors detected by simulation or general input errors into errors file
 bool OutputUtility::writeErrors(const string &output_full_path_and_file_name, std::vector<Error> &algorithm_errors)
 {
     if (algorithm_errors.empty()) return true; // No errors to report
     fs::path p(output_full_path_and_file_name);
-    fs::create_directory(p.parent_path());
+    fs::create_directories(p.parent_path());
 
     ofstream write_file(output_full_path_and_file_name);
     if(!write_file.is_open()) 
     {
-        std::cout << "Error opening cargo/general errors file: "+ output_full_path_and_file_name + "\n";
         return false;   
     }
 
@@ -139,19 +143,20 @@ bool OutputUtility::writeErrors(const string &output_full_path_and_file_name, st
     {
         write_file << "\t" + error.errorToString() << std::endl;
     }
+
     write_file.close();
     return true;
 }
 
+// Writes errors detected by algorithm into a file
 bool OutputUtility::writeAlgorithmErrors(const string &output_full_path_and_file_name, std::vector<AlgorithmError> &errors)
 {
     if (errors.empty()) return true; // No errors to report
     fs::path p(output_full_path_and_file_name);
-    fs::create_directory(p.parent_path());
+    fs::create_directories(p.parent_path());
     ofstream write_file(output_full_path_and_file_name);
     if(!write_file.is_open()) 
     {
-        std::cout << "Error opening algorithm errors\n";
         return false;   
     }
 
@@ -164,6 +169,7 @@ bool OutputUtility::writeAlgorithmErrors(const string &output_full_path_and_file
     {
         write_file << "\t" + error.errorToString() << std::endl;
     }
+    
     write_file.close();
     return true;
 }

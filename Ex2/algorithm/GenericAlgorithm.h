@@ -23,7 +23,10 @@
 
 using string = std::string;
 
-
+/**
+ * @brief GenericAlgorithm.h is the common functions between our algorithms
+ * 
+ */
 class GenericAlgorithm : public AbstractAlgorithm
 {
 protected:

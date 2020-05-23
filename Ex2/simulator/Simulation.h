@@ -1,11 +1,7 @@
-//
-// Created by nir on 12/05/2020.
-//
-
 #ifndef EX2_SIMULATION_H
 #define EX2_SIMULATION_H
+
 #include "../common/AbstractAlgorithm.h"
-#include <memory>
 #include "../common/Ship.h"
 #include "../common/Port.h"
 #include "../common/GeneralUtility.h"
@@ -14,7 +10,13 @@
 #include "../common/DistanceToDestinationComparator.h"
 #include "../common/WeightBalanceCalculator.h"
 #include "../common/OutputUtility.h"
+#include <memory>
 #include "Error.h"
+
+/**
+ * @brief Simulation.h runs a simulation of the algorithm provides in the .so file
+ * 
+ */
 class Simulation {
     std::unique_ptr<AbstractAlgorithm> m_algorithm;
     std::vector<AlgorithmError> m_algorithmErrors;
@@ -34,7 +36,6 @@ public:
     // Return false if run can't be started
     bool initialize();
     int run();
-
 private:
     bool isDestinationReachable(std::shared_ptr<const Container> container);
     void handleUnloadOperation(Port &port, const Instruction &instruction, Errors &errors);
@@ -50,9 +51,8 @@ private:
     void checkLatestDestinationsRejected(Port& port, PortContainers& unloaded_containers, DistanceToDestinationComparator& distance_to_dest,
                                          Errors& errors);
 
-    void
-    checkNoRoomForContainers(PortContainers& unloaded_containers, DistanceToDestinationComparator& distance_to_dest,
-                             Errors& errors);
+    void checkNoRoomForContainers(PortContainers& unloaded_containers, DistanceToDestinationComparator& distance_to_dest,
+                                  Errors& errors);
     static void setRealDestinations(const Route& route, int curr_idx, ContainersVector& containers);
 };
 #endif //EX2_SIMULATION_H

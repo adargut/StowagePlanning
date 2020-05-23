@@ -14,7 +14,7 @@
 #include "GeneralUtility.h"
 #include "Instruction.h"
 #include "ISO_6346.h"
-#include "../simulator/Error.h" //TODO move to common
+#include "../simulator/Error.h" 
 
 // macros
 #define TRAVEL_OPTION "-travel_path"
@@ -46,6 +46,11 @@ using DirectoryIterator = fs::directory_iterator;
 using ErrorSet = std::unordered_set<AlgorithmError::errorCode>;
 using string = std::string;
 using ifstream = std::ifstream;
+
+/**
+ * @brief InputUtility.h provides utilities for handling input
+ * 
+ */
 namespace InputUtility
 {
     AlgorithmError readShipPlan(const std::string& full_path_and_file_name, Plan& plan);

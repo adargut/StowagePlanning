@@ -5,6 +5,10 @@
 
 using PossiblePairs = std::unordered_set<string>;
 
+/**
+ * @brief RandomAlgorithm.h implements a non-deterministic algorithm for loading cargo
+ * 
+ */
 class RandomAlgorithm : public GenericAlgorithm
 {
 public:

@@ -6,6 +6,7 @@
 
 std::vector<Error> SimulationUtility::general_errors;
 
+// Register the .so file
 int registerAlgorithms(const string& algorithmDir, const std::vector<string>& algorithmNames)
 {
     AlgorithmManager::getInstance().setAlgorithmsPath(algorithmDir);
@@ -13,13 +14,13 @@ int registerAlgorithms(const string& algorithmDir, const std::vector<string>& al
     {
         if(!AlgorithmManager::getInstance().registerAlgorithm(algorithmName))
         {
-            std::cout << algorithmName << " failed to register\n";
             SimulationUtility::general_errors.emplace_back(algorithmName + " failed to register");
         }
     }
     return 0;
 }
 
+// Run all <travel, algorithm> pairs
 int runSimulations(std::vector<string>& travelPaths, std::vector<string>& algorithmNames, string& outputPath)
 {
     std::vector<string> travelNames;
@@ -40,23 +41,12 @@ int runSimulations(std::vector<string>& travelPaths, std::vector<string>& algori
             Simulation simulation(std::move(algorithm), algorithmName, travelName, travel, outputPath);
             simulation.initialize();
             if(!resultsMap.count(algorithmName)) resultsMap[algorithmName] = std::vector<string>();
+            std::cout << "\tRunning travel " << travelName << " using algorithm " << algorithmName << std::endl;
             resultsMap[algorithmName].push_back(std::to_string(simulation.run()));
+            std::cout << "\t\tFINISHED!\n";
         }
     }
     OutputUtility::writeResults(outputPath + "/" + RESULTS_FILENAME, resultsMap, travelNames);
-    return 0;
-}
-
-int test_run()
-{
-//    std::unique_ptr<AbstractAlgorithm> alg = std::make_unique<RandomAlgorithm>();
-//    Simulation simulation(std::move(alg), "test_algorithm", "travel_0", "../Travels_dir/travel_0", "../test_output");
-//    simulation.initialize();
-//    AlgorithmTravelResultsMap resultsMap;
-//    std::vector<string> travelNames = {"travel_0"};
-//    resultsMap["test_algorithm"] = std::vector<string>();
-//    resultsMap["test_algorithm"].push_back(std::to_string(simulation.run()));
-//    //OutputUtility::writeResults("./test_output", resultsMap, travelNames);
     return 0;
 }
 
@@ -74,9 +64,8 @@ int main(int argc, char** argv)
     runSimulations(travel_paths, algorithmNames, output_path);
     string errors_path = output_path + "/" + ERRORS_DIR;
     string general_errors_path = errors_path + "/general_errors.errors";
-    //TODO https://moodle.tau.ac.il/mod/forum/discuss.php?d=98197
     OutputUtility::writeErrors(general_errors_path, SimulationUtility::general_errors);
     std::cout << "-----PROGRAM FINISHED------\n";
     std::cout << "See errors (if any) in " << errors_path << " and results in: " << output_path << std::endl;
-    return 0;
+    return EXIT_SUCCESS;
 }

@@ -24,7 +24,10 @@ namespace fs = std::filesystem;
 using ifstream = std::ifstream;
 using ofstream = std::ofstream;
 
-
+/**
+ * @brief OutputUtility.h provides useful utilities for writing to files
+ * 
+ */
 namespace OutputUtility
 {
     bool writeCargoInstructions(const string &output_full_path_and_file_name, const Instructions &instructions);
