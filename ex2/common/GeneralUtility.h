@@ -44,7 +44,7 @@ typedef typename std::vector<Instruction> Instructions;
 typedef typename std::vector<Error> Errors;
 
 /**
- * @brief GeneralUtility.h provides general use utility functions
+ * @brief GeneralUtility.h provides declarations and general use utility functions
  * 
  */
 namespace GeneralUtility
