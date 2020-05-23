@@ -1,0 +1,4 @@
+The following errors were detected on visit number 1 in port 'CCCCC', which is stop number 3 since the beginning of the journey:
+	[Containers At Port Error] Last port in route has awaiting containers, ignoring (E17)
+	[Simulator Report] The Simulator reported the following errors: E17
+	[Algorithm Report] The Algorithm reported the following errors: E17

@@ -1,0 +1,5 @@
+The following errors were reported by the algorithm:
+=====================================================
+	BadContainerID ContainersExceedingCapacity
+	DuplicateContainerOnShip
+	LastPortNotEmpty

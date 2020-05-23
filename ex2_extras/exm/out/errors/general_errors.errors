@@ -1,0 +1,49 @@
+The following general errors were found:
+=====================================================
+	  ../exm/Algo2BetterThan1/CCCCC_1.cargo_data has cargo data even though it's the last port
+	  SamePortConsecutively BadPortSymbol in ../exm/sim3/3.route
+	  ../exm/sim3/CCCCC_1.cargo_data has cargo data even though it's the last port
+	  ../exm/sim3/BBBBB_0.cargo_data is not a part of the travel ../exm/sim3
+	  ../exm/sim3/AAAAA_0.cargo_data is not a part of the travel ../exm/sim3
+	  ../exm/sim3/CCCCC_0.cargo_data is not a part of the travel ../exm/sim3
+	  ../exm/sim1/CCCCC_1.cargo_data has cargo data even though it's the last port
+	  ../exm/sim1/BBBBB_0.cargo_data is not a part of the travel ../exm/sim1
+	  BadContainerID in ../exm/sim1/AAAAA_1.cargo_data
+	  ../exm/sim1/AAAAA_0.cargo_data is not a part of the travel ../exm/sim1
+	  ../exm/sim1/CCCCC_0.cargo_data is not a part of the travel ../exm/sim1
+	  BadPlanFile in ../exm/yahav/Plan.ship_plan
+	  SamePortConsecutively BadPortSymbol in ../exm/yahav/Route.route
+	  ExceedingFloorValue ConflictingXY in ../exm/sim2/2.ship_plan
+	  ../exm/sim7/BBBBB_0.cargo_data is not a part of the travel ../exm/sim7
+	  ../exm/sim7/AAAAA_0.cargo_data is not a part of the travel ../exm/sim7
+	  ../exm/sim7/CCCCC_0.cargo_data is not a part of the travel ../exm/sim7
+	  Two or more plan files in ../exm
+	  ../exm/file: Missing cargo file for BBBBB_1
+	  ../exm/sim5/CCCCC_1.cargo_data has cargo data even though it's the last port
+	  ../exm/sim5/BBBBB_0.cargo_data is not a part of the travel ../exm/sim5
+	  BadContainerID in ../exm/sim5/AAAAA_1.cargo_data
+	  ../exm/sim5/AAAAA_0.cargo_data is not a part of the travel ../exm/sim5
+	  ExceedingXYValue in ../exm/sim6/ShipPort.ship_plan
+	  ../exm/sim6/AAAAA_3.cargo_data is not a part of the travel ../exm/sim6
+	  BadContainerID in ../exm/sim6/BBBBB_2.cargo_data
+	  ../exm/sim6/BBBBB_2.cargo_data has cargo data even though it's the last port
+	  ../exm/sim6/BBBBB_0.cargo_data is not a part of the travel ../exm/sim6
+	  BadContainerID in ../exm/sim6/AAAAA_1.cargo_data
+	  ../exm/sim6/AAAAA_0.cargo_data is not a part of the travel ../exm/sim6
+	  ../exm/sim8/BBBBB_2.cargo_data is not a part of the travel ../exm/sim8
+	  ../exm/sim8/BBBBB_0.cargo_data is not a part of the travel ../exm/sim8
+	  ../exm/sim8/AAAAA_0.cargo_data is not a part of the travel ../exm/sim8
+	  ../exm/sim8: Missing cargo file for BBBBB_1
+	  ../exm/sim8: Missing cargo file for AAAAA_2
+	  ../exm/sim4/CCCCC_1.cargo_data is not a part of the travel ../exm/sim4
+	  ../exm/sim4/BBBBB_0.cargo_data is not a part of the travel ../exm/sim4
+	  ../exm/sim4/AAAAA_0.cargo_data is not a part of the travel ../exm/sim4
+	  ../exm/sim4/CCCCC_0.cargo_data is not a part of the travel ../exm/sim4
+	  ../exm/sim4: Missing cargo file for AAAAA_2
+	  BadPlanFile in ../exm/Travel-Very-Diverse-Errors/Plan.ship_plan
+	  BadPortSymbol in ../exm/Travel-Very-Diverse-Errors/Route.route
+	  ../exm/sim12/CCCCC_1.cargo_data has cargo data even though it's the last port
+	  ../exm/sim12: Missing cargo file for AAAAA_2
+	  BadPortSymbol SinglePortTravel in ../exm/sim11/ro.route
+	  ../exm/sim10/CCCCC_1.cargo_data has cargo data even though it's the last port
+	  ../exm/sim10: Missing cargo file for BBBBB_1

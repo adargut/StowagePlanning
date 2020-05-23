@@ -1,0 +1,22 @@
+The following errors were detected during the initialization of the Simulator and the Algorithm:
+	[Ship Plan Error] Line 1: too many parameters - expected 3, but received 4, ignoring the extra parameters (E56)
+	[Ship Plan Error] Line 4: position (2, 1) exceeds the ship dimensions, ignoring (E1)
+	[Ship Plan Error] Line 7: too many parameters - expected 3, but received 4, ignoring the extra parameters (E56)
+	[Ship Plan Error] Line 7: position (0, 2) exceeds the ship dimensions, ignoring (E1)
+	[Ship Plan Error] Line 10: data row is in invalid format (insufficient parameters, not integers, etc), ignoring (E2)
+	[Ship Plan Error] Line 12: data row is in invalid format (insufficient parameters, not integers, etc), ignoring (E2)
+	[Ship Plan Error] Line 13: data row is in invalid format (insufficient parameters, not integers, etc), ignoring (E2)
+	[Ship Plan Error] Line 16: too many parameters - expected 3, but received 4, ignoring the extra parameters (E56)
+	[Ship Plan Error] Line 17: data row contains similar data about position (1, 1), ignoring (E2)
+	[Ship Plan Error] Line 22: number of floors (3) is equal to the number of floors provided in the first line, this data is redundant, ignoring (E0)
+	[Ship Plan Error] Line 23: data row contains similar data about position (1, 1), ignoring (E2)
+	[Ship Route Error] Line 3: port 'AAAAA' appeared twice in a row, ignoring the latter (E5)
+	[Ship Route Error] Line 4: port 'AAAAA' appeared twice in a row, ignoring the latter (E5)
+	[Ship Route Error] Line 8: too many parameters - expected 1, but received 2, ignoring the extra parameters (E56)
+	[Ship Route Error] Line 8: invalid port symbol ('BBBBBB'), ignoring (E6)
+	[Ship Route Error] Line 11: invalid port symbol ('12'), ignoring (E6)
+	[Ship Route Error] Line 12: port 'DDDDD' appeared twice in a row, ignoring the latter (E5)
+	[Algorithm Error] Algorithm failed to initialize, although the Ship Plan and Route files are valid (E50)
+	[Travel Error] Travel contains an invalid file ('Readme'), ignoring (E27)
+	[Simulator Report] The Simulator reported the following errors: E0, E1, E2, E5, E6, E27, E50, E56
+	[Algorithm Report] The Algorithm reported the following errors: E3, E5, E6

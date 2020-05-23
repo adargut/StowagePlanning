@@ -1,0 +1,28 @@
+The following errors were detected during the initialization of the Simulator and the Algorithm:
+	[Travel Error] Travel contains an invalid file ('AAAAA_1.instructions'), ignoring (E27)
+	[Travel Error] Travel contains an invalid file ('BBBBB_0.cargo_data'), ignoring (E27)
+	[Travel Error] Travel contains an invalid file ('ShipPort.csv'), ignoring (E27)
+	[Travel Error] Travel contains an invalid file ('Expect.txt'), ignoring (E27)
+	[Travel Error] Travel contains an invalid file ('Ports.csv'), ignoring (E27)
+	[Travel Error] Travel contains an invalid file ('AAAAA_0.instructions'), ignoring (E27)
+	[Travel Error] Travel contains an invalid file ('AAAAA_0.cargo_data'), ignoring (E27)
+	[Travel Error] Travel contains an invalid file ('CCCCC_0.cargo_data'), ignoring (E27)
+	[Travel Error] Travel contains an invalid file ('BBBBB_0.instructions'), ignoring (E27)
+	[Cargo Data Error] Port 'CCCCC' has cargo_data files, but doesn't appear in the Route, ignoring (E28)
+	[Simulator Report] The Simulator reported the following errors: E27, E28
+-----------------------------------------------------------------
+The following errors were detected on visit number 1 in port 'AAAAA', which is stop number 1 since the beginning of the journey:
+	[Containers At Port Error] Container with ID 'CSQU3054383' has bad destination port: 'CCCCC', which is not on the ship route, expecting to receive a reject (E13)
+	[Containers At Port Error] Container with ID 'FTJU5436354' has bad destination port: 'CCCCC', which is not on the ship route, expecting to receive a reject (E13)
+	[Containers At Port Error] Container with ID 'BQGJ4275453' has bad destination port: 'CCCCC', which is not on the ship route, expecting to receive a reject (E13)
+	[Containers At Port Error] Container with ID 'UKTZ8982560' has bad destination port: 'CCCCC', which is not on the ship route, expecting to receive a reject (E13)
+	[Containers At Port Error] Container with ID 'SUDZ3634151' has bad destination port: 'CCCCC', which is not on the ship route, expecting to receive a reject (E13)
+	[Containers At Port Error] Container with ID 'RAKU1586918' has bad destination port: 'CCCCC', which is not on the ship route, expecting to receive a reject (E13)
+	[Containers At Port Error] Container with ID 'ADYJ4668820' has bad destination port: 'CCCCC', which is not on the ship route, expecting to receive a reject (E13)
+	[Simulator Report] The Simulator reported the following errors: E13
+	[Algorithm Report] The Algorithm reported the following errors: E13
+-----------------------------------------------------------------
+The following errors were detected on visit number 1 in port 'BBBBB', which is stop number 2 since the beginning of the journey:
+	[Containers At Port Error] Container with ID 'HKOU8158714' has bad destination port: 'CCCCC', which is not on the ship route, expecting to receive a reject (E13)
+	[Simulator Report] The Simulator reported the following errors: E13
+	[Algorithm Report] The Algorithm reported the following errors: E13

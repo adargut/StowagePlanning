@@ -1,4 +1,4 @@
-COMP = g++
+COMP = g++-9.3.0
 CommonDir = ../common
 OBJS = AlgorithmError.o Container.o DistanceToDestinationComparator.o GeneralUtility.o InputUtility.o Instruction.o ISO_6346.o OutputUtility.o Ship.o Instruction.o GenericAlgorithm.o
 RANDOM_OBJS = RandomAlgorithm.o

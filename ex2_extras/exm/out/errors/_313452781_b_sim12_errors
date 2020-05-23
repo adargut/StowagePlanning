@@ -1,0 +1,16 @@
+The following errors were detected on visit number 1 in port 'AAAAA', which is stop number 1 since the beginning of the journey:
+	[Containers At Port Error] Container with ID 'UKTZ8982560' has bad destination port: 'DDDDD', which is not on the ship route, expecting to receive a reject (E13)
+	[Containers At Port Error] Container with ID 'RAKU1586918' has bad destination port: 'DDDDD', which is not on the ship route, expecting to receive a reject (E13)
+	[Containers At Port Error] Ship is at full capacity, container with ID 'ADYJ4668820' was rejected (E18)
+	[Simulator Report] The Simulator reported the following errors: E13, E18
+	[Algorithm Report] The Algorithm reported the following errors: E13, E18
+-----------------------------------------------------------------
+The following errors were detected on visit number 1 in port 'BBBBB', which is stop number 2 since the beginning of the journey:
+	[Containers At Port Error] Ship is at full capacity, container with ID 'HKOU8158714' was rejected (E18)
+	[Simulator Report] The Simulator reported the following errors: E18
+	[Algorithm Report] The Algorithm reported the following errors: E18
+-----------------------------------------------------------------
+The following errors were detected on visit number 1 in port 'CCCCC', which is stop number 4 since the beginning of the journey:
+	[Containers At Port Error] Last port in route has awaiting containers, ignoring (E17)
+	[Simulator Report] The Simulator reported the following errors: E17
+	[Algorithm Report] The Algorithm reported the following errors: E17
