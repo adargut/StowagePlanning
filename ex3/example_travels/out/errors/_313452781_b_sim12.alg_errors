@@ -1,0 +1,6 @@
+The following errors were reported by the algorithm:
+=====================================================
+	BadContainerDest ContainersExceedingCapacity
+	ContainersExceedingCapacity
+	BadCargoFile
+	LastPortNotEmpty

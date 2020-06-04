@@ -1,0 +1,14 @@
+The following general errors were found:
+=====================================================
+	  ../unhappy_travels/Travel_1/CCCCC_1.cargo_data has cargo data even though it's the last port
+	  ../unhappy_travels/Travel_1/BBBBB_0.cargo_data is not a part of the travel ../unhappy_travels/Travel_1
+	  BadContainerID in ../unhappy_travels/Travel_1/AAAAA_1.cargo_data
+	  ../unhappy_travels/Travel_1/AAAAA_0.cargo_data is not a part of the travel ../unhappy_travels/Travel_1
+	  ../unhappy_travels/Travel_1/CCCCC_0.cargo_data is not a part of the travel ../unhappy_travels/Travel_1
+	  ../unhappy_travels/Travel_2/BBBBB_0.cargo_data is not a part of the travel ../unhappy_travels/Travel_2
+	  ../unhappy_travels/Travel_2/AAAAA_0.cargo_data is not a part of the travel ../unhappy_travels/Travel_2
+	  ../unhappy_travels/Travel_2/CCCCC_0.cargo_data is not a part of the travel ../unhappy_travels/Travel_2
+	  Two or more plan files in ../unhappy_travels/Travel_4
+	  ExceedingXYValue in ../unhappy_travels/Travel_3/p.ship_plan
+	  ../unhappy_travels/sim12/CCCCC_1.cargo_data has cargo data even though it's the last port
+	  ../unhappy_travels/sim12: Missing cargo file for AAAAA_2

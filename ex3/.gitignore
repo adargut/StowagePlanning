@@ -1,0 +1,13 @@
+/cmake-build-debug/
+/CMakeFiles
+/.idea
+/.vscode
+cmake_install.cmake
+CMakeCache.txt
+Ex2
+Ex2.cbp
+Makefile
+../.idea
+../.vscode
+../vscode/
+../idea/

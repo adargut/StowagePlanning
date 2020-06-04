@@ -1,0 +1,13 @@
+The following errors were reported by the simulation:
+=====================================================
+	 L,OOLU3456780,0,0,1 Invalid load position
+	 U,CSQZ3054387,0,0,1 Failed unloading container from the ship
+	 L,CSQU3054383,0,0,0 Invalid load position
+	  Container that wasn't loaded didn't get rejected
+	  CSQZ3054387 which could be loaded was left on port while there's still room on the ship
+	  CSIU2000820 which could be loaded was left on port while there's still room on the ship
+	  DOGU2045518 which could be loaded was left on port while there's still room on the ship
+	  ZCSU2583334 which could be loaded was left on port while there's still room on the ship
+	  ECAU1002998 which could be loaded was left on port while there's still room on the ship
+	  SHCU4002932 which could be loaded was left on port while there's still room on the ship
+	 U,ECAU1002998,0,0,0 Failed unloading container from the ship
