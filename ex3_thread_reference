@@ -1,0 +1,115 @@
+#include<iostream>
+#include<thread>
+#include<mutex>
+#include<atomic>
+#include<vector>
+#include<optional>
+#include<functional>
+#include<chrono>
+
+using namespace std;
+
+// SimpleTasksProducer - you may want to separate it into .h and .cpp
+class SimpleTasksProducer {
+    const int numTasks = -1;
+    std::atomic_int task_counter = 0;
+    std::mutex m;
+    vector<string> &m_travel_names;
+    vector<string> &m_tasks;
+    
+    std::optional<int> next_task_index() {
+        for(int curr_counter = task_counter.load(); curr_counter < numTasks; ) {
+            if(task_counter.compare_exchange_weak(curr_counter, curr_counter + 1)) {
+                return {curr_counter}; 
+            }
+        }
+        return {};
+    }
+public:
+    SimpleTasksProducer(int numTasks, vector<string> &travel_names, vector<string> &tasks)
+        : numTasks(numTasks), m_travel_names(travel_names), m_tasks(tasks) {}
+    SimpleTasksProducer(SimpleTasksProducer&& other)
+        : numTasks(other.numTasks), m_travel_names(other.m_travel_names), m_tasks(other.m_tasks) {}
+    std::optional<std::function<void(void)>> getTask() {
+        auto task_index = next_task_index();
+        if(task_index) {
+            return [task_index, this]{
+                m.lock();
+                std::cout << std::this_thread::get_id() << "- just wrote: " << m_tasks[*task_index] << " at index : " << *task_index << std::endl;
+                m.unlock();
+                m_travel_names[*task_index] = m_tasks[*task_index]; // store entire travel data, like errors and plan etc.. not just name (in real code)
+                std::this_thread::yield(); // just to check threads switch
+            };
+        }
+        else return {};
+    }
+};
+
+class ThreadPoolExecuter {
+    SimpleTasksProducer producer;
+    const int numThreads = -1;
+    std::vector<std::thread> workers;
+    std::atomic_bool running = false;
+    std::atomic_bool done_preprocessing = false;
+    static thread_local int num_tasks_finished;
+    std::atomic_int total_num_tasks_finished { 0 };
+    
+    void worker_function() {
+        while(!done_preprocessing) {
+            auto task = producer.getTask();
+            if(!task) break;
+            (*task)();
+        }
+        if(done_preprocessing) {
+            cout << "done preprocessing at thread id: " << std::this_thread::get_id() << endl;
+        }
+        else {
+            std::cout << std::this_thread::get_id() << " - finished after processing " << std::endl;
+        }
+    }
+public:
+    ThreadPoolExecuter(SimpleTasksProducer producer, int numThreads)
+    : producer(std::move(producer)), numThreads(numThreads) { 
+        workers.reserve(numThreads);
+    }
+    bool start() {
+        // bool running_status = false;
+        // // see: https://en.cppreference.com/w/cpp/atomic/atomic/compare_exchange
+        // if(!running.compare_exchange_strong(running_status, true)) {
+        //     return false;
+        // }
+        for(int i=0; i<numThreads; ++i) {
+            workers.push_back(std::thread([this]{
+                worker_function();
+            }));
+        }
+        return true;
+    }
+    void stop_gracefully() {
+        done_preprocessing = true;
+        wait_till_finish();
+    }
+    void wait_till_finish() {
+        for(auto& t : workers) {
+            t.join();
+        }
+        std::cout << "thread pool finished/stopped after processing " << total_num_tasks_finished << " task(s)" << std::endl;
+    }
+};
+
+
+int main()  
+   {
+       vector<string> travel_names {8}; // stores results
+       vector<string> tasks = {"travel1", "travel2", "travel3", "travel4", "travel5", "travel6", "travel7", "travel8"};
+       SimpleTasksProducer producer(tasks.size(), travel_names, tasks);
+       ThreadPoolExecuter travel_executer(std::move(producer), 4);
+       
+       travel_executer.start();
+       travel_executer.wait_till_finish();
+       
+       for (auto &s : travel_names) 
+       {
+           std::cout << s << std::endl;
+       }
+   }
