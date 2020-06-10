@@ -27,6 +27,7 @@
 
 // Forward declarations
 class Container;
+class TravelData;
 class Instruction;
 class Port;
 class Error;
@@ -37,9 +38,10 @@ using string = std::string;
 // Typedef declarations
 typedef typename std::vector<std::vector<std::vector<std::string>>> Plan;
 typedef typename std::vector<std::vector<AlgorithmError>> AlgorithmErrors;
+typedef typename std::pair<string, TravelData> ProcessedDataSingleton;
+typedef typename std::vector<ProcessedDataSingleton> ProcessedDataList;
 // Map algorithm name to vector of results for all travels
 typedef typename std::unordered_map<string, std::vector<string>> AlgorithmTravelResultsMap;
-// Map algorithm name to vector of results for all travels
 typedef typename std::unordered_map<std::string, std::shared_ptr<Container>> PortContainers;
 typedef typename std::array<int, 3> Position;
 typedef typename std::unordered_map<std::string, std::pair<std::shared_ptr<Container>, Position>> ContainerMap;

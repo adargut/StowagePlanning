@@ -6,7 +6,6 @@
 #define EX3_PREPROCESSINGTASKSPRODUCER_H
 
 #include "AbstractTasksProducer.h"
-#include "TravelData.h"
 
 class PreProcessingTasksProducer : public AbstractTasksProducer
 {

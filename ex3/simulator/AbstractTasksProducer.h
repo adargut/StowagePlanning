@@ -6,6 +6,8 @@
 #define EX3_ABSTRACTTASKSPRODUCER_H
 
 #include "../common/GeneralUtility.h"
+#include "../common/AlgorithmManager.h"
+#include "TravelData.h"
 
 class AbstractTasksProducer
 {

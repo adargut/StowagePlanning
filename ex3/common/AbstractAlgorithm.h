@@ -1,4 +1,4 @@
-// AbstractAlgorithm.h
+// AbstractAlgorithm.h = Process
 
 #pragma once
 

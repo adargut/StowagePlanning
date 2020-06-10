@@ -8,6 +8,7 @@
 #include "../common/GeneralUtility.h"
 #include "../common/Port.h"
 #include "../common/Ship.h"
+#include "../common/AlgorithmError.h"
 #include "Error.h"
 
 class TravelData
@@ -15,8 +16,33 @@ class TravelData
 public:
     string m_travel_name;
     string m_full_path;
+    string m_output_dir;
+
+    // TODO not sure if this should be here?
+    const string &getOutputDir() const
+    {
+        return m_output_dir;
+    }
+
+    void setOutputDir(const string &mOutputDir)
+    {
+        m_output_dir = mOutputDir;
+    }
+
     Ship m_ship;
     std::vector<Error> m_travel_errors;
+    AlgorithmError m_alg_init_error;
+
+    const AlgorithmError &getAlgInitError() const
+    {
+        return m_alg_init_error;
+    }
+
+    void setAlgInitError(const AlgorithmError &mAlgInitError)
+    {
+        m_alg_init_error = mAlgInitError;
+    }
+
     Ports m_ports;
     bool m_valid;
     

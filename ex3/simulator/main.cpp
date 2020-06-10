@@ -31,19 +31,22 @@ int runSimulations(std::vector<string>& travelPaths, std::vector<string>& algori
         travelNames.push_back(std::move(travelName));
     }
     AlgorithmTravelResultsMap resultsMap;
-    for (auto& algorithmName : algorithmNames)
-    {
-        for (auto& travel : travelPaths)
-        {
-            string travelName = std::filesystem::path(travel).filename();
-            auto algorithm = AlgorithmManager::getInstance().getAlgorithmInstance(algorithmName);
-            if(algorithm == nullptr) continue; // algorithm didn't register
-            Simulation simulation(std::move(algorithm), algorithmName, travelName, travel, outputPath);
-            simulation.initialize();
-            if(!resultsMap.count(algorithmName)) resultsMap[algorithmName] = std::vector<string>();
-            std::cout << "\tRunning travel " << travelName << " using algorithm " << algorithmName << std::endl;
-            resultsMap[algorithmName].push_back(std::to_string(simulation.run()));
-            std::cout << "\t\tFINISHED!\n";
+    for (auto& algorithmName : algorithmNames) {
+        for (auto &travel : travelPaths) {
+            (void) algorithmName;
+            (void) travel;
+            // TODO delete this, moved to SimulationProducer...
+//            string travelName = std::filesystem::path(travel).filename();
+//            auto algorithm = AlgorithmManager::getInstance().getAlgorithmInstance(algorithmName);
+//            if(algorithm == nullptr) continue; // algorithm didn't register
+//            Simulation simulation(std::move(algorithm), algorithmName, <#initializer#>);
+//            simulation.initialize();
+//            if(!resultsMap.count(algorithmName)) resultsMap[algorithmName] = std::vector<string>();
+//            std::cout << "\tRunning travel " << travelName << " using algorithm " << algorithmName << std::endl;
+//            resultsMap[algorithmName].push_back(std::to_string(simulation.run()));
+//            std::cout << "\t\tFINISHED!\n";
+//        }
+//    }
         }
     }
     OutputUtility::writeResults(outputPath + "/" + RESULTS_FILENAME, resultsMap, travelNames);

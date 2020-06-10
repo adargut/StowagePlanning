@@ -1,19 +1,16 @@
-//
-// Created by nir on 09/06/2020.
-//
-
 #ifndef EX3_SIMULATIONTASKSPRODUCER_H
 #define EX3_SIMULATIONTASKSPRODUCER_H
 
 #include "AbstractTasksProducer.h"
+#include "Simulation.h"
 
 class SimulationTasksProducer : public AbstractTasksProducer
 {
-    std::vector<string> &m_algo_travel_pairs; //TODO something else
-    std::vector<string> &m_results; //TODO something else
+    const ProcessedDataSingleton &m_travel_data; //TODO something else
+    int m_results; //TODO something else
 public:
-    SimulationTasksProducer(int numTasks, std::vector<string> &algo_travel_pairs, std::vector<string> &results) : AbstractTasksProducer(numTasks), m_algo_travel_pairs(algo_travel_pairs), m_results(results) {}
-    SimulationTasksProducer(SimulationTasksProducer && other):  AbstractTasksProducer(std::move(other)), m_algo_travel_pairs(other.m_algo_travel_pairs), m_results(other.m_results) {}
+    SimulationTasksProducer(int numTasks, ProcessedDataSingleton &travel_data) : AbstractTasksProducer(numTasks), m_travel_data(travel_data) {}
+    SimulationTasksProducer(SimulationTasksProducer && other) : AbstractTasksProducer(std::move(other)), m_travel_data(other.m_travel_data), m_results(other.m_results) {}
     std::optional<std::function<void(void)>> getTask() override;
 };
 
