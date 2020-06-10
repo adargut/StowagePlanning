@@ -23,17 +23,15 @@ class Simulation {
     // TODO add static global member to determine which travels were initialized
     std::unique_ptr<AbstractAlgorithm> m_algorithm;
     std::vector<AlgorithmError> m_algorithmErrors;
-    const string m_algorithmName;
+    string m_algorithmName;
     const ProcessedDataSingleton &m_travel_data;
-    Ship m_ship;
     Ports m_ports;
+    Ship m_ship;
     bool m_canRun = true;
 public:
-    Simulation(std::unique_ptr<AbstractAlgorithm> algorithm, const ProcessedDataSingleton &travel_data) :
-            m_algorithm(std::move(algorithm)), m_algorithmName(std::move(travel_data.first)),
-            m_travel_data(travel_data) , m_ports(std::move(travel_data.second.getPorts())) {};
-    // Return false if run can't be started
-    bool initialize();
+    Simulation(std::unique_ptr<AbstractAlgorithm> algorithm, const ProcessedDataSingleton &travel_data);
+    // TODO function not needed, remove after finishing preprocessing
+    void initialize();
     int run();
 private:
     bool isDestinationReachable(std::shared_ptr<const Container> container);

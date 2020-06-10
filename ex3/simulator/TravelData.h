@@ -13,11 +13,15 @@
 
 class TravelData
 {
-public:
+private:
     string m_travel_name;
     string m_full_path;
     string m_output_dir;
-
+    Ship m_ship;
+    std::vector<AlgorithmError> m_travel_errors;
+    Ports m_ports;
+    bool m_valid;
+public:
     // TODO not sure if this should be here?
     const string &getOutputDir() const
     {
@@ -28,23 +32,6 @@ public:
     {
         m_output_dir = mOutputDir;
     }
-
-    Ship m_ship;
-    std::vector<Error> m_travel_errors;
-    AlgorithmError m_alg_init_error;
-
-    const AlgorithmError &getAlgInitError() const
-    {
-        return m_alg_init_error;
-    }
-
-    void setAlgInitError(const AlgorithmError &mAlgInitError)
-    {
-        m_alg_init_error = mAlgInitError;
-    }
-
-    Ports m_ports;
-    bool m_valid;
     
     const string& getTravelName() const
     {
@@ -76,7 +63,7 @@ public:
         m_ship = mShip;
     }
 
-    const std::vector<Error>& getTravelErrors() const
+    const std::vector<AlgorithmError>& getTravelErrors() const
     {
         return m_travel_errors;
     }
@@ -96,9 +83,9 @@ public:
         m_valid = valid;
     }
 
-    void addTravelError(const string& error_code)
+    void addTravelError(AlgorithmError& algorithm_error)
     {
-        m_travel_errors.emplace_back(error_code);
+        m_travel_errors.emplace_back(algorithm_error);
     }
 
     void addPort(const Port& port)

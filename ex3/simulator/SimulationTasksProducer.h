@@ -6,8 +6,8 @@
 
 class SimulationTasksProducer : public AbstractTasksProducer
 {
-    const ProcessedDataSingleton &m_travel_data; //TODO something else
-    int m_results; //TODO something else
+    ProcessedDataList m_processed_travels; // the tasks
+    AlgorithmTravelResultsMap &m_results; // where task results are stored
 public:
     SimulationTasksProducer(int numTasks, ProcessedDataSingleton &travel_data) : AbstractTasksProducer(numTasks), m_travel_data(travel_data) {}
     SimulationTasksProducer(SimulationTasksProducer && other) : AbstractTasksProducer(std::move(other)), m_travel_data(other.m_travel_data), m_results(other.m_results) {}

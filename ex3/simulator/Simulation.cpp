@@ -1,5 +1,20 @@
 #include "Simulation.h"
 
+// Constructor
+Simulation::Simulation(std::unique_ptr<AbstractAlgorithm> algorithm, const ProcessedDataSingleton &travel_data) :
+                       m_algorithm(std::move(algorithm)), m_travel_data(travel_data),
+                       m_ports(travel_data.second.getPorts()), m_ship(travel_data.second.getShip())
+{
+    m_canRun = travel_data.second.isValid();
+    m_algorithmName = travel_data.first;
+
+    // Flush errors found in preprocessing into simulation
+    for (auto &processed_error : travel_data.second.getTravelErrors())
+    {
+        m_algorithmErrors.push_back(processed_error);
+    }
+}
+
 // Checks if instruction is in valid range for plan
 static bool isRangeValid(const Plan &plan, const Instruction &instruction)
 {
@@ -25,11 +40,9 @@ bool Simulation::isDestinationReachable(std::shared_ptr<const Container> contain
 }
 
 // Initialize simulation
-// TODO add argument for position of <travel, algorithm> pair result
-bool Simulation::initialize()
+// TODO this function is not needed: most happens in constructor, rest needs to happen in preprocessing..
+void Simulation::initialize()
 {
-    m_ship = m_travel_data.second.getShip();
-    m_canRun = m_travel_data.second.isValid();
 
     // TODO move to preprocessing..
 //    AlgorithmError alg_init_errors = m_travel_data.second.getAlgInitError();
@@ -115,7 +128,6 @@ bool Simulation::initialize()
 //    {
 //        m_canRun = false;
 //    }
-    return true;
 }
 
 // Run simulation
