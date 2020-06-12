@@ -1,71 +1,73 @@
 
 #include "SimulationUtility.h"
 
-// Checks if plan file is valid
-static bool isPlanFileValid(const string& file_path)
-{
-    Plan temp_plan;
-    AlgorithmError error = InputUtility::readShipPlan(file_path, temp_plan);
-    if(error) SimulationUtility::general_errors.emplace_back(error.errorToString() + " in " + file_path);
-    return !(error.getBit(AlgorithmError::BadPlanFile)
-             || error.getBit(AlgorithmError::ConflictingXY));
-}
+//TODO basically moved all of this to PreProcessingTasksProducer
 
-// Checks if route file is valid
-static bool isRouteFileValid(const string& file_path)
-{
-    Route temp_route;
-    AlgorithmError error = InputUtility::readShipRoute(file_path, temp_route);
-    if(error) SimulationUtility::general_errors.emplace_back(error.errorToString() + " in " + file_path);
-    return !(error.getBit(AlgorithmError::BadTravelFile)
-             || error.getBit(AlgorithmError::SinglePortTravel));
-}
+// Checks if plan file is valid
+//static bool isPlanFileValid(const string& file_path)
+//{
+//    Plan temp_plan;
+//    AlgorithmError error = InputUtility::readShipPlan(file_path, temp_plan);
+//    if(error) SimulationUtility::general_errors.emplace_back(error.errorToString() + " in " + file_path);
+//    return !(error.getBit(AlgorithmError::BadPlanFile)
+//             || error.getBit(AlgorithmError::ConflictingXY));
+//}
+//
+//// Checks if route file is valid
+//static bool isRouteFileValid(const string& file_path)
+//{
+//    Route temp_route;
+//    AlgorithmError error = InputUtility::readShipRoute(file_path, temp_route);
+//    if(error) SimulationUtility::general_errors.emplace_back(error.errorToString() + " in " + file_path);
+//    return !(error.getBit(AlgorithmError::BadTravelFile)
+//             || error.getBit(AlgorithmError::SinglePortTravel));
+//}
 
 // Checks if cargo errors occurred
-static bool reportCargoDataErrors(const string& travel_path, const string& route_file)
-{
-    std::vector<string> route;
-    InputUtility::readShipRoute(route_file, route);
-    const string& last_port = route.back();
-    std::unordered_set<string> ports_set(route.begin(), route.end());
-    std::error_code rc;
-    for (const auto &file : DirectoryIterator(travel_path, rc))
-    {
-        auto& cargo_data_file = file.path();
-        if (cargo_data_file.extension() == CARGO_SUFFIX)
-        {
-            if(!ports_set.count(cargo_data_file.filename().replace_extension("")))
-            {
-                SimulationUtility::general_errors.emplace_back(
-                        cargo_data_file.string() + " is not a part of the travel " + travel_path);
-            }
-            else
-            {
-                ports_set.erase(cargo_data_file.filename().replace_extension(""));
-                ContainersVector temp;
-                AlgorithmError error = InputUtility::readCargo(cargo_data_file, temp);
-                if (error) SimulationUtility::general_errors.emplace_back(
-                            error.errorToString() + " in " + cargo_data_file.string());
-                if(last_port == cargo_data_file.filename().replace_extension(""))
-                {
-                    if(!temp.empty()) SimulationUtility::general_errors.emplace_back(
-                                cargo_data_file.string() + " has cargo data even though it's the last port");
-                }
-            }
-        }
-    }
-    if(!ports_set.empty())
-    {
-        for (auto& port : ports_set)
-        {
-            SimulationUtility::general_errors.emplace_back(travel_path + ": Missing cargo file for " + port);
-        }
-    }
-    return true;
-}
+//static bool reportCargoDataErrors(const string& travel_path, const string& route_file)
+//{
+//    std::vector<string> route;
+//    InputUtility::readShipRoute(route_file, route);
+//    const string& last_port = route.back();
+//    std::unordered_set<string> ports_set(route.begin(), route.end());
+//    std::error_code rc;
+//    for (const auto &file : DirectoryIterator(travel_path, rc))
+//    {
+//        auto& cargo_data_file = file.path();
+//        if (cargo_data_file.extension() == CARGO_SUFFIX)
+//        {
+//            if(!ports_set.count(cargo_data_file.filename().replace_extension("")))
+//            {
+//                SimulationUtility::general_errors.emplace_back(
+//                        cargo_data_file.string() + " is not a part of the travel " + travel_path);
+//            }
+//            else
+//            {
+//                ports_set.erase(cargo_data_file.filename().replace_extension(""));
+//                ContainersVector temp;
+//                AlgorithmError error = InputUtility::readCargo(cargo_data_file, temp);
+//                if (error) SimulationUtility::general_errors.emplace_back(
+//                            error.errorToString() + " in " + cargo_data_file.string());
+//                if(last_port == cargo_data_file.filename().replace_extension(""))
+//                {
+//                    if(!temp.empty()) SimulationUtility::general_errors.emplace_back(
+//                                cargo_data_file.string() + " has cargo data even though it's the last port");
+//                }
+//            }
+//        }
+//    }
+//    if(!ports_set.empty())
+//    {
+//        for (auto& port : ports_set)
+//        {
+//            SimulationUtility::general_errors.emplace_back(travel_path + ": Missing cargo file for " + port);
+//        }
+//    }
+//    return true;
+//}
 
 // Handle -travel argument given by command line
-// TODO move error checking for each thread, not here
+// TODO mostly moved to Preprocessing, we may just need this to populate the list of paths
 bool handleTravelArg(const string& travels_folder_path, std::vector<string>& travel_paths)
 {
     if (!fs::exists(travels_folder_path))

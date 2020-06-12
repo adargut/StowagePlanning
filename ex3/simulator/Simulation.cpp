@@ -44,7 +44,7 @@ bool Simulation::isDestinationReachable(std::shared_ptr<const Container> contain
 void Simulation::initialize()
 {
 
-    // TODO move to preprocessing..
+    // TODO move to preprocessing.. - no, should be here
 //    AlgorithmError alg_init_errors = m_travel_data.second.getAlgInitError();
 //    if( alg_init_errors.getBit(AlgorithmError::BadTravelFile)
 //        || alg_init_errors.getBit(AlgorithmError::SinglePortTravel)
@@ -53,7 +53,7 @@ void Simulation::initialize()
 //    {
 //        m_canRun = false;
 //    }
-    // TODO move to preprcoessing too
+    // TODO move to preprcoessing too - no, should be here
 //    err = m_algorithm->readShipPlan(plan_file);
 //    if (err) m_algorithmErrors.push_back(AlgorithmError(err));
 //    alg_init_errors = AlgorithmError(err);
@@ -64,7 +64,7 @@ void Simulation::initialize()
 //    }
 
     // Set ship initial configuration
-    // TODO move to preprocessing
+    // TODO move to preprocessing - moved
 //    std::error_code rc;
 //    for (const auto &file : DirectoryIterator(m_travelDir, rc))
 //    {
@@ -77,7 +77,7 @@ void Simulation::initialize()
 //    }
     // TODO before reading check if was read already: if it was read, take it from DS, else read it and put in DS
     // TODO merge readShipRoute, readShipPlan & readCargo into one function with lock
-    // TODO move to preprocessing
+    // TODO move to preprocessing - moved
 //    InputUtility::readShipRoute(route_file, ship_route);
 //    for (const auto &file : DirectoryIterator(m_travelDir, rc))
 //    {
@@ -89,12 +89,12 @@ void Simulation::initialize()
 //        }
 //    }
     // TODO before reading check if was read already: if it was read, take it from DS, else read it and put in DS
-    // TODO move to preprocessing..
+    // TODO move to preprocessing.. - moved
 //    InputUtility::readShipPlan(plan_file, ship_plan);
 //    m_ship.setRoute(ship_route);
 //    m_ship.setPlan(ship_plan);
 
-    // TODO move to preprocessing...
+    // TODO move to preprocessing... - moved
     // Set data of ports
 //    for (size_t i = 0; i < ship_route.size(); ++i)
 //    {
@@ -107,7 +107,7 @@ void Simulation::initialize()
 //        m_ports.emplace_back(port, port_containers);
 //    }
 
-    // TODO move to preprocessing..
+    // TODO move to preprocessing.. - no, should be here
 //    uint32_t err = 0;
 //    auto wbc = WeightBalanceCalculator();
 //    err = m_algorithm->setWeightBalanceCalculator(wbc);

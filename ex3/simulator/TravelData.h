@@ -18,7 +18,7 @@ private:
     string m_full_path;
     string m_output_dir;
     Ship m_ship;
-    std::vector<AlgorithmError> m_travel_errors;
+    std::vector<Error> m_travel_errors;
     Ports m_ports;
     bool m_valid;
 public:
@@ -63,7 +63,7 @@ public:
         m_ship = mShip;
     }
 
-    const std::vector<AlgorithmError>& getTravelErrors() const
+    const std::vector<Error>& getTravelErrors() const
     {
         return m_travel_errors;
     }
@@ -83,14 +83,14 @@ public:
         m_valid = valid;
     }
 
-    void addTravelError(AlgorithmError& algorithm_error)
+    void addTravelError(const string& algorithm_error)
     {
         m_travel_errors.emplace_back(algorithm_error);
     }
 
-    void addPort(const Port& port)
+    void addPort(const string& port_name, const ContainersVector& containers)
     {
-        m_ports.push_back(port); //TODO check this is fine
+        m_ports.emplace_back(port_name, containers); //TODO check this is fine
     }
 };
 
