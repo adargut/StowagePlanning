@@ -16,6 +16,8 @@ class TravelData
 private:
     string m_travel_name;
     string m_full_path;
+    string m_route_path;
+    string m_plan_path;
     string m_output_dir;
     Ship m_ship;
     std::vector<Error> m_travel_errors;
@@ -90,7 +92,24 @@ public:
 
     void addPort(const string& port_name, const ContainersVector& containers)
     {
-        m_ports.emplace_back(port_name, containers); //TODO check this is fine
+        m_ports.emplace_back(port_name, containers);
+    }
+
+    // TODO add all below to preprocessing procedure
+    const string &getRoutePath() const {
+        return m_route_path;
+    }
+
+    void setRoutePath(const string &mRoutePath) {
+        m_route_path = mRoutePath;
+    }
+
+    const string &getPlanPath() const {
+        return m_plan_path;
+    }
+
+    void setPlanPath(const string &mPlanPath) {
+        m_plan_path = mPlanPath;
     }
 };
 

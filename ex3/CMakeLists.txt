@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 2.8.12)
 project(ex3)
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_FLAGS "-std=c++2a -Wall -Wextra -Werror -pedantic-errors -DNDEBUG -ldl")
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_FLAGS "-std=c++2a -Wall -pthread -Wextra -Werror -pedantic-errors -DNDEBUG -ldl")
 link_libraries(stdc++fs)
 
 add_executable(ex3 common/AbstractAlgorithm.h common/AlgorithmRegistration.h common/WeightBalanceCalculator.cpp common/WeightBalanceCalculator.h simulator/main.cpp common/InputUtility.cpp common/InputUtility.h common/AlgorithmManager.cpp common/AlgorithmManager.h common/AlgorithmRegistration.cpp common/Ship.cpp common/Ship.h common/Port.cpp common/Port.h common/Container.cpp common/Container.h simulator/Simulation.cpp simulator/Simulation.h common/Instruction.cpp common/Instruction.h

@@ -65,7 +65,7 @@ static void setPortsData(TravelData& travel_data)
 }
 
 // Checks if cargo errors occurred
-static bool reportCargoDataErrors(TravelData& travel_data, const string& route_file)
+static bool reportCargoDataErrors(TravelData& travel_data)
 {
     const string& full_travel_path = travel_data.getFullPath();
     const string& travel_name = travel_data.getTravelName();
@@ -111,10 +111,10 @@ std::optional<std::function<void(void)>> PreProcessingTasksProducer::getTask()
     auto task_index = next_task_index();
     if(task_index)
     {
-        return [task_index, this] //TODO implement
+        return [task_index, this]
         {
-            const string& travel_name = m_travel_paths[*task_index];
-            string full_travel_path = m_travels_dir + travel_name;
+            const string &full_travel_path = m_travel_paths[*task_index];
+            string travel_name = fs::path(full_travel_path).filename();
             TravelData& travel_data = m_travels_data[*task_index];
             travel_data.setTravelName(travel_name);
             travel_data.setFullPath(full_travel_path);
@@ -155,14 +155,13 @@ std::optional<std::function<void(void)>> PreProcessingTasksProducer::getTask()
             }
             if (valid_plan_file && valid_route_file)
             {
-                reportCargoDataErrors(full_travel_path, route_file);
-                setPortsData(travel_data, full_travel_path);
+                reportCargoDataErrors(travel_data);
+                setPortsData(travel_data);
                 travel_data.setValid(true);
             }
             m.lock();
-            // std::cout << std::this_thread::get_id() << "- just wrote: " << m_tasks[*task_index] << " at index : " << *task_index << std::endl;
+            std::cout << "thread: " << std::this_thread::get_id() << "finished preprocessing: " << travel_name;
             m.unlock();
-            std::this_thread::yield(); // just to check threads switch
         };
     }
     else return {};

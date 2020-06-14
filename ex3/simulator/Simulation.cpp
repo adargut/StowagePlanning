@@ -1,19 +1,10 @@
 #include "Simulation.h"
 
 // Constructor
-Simulation::Simulation(std::unique_ptr<AbstractAlgorithm> algorithm, const ProcessedDataSingleton &travel_data) :
-                       m_algorithm(std::move(algorithm)), m_travel_data(travel_data),
-                       m_ports(travel_data.second.getPorts()), m_ship(travel_data.second.getShip())
-{
-    m_canRun = travel_data.second.isValid();
-    m_algorithmName = travel_data.first;
-
-    // Flush errors found in preprocessing into simulation
-    for (auto &processed_error : travel_data.second.getTravelErrors())
-    {
-        m_algorithmErrors.push_back(processed_error);
-    }
-}
+Simulation::Simulation(std::unique_ptr<AbstractAlgorithm> algorithm, string algorithm_name,
+                       const TravelData &travel_data) :
+                       m_algorithm(std::move(algorithm)), m_algorithmName(std::move(algorithm_name)),
+                       m_travel_data(travel_data), m_ports(travel_data.getPorts()), m_ship(travel_data.getShip()) {}
 
 // Checks if instruction is in valid range for plan
 static bool isRangeValid(const Plan &plan, const Instruction &instruction)
@@ -43,91 +34,29 @@ bool Simulation::isDestinationReachable(std::shared_ptr<const Container> contain
 // TODO this function is not needed: most happens in constructor, rest needs to happen in preprocessing..
 void Simulation::initialize()
 {
+    uint32_t err = 0;
+    string plan_file = m_travel_data.getPlanPath();
+    string route_file = m_travel_data.getRoutePath();
 
-    // TODO move to preprocessing.. - no, should be here
-//    AlgorithmError alg_init_errors = m_travel_data.second.getAlgInitError();
-//    if( alg_init_errors.getBit(AlgorithmError::BadTravelFile)
-//        || alg_init_errors.getBit(AlgorithmError::SinglePortTravel)
-//        || alg_init_errors.getBit(AlgorithmError::BadPlanFile)
-//        || alg_init_errors.getBit(AlgorithmError::ConflictingXY))
-//    {
-//        m_canRun = false;
-//    }
-    // TODO move to preprcoessing too - no, should be here
-//    err = m_algorithm->readShipPlan(plan_file);
-//    if (err) m_algorithmErrors.push_back(AlgorithmError(err));
-//    alg_init_errors = AlgorithmError(err);
-//    if(alg_init_errors.getBit(AlgorithmError::BadPlanFile)
-//       || alg_init_errors.getBit(AlgorithmError::ConflictingXY))
-//    {
-//        m_canRun = false;
-//    }
-
-    // Set ship initial configuration
-    // TODO move to preprocessing - moved
-//    std::error_code rc;
-//    for (const auto &file : DirectoryIterator(m_travelDir, rc))
-//    {
-//        string file_path = file.path();
-//        if (file.path().extension() == ROUTE_SUFFIX)
-//        {
-//            route_file = std::move(file_path);
-//            break;
-//        }
-//    }
-    // TODO before reading check if was read already: if it was read, take it from DS, else read it and put in DS
-    // TODO merge readShipRoute, readShipPlan & readCargo into one function with lock
-    // TODO move to preprocessing - moved
-//    InputUtility::readShipRoute(route_file, ship_route);
-//    for (const auto &file : DirectoryIterator(m_travelDir, rc))
-//    {
-//        string file_path = file.path();
-//        if (file.path().extension() == PLAN_SUFFIX)
-//        {
-//            plan_file = std::move(file_path);
-//            break;
-//        }
-//    }
-    // TODO before reading check if was read already: if it was read, take it from DS, else read it and put in DS
-    // TODO move to preprocessing.. - moved
-//    InputUtility::readShipPlan(plan_file, ship_plan);
-//    m_ship.setRoute(ship_route);
-//    m_ship.setPlan(ship_plan);
-
-    // TODO move to preprocessing... - moved
-    // Set data of ports
-//    for (size_t i = 0; i < ship_route.size(); ++i)
-//    {
-//        auto& port = ship_route[i];
-//        ContainersVector port_containers;
-//        string port_file = m_travelDir + "/" + port + CARGO_SUFFIX;
-//        InputUtility::readCargo(port_file, port_containers);
-//        setRealDestinations(ship_route, i, port_containers);
-//        if(i == ship_route.size() - 1) port_containers.clear(); //Ignoring containers at the last port
-//        m_ports.emplace_back(port, port_containers);
-//    }
-
-    // TODO move to preprocessing.. - no, should be here
-//    uint32_t err = 0;
-//    auto wbc = WeightBalanceCalculator();
-//    err = m_algorithm->setWeightBalanceCalculator(wbc);
-//    if (err) m_algorithmErrors.emplace_back(err);
-//    err = m_algorithm->readShipRoute(route_file);
-//    if (err) m_algorithmErrors.emplace_back(err);
-//    AlgorithmError alg_init_errors = AlgorithmError(err);
-//    if(alg_init_errors.getBit(AlgorithmError::BadTravelFile)
-//       || alg_init_errors.getBit(AlgorithmError::SinglePortTravel))
-//    {
-//        m_canRun = false;
-//    }
-//    err = m_algorithm->readShipPlan(plan_file);
-//    if (err) m_algorithmErrors.push_back(AlgorithmError(err));
-//    alg_init_errors = AlgorithmError(err);
-//    if(alg_init_errors.getBit(AlgorithmError::BadPlanFile)
-//          || alg_init_errors.getBit(AlgorithmError::ConflictingXY))
-//    {
-//        m_canRun = false;
-//    }
+    auto wbc = WeightBalanceCalculator();
+    err = m_algorithm->setWeightBalanceCalculator(wbc);
+    if (err) m_algorithmErrors.emplace_back(err);
+    err = m_algorithm->readShipRoute(route_file);
+    if (err) m_algorithmErrors.emplace_back(err);
+    AlgorithmError alg_init_errors = AlgorithmError(err);
+    if(alg_init_errors.getBit(AlgorithmError::BadTravelFile)
+       || alg_init_errors.getBit(AlgorithmError::SinglePortTravel))
+    {
+        m_canRun = false;
+    }
+    err = m_algorithm->readShipPlan(plan_file);
+    if (err) m_algorithmErrors.push_back(AlgorithmError(err));
+    alg_init_errors = AlgorithmError(err);
+    if(alg_init_errors.getBit(AlgorithmError::BadPlanFile)
+       || alg_init_errors.getBit(AlgorithmError::ConflictingXY))
+    {
+        m_canRun = false;
+    }
 }
 
 // Run simulation
@@ -136,8 +65,8 @@ int Simulation::run()
     int number_of_operations = 0;
     uint32_t reported_errors;
     Errors errors;
-    string crane_instructions_dir = m_travel_data.second.getOutputDir() + "/" + m_algorithmName + "_" +
-                                    m_travel_data.second.getTravelName() + "_crane_instructions";
+    string crane_instructions_dir = m_travel_data.getOutputDir() + "/" + m_algorithmName + "_" +
+                                    m_travel_data.getTravelName() + "_crane_instructions";
     fs::create_directories(crane_instructions_dir);
     if(!m_canRun)
     {
@@ -152,7 +81,7 @@ int Simulation::run()
         std::vector<std::string> rejected; // Vector to keep track of rejected container id's for this port
         PortContainers original_containers(port.getContainers());
         const string& port_code = port.getCode();
-        string cargo_file = m_travel_data.second.getFullPath() + "/" + port_code + CARGO_SUFFIX;
+        string cargo_file = m_travel_data.getFullPath() + "/" + port_code + CARGO_SUFFIX;
         string crane_instructions_file = crane_instructions_dir + "/" + port_code + CRANE_INSTRUCTIONS_SUFFIX;
         reported_errors = m_algorithm->getInstructionsForCargo(cargo_file, crane_instructions_file);
         if (reported_errors) m_algorithmErrors.emplace_back(reported_errors);
@@ -200,10 +129,10 @@ int Simulation::run()
         checkNoRoomForContainers(unloaded_containers, distance_to_dest, errors);
         m_ship.advanceCurrentPortIdx();
     }
-    string crane_errors_path = m_travel_data.second.getOutputDir() + "/" + ERRORS_DIR + "/" + m_algorithmName + UNDERSCORE +
-                               m_travel_data.second.getTravelName() + SIMULATION_ERRORS_SUFFIX;
-    string algorithm_errors_path = m_travel_data.second.getOutputDir() + "/" + ERRORS_DIR + "/" + m_algorithmName + UNDERSCORE +
-                                   m_travel_data.second.getTravelName() + ALG_ERRORS_SUFFIX;
+    string crane_errors_path = m_travel_data.getOutputDir() + "/" + ERRORS_DIR + "/" + m_algorithmName + UNDERSCORE +
+                               m_travel_data.getTravelName() + SIMULATION_ERRORS_SUFFIX;
+    string algorithm_errors_path = m_travel_data.getOutputDir() + "/" + ERRORS_DIR + "/" + m_algorithmName + UNDERSCORE +
+                                   m_travel_data.getTravelName() + ALG_ERRORS_SUFFIX;
     // Flush errors into file
     OutputUtility::writeErrors(crane_errors_path, errors);
     OutputUtility::writeAlgorithmErrors(algorithm_errors_path, m_algorithmErrors);

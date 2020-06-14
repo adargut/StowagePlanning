@@ -84,15 +84,18 @@ bool OutputUtility::writeResults(const string &output_full_path_and_file_name, A
     header.append("\n");
     file_buffer.push_back(std::move(header));
 
-    // Write rest of data to simulation results
+    // Write text lines to simulation results, each line corresponds to one algorithm
     for(auto& result_pair : results)
     {
         string line;
         int line_sum = 0;
         int line_errors = 0;
+        // Write algorithm name to start of line
         line += result_pair.first + CSV_SEPERATOR;
-        for (auto& numeric_result : results[result_pair.first])
+
+        for (auto& travel_seen : travels_seen)
         {
+            auto& numeric_result = result_pair.second[travel_seen];
             if (std::stoi(numeric_result) < 0) 
             {
                 line_errors += 1;
