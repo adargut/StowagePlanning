@@ -18,19 +18,18 @@ private:
     string m_full_path;
     string m_route_path;
     string m_plan_path;
-    string m_output_dir;
+    static string m_output_dir;
     Ship m_ship;
     std::vector<Error> m_travel_errors;
     Ports m_ports;
     bool m_valid;
 public:
-    // TODO not sure if this should be here?
-    const string &getOutputDir() const
+    static const string &getOutputDir()
     {
         return m_output_dir;
     }
 
-    void setOutputDir(const string &mOutputDir)
+    static void setOutputDir(const string &mOutputDir)
     {
         m_output_dir = mOutputDir;
     }

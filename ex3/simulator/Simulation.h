@@ -19,8 +19,6 @@
  * 
  */
 class Simulation {
-    // TODO add member for slot position
-    // TODO add static global member to determine which travels were initialized
     std::unique_ptr<AbstractAlgorithm> m_algorithm;
     std::vector<AlgorithmError> m_algorithmErrors;
     string m_algorithmName;

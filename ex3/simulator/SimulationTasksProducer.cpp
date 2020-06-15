@@ -25,7 +25,6 @@ std::optional<std::function<void(void)>> SimulationTasksProducer::getTask()
 
             // Flush results into larger results map shared by all threads
             m.lock();
-            // TODO make sure results end up being sorted
             if (!m_results.count(algorithmName)) m_results[algorithmName] = std::unordered_map<string, string>();
             m_results[algorithmName][travelName] = simulation_results;
             m.unlock();

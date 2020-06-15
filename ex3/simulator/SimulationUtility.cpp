@@ -76,7 +76,6 @@ bool SimulationUtility::handleArgs(int argc, char **argv, std::vector<string>& t
         return false;
     }
     // Parse path to travel folder
-    // TODO make each thread call this
     if(!handleTravelArg(travel_folder, travel_paths))
     {
         return false;
@@ -100,7 +99,7 @@ bool SimulationUtility::parseArgs(int argc, char** argv, string& travelFolder, s
     std::unordered_map<string, string> arg_map;
     for (int i = 1; i < argc; i+=2)
     {
-        if(arg_map.count(argv[i])) return false; // Same argument passed twice, TODO check if correct behaviour
+        if(arg_map.count(argv[i])) return false; // Same argument passed twice
         arg_map[argv[i]] = argv[i+1];
     }
 

@@ -3,3 +3,4 @@
 //
 
 #include "TravelData.h"
+string TravelData::m_output_dir;

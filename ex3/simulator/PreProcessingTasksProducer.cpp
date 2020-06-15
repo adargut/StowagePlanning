@@ -119,7 +119,6 @@ std::optional<std::function<void(void)>> PreProcessingTasksProducer::getTask()
             travel_data.setTravelName(travel_name);
             travel_data.setFullPath(full_travel_path);
             Ship ship;
-            string route_file;
             std::error_code rc;
             bool valid_route_file = false;
             bool route_file_found = false;
@@ -138,7 +137,7 @@ std::optional<std::function<void(void)>> PreProcessingTasksProducer::getTask()
                         break;
                     }
                     route_file_found = true;
-                    route_file = file.path();
+                    travel_data.setRoutePath(file.path());
                 }
                 else if (file.path().extension() ==  PLAN_SUFFIX)
                 {
@@ -151,6 +150,7 @@ std::optional<std::function<void(void)>> PreProcessingTasksProducer::getTask()
                         break;
                     }
                     plan_file_found = true;
+                    travel_data.setPlanPath(file.path());
                 }
             }
             if (valid_plan_file && valid_route_file)

@@ -65,6 +65,7 @@ int main(int argc, char** argv)
     //  then let threads run a <travel, algorithm> pair from the queue: do this until the queue empties out and join them together
 
     // Preprocessing travel data
+    TravelData::setOutputDir(output_path);
     std::vector<TravelData> travels_data(travel_paths.size());
     PreProcessingTasksProducer preprocessor(travel_paths.size(),travel_paths, travels_data);
     ThreadPoolExecutor preprocessing_executor(std::move(preprocessor), num_threads);
