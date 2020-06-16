@@ -144,7 +144,6 @@ AlgorithmError InputUtility::readShipPlan(const std::string& full_path_and_file_
 // Utility for reading cargo from file
 AlgorithmError InputUtility::readCargo(const string &full_path_and_file_name, ContainersVector &containers_to_load)
 {
-    //TODO check and report same ID appearing twice
     AlgorithmError errors;
     std::unordered_set<string> seen_ids;
     if (!fs::exists(full_path_and_file_name))

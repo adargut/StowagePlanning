@@ -1,5 +1,5 @@
-#include "AlgorithmRegistration.h"
-#include "AlgorithmManager.h"
+#include "../common/AlgorithmRegistration.h"
+#include "../common/AlgorithmManager.h"
 
 // Gets instance of factory
 AlgorithmRegistration::AlgorithmRegistration(std::function<std::unique_ptr<AbstractAlgorithm>()> factory)

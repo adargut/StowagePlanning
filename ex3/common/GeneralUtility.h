@@ -38,7 +38,7 @@ using string = std::string;
 // Typedef declarations
 typedef typename std::vector<std::vector<std::vector<std::string>>> Plan;
 typedef typename std::vector<std::vector<AlgorithmError>> AlgorithmErrors;
-typedef typename std::pair<string, const TravelData&> ProcessedDataSingleton;
+typedef typename std::pair<string, const TravelData*> ProcessedDataSingleton;
 typedef typename std::vector<ProcessedDataSingleton> ProcessedDataList;
 // Map algorithm name to vector of results & travel names for all travels
 typedef typename std::unordered_map<string, std::unordered_map<string, string>> AlgorithmTravelResultsMap;

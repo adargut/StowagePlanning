@@ -83,14 +83,14 @@ void Instruction::instructionToString(const Instruction &instruction, std::strin
     }
 }
 
-// Count how many load/unload instructions are inside a vector of instructions
-// TODO change score formula: load/unload=5, move=3, reject=0
+// Count how many load/unload/move instructions are inside a vector of instructions
 int Instruction::countInstructions(const Instructions &instructions)
 {
     int counter = 0;
     for (auto& instruction : instructions)
     {
-        if(instruction.getOp() != Instruction::Reject) counter++;
+        if(instruction.getOp() == Instruction::Load || instruction.getOp() == Instruction::Unload) counter+=5;
+        if(instruction.getOp() == Instruction::Move) counter+=3;
     }
     return counter;
 }

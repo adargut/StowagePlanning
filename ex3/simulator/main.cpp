@@ -53,33 +53,36 @@ int main(int argc, char** argv)
     std::vector<string> travel_paths;
     string algorithmDir;
     std::vector<string> algorithmNames;
-    int num_threads = 3; // TODO remove this
+    int num_threads;
     string output_path;
-    // TODO add number of threads, handle case of one thread
-    SimulationUtility::handleArgs(argc, argv, travel_paths, algorithmDir, algorithmNames, output_path);
+    SimulationUtility::handleArgs(argc, argv, travel_paths, algorithmDir, algorithmNames, output_path, num_threads);
     registerAlgorithms(algorithmDir, algorithmNames);
-    // TODO make each thread preprocess a single travel from unprocessed travels queue, processes it, and if it's valid,
-    //  it stores the data of plan/travel/cargo in a designated data structure, then wait for second function if queue is empty,
-    //  else preprocess another unprocessed travel
-    // TODO once all travels are processed, wake up all sleeping threads (using condition variable, condition will be counter of travels processed reaching number of travels)
-    //  then let threads run a <travel, algorithm> pair from the queue: do this until the queue empties out and join them together
 
     // Preprocessing travel data
     TravelData::setOutputDir(output_path);
     std::vector<TravelData> travels_data(travel_paths.size());
     PreProcessingTasksProducer preprocessor(travel_paths.size(),travel_paths, travels_data);
-    ThreadPoolExecutor preprocessing_executor(std::move(preprocessor), num_threads);
 
-    preprocessing_executor.start();
-    preprocessing_executor.wait_till_finish();
+    if(num_threads > 1)
+    {
+        ThreadPoolExecutor preprocessing_executor(std::move(preprocessor), num_threads);
+        preprocessing_executor.start();
+        preprocessing_executor.wait_till_finish();
+    }
+    else // main thread performs all tasks
+    {
+        while(auto task = preprocessor.getTask())
+        {
+            (*task)();
+        }
+    }
 
     // Create vector of <algorithm_name, travel_data> pairs to run simulations on
     ProcessedDataList processed_data_list;
     std::vector<string> valid_travels;
 
-    for (auto &travel_data : travels_data)
+    for (auto& travel_data : travels_data)
     {
-        valid_travels.push_back(travel_data.getTravelName());
         // Report general errors
         for (auto &error : travel_data.getTravelErrors())
         {
@@ -87,9 +90,10 @@ int main(int argc, char** argv)
         }
         if (travel_data.isValid())
         {
+            valid_travels.push_back(travel_data.getTravelName());
             for (auto &algorithm_name : algorithmNames)
             {
-                processed_data_list.push_back(std::make_pair(algorithm_name, travel_data));
+                processed_data_list.push_back(std::make_pair(algorithm_name, &travel_data));
             }
         }
         // No valid travels to run
@@ -102,11 +106,21 @@ int main(int argc, char** argv)
 
     // Running simulations
     AlgorithmTravelResultsMap simulation_results;
-    SimulationTasksProducer simulations_runner(travel_paths.size(), processed_data_list, simulation_results);
-    ThreadPoolExecutor simulations_executor(std::move(simulations_runner), num_threads);
+    SimulationTasksProducer simulations_runner(processed_data_list.size(), processed_data_list, simulation_results);
 
-    simulations_executor.start();
-    simulations_executor.wait_till_finish();
+    if(num_threads > 1)
+    {
+        ThreadPoolExecutor simulations_executor(std::move(simulations_runner), num_threads);
+        simulations_executor.start();
+        simulations_executor.wait_till_finish();
+    }
+    else // main thread performs all tasks
+    {
+        while(auto task = simulations_runner.getTask())
+        {
+            (*task)();
+        }
+    }
 
     // Flush results/errors into their files
     string errors_path = output_path + "/" + ERRORS_DIR;

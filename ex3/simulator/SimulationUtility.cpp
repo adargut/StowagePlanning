@@ -67,11 +67,11 @@ static bool handleOutputArg(string& output_path)
 }
 
 // Handle all command line args
-bool SimulationUtility::handleArgs(int argc, char **argv, std::vector<string>& travel_paths, string& algorithms_dir,
-                                   std::vector<string>& algorithm_names, string& output_path)
+bool SimulationUtility::handleArgs(int argc, char** argv, std::vector<string>& travel_paths, string& algorithms_dir,
+                                   std::vector<string>& algorithm_names, string& output_path, int& num_threads)
 {
     string travel_folder;
-    if(!parseArgs(argc, argv, travel_folder, algorithms_dir, output_path))
+    if(!parseArgs(argc, argv, travel_folder, algorithms_dir, output_path, num_threads))
     {
         return false;
     }
@@ -88,10 +88,12 @@ bool SimulationUtility::handleArgs(int argc, char **argv, std::vector<string>& t
 }
 
 // Parse command line arg
-bool SimulationUtility::parseArgs(int argc, char** argv, string& travelFolder, string& algorithmFolder, string& outputFolder)
+bool
+SimulationUtility::parseArgs(int argc, char** argv, string& travelFolder, string& algorithmFolder, string& outputFolder,
+                             int& num_threads)
 {
     outputFolder = CWD; // temporarily set as CWD
-    if(argc != 3 && argc != 5 && argc != 7)
+    if(argc != 3 && argc != 5 && argc != 7 && argc != 9)
     {
         SimulationUtility::general_errors.emplace_back("Wrong number of arguments");
         return false;
@@ -126,6 +128,22 @@ bool SimulationUtility::parseArgs(int argc, char** argv, string& travelFolder, s
     else
     {
         outputFolder = CWD;
+    }
+    if(arg_map.count(NUM_THREADS_OPTION))
+    {
+        // Check argument is a valid int
+        if(arg_map[NUM_THREADS_OPTION].find_first_not_of("0123456789") == string::npos)
+        {
+            num_threads = std::stoi(arg_map[NUM_THREADS_OPTION]);
+        } else
+        {
+            SimulationUtility::general_errors.emplace_back("Invalid num_threads argument");
+            return false;
+        }
+
+    } else
+    {
+        num_threads = 1;
     }
     return true;
 }

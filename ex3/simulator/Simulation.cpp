@@ -31,7 +31,6 @@ bool Simulation::isDestinationReachable(std::shared_ptr<const Container> contain
 }
 
 // Initialize simulation
-// TODO this function is not needed: most happens in constructor, rest needs to happen in preprocessing..
 void Simulation::initialize()
 {
     uint32_t err = 0;
@@ -137,7 +136,6 @@ int Simulation::run()
     OutputUtility::writeErrors(crane_errors_path, errors);
     OutputUtility::writeAlgorithmErrors(algorithm_errors_path, m_algorithmErrors);
     if(!errors.empty()) return -1;
-    // TODO push into operations vector at position n (reserved slot for this pair)
     return number_of_operations;
 }
 

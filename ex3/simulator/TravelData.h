@@ -54,14 +54,14 @@ public:
         m_full_path = mFullPath;
     }
 
-    const Ship& getShip() const
+    Ship& getShip()
     {
         return m_ship;
     }
 
-    void setShip(const Ship& mShip)
+    const Ship& getShip() const
     {
-        m_ship = mShip;
+        return m_ship;
     }
 
     const std::vector<Error>& getTravelErrors() const
@@ -94,7 +94,6 @@ public:
         m_ports.emplace_back(port_name, containers);
     }
 
-    // TODO add all below to preprocessing procedure
     const string &getRoutePath() const {
         return m_route_path;
     }

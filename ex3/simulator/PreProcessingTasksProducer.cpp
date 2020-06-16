@@ -118,7 +118,7 @@ std::optional<std::function<void(void)>> PreProcessingTasksProducer::getTask()
             TravelData& travel_data = m_travels_data[*task_index];
             travel_data.setTravelName(travel_name);
             travel_data.setFullPath(full_travel_path);
-            Ship ship;
+            Ship& ship = travel_data.getShip();
             std::error_code rc;
             bool valid_route_file = false;
             bool route_file_found = false;
@@ -160,7 +160,7 @@ std::optional<std::function<void(void)>> PreProcessingTasksProducer::getTask()
                 travel_data.setValid(true);
             }
             m.lock();
-            std::cout << "thread: " << std::this_thread::get_id() << "finished preprocessing: " << travel_name;
+            std::cout << "thread: " << std::this_thread::get_id() << " finished preprocessing: " << travel_name << "\n";
             m.unlock();
         };
     }

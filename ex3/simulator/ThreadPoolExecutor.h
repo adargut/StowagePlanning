@@ -12,7 +12,6 @@ class ThreadPoolExecutor {
     TasksProducer producer;
     const int numThreads = -1;
     std::vector<std::thread> workers;
-    std::atomic_int total_num_tasks_finished { 0 };
 
     void worker_function() {
         while(true) {
@@ -28,11 +27,6 @@ public:
         workers.reserve(numThreads);
     }
     bool start() {
-        // bool running_status = false;
-        // // see: https://en.cppreference.com/w/cpp/atomic/atomic/compare_exchange
-        // if(!running.compare_exchange_strong(running_status, true)) {
-        //     return false;
-        // }
         for(int i=0; i<numThreads; ++i) {
             workers.push_back(std::thread([this]{
                 worker_function();
@@ -44,7 +38,6 @@ public:
         for(auto& t : workers) {
             t.join();
         }
-        std::cout << "thread pool finished/stopped after processing " << total_num_tasks_finished << " task(s)" << std::endl;
     }
 };
 
