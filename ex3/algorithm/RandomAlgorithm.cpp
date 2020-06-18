@@ -3,7 +3,7 @@
 
 REGISTER_ALGORITHM(RandomAlgorithm)
 
-// Generate all pairs of format {x, y} with x, y upto max_x, max_y respectively
+// Generate all pairs of format {x, y} with x, y upto max_x, max_y respectively, that are legal
 bool RandomAlgorithm::generateAllPairs(std::vector<std::pair<int, int>>& res, std::optional<std::pair<int, int>> illegal_x_y)
 {
     const Plan &ship_plan = m_ship.getPlan();
@@ -31,8 +31,9 @@ bool RandomAlgorithm::findFreePos(int &res_x, int &res_y, int &res_z, std::optio
 
     if (generateAllPairs(pairs, illegal_x_y))
     {
-        res_x = pairs[rand() % pairs.size()].first;
-        res_y = pairs[rand() % pairs.size()].second;
+        int random_idx = rand() % pairs.size();
+        res_x = pairs[random_idx].first;
+        res_y = pairs[random_idx].second;
         res_z = minFreeFloor(res_x, res_y);
         return true;
     }

@@ -87,7 +87,6 @@ void GenericAlgorithm::getInstructionsForUnloading(Instructions& instructions)
         }
     }
     // Unload higher containers first to optimize performance
-    // TODO check on Coliru
     std::sort(containers_to_unload.begin(), containers_to_unload.end(),
             [&,ship_map](const string& c1, const string& c2) -> bool
             {

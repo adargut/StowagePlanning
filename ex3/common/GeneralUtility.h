@@ -47,7 +47,7 @@ typedef typename std::array<int, 3> Position;
 typedef typename std::unordered_map<std::string, std::pair<std::shared_ptr<Container>, Position>> ContainerMap;
 typedef typename std::vector<std::shared_ptr<Container>> ContainersVector;
 typedef typename std::vector<std::string> Route;
-typedef typename std::vector<Port> Ports; //TODO shouldn't be here since not in use by the algorithms
+typedef typename std::vector<Port> Ports;
 typedef typename std::vector<Instruction> Instructions;
 typedef typename std::vector<Error> Errors;
 
