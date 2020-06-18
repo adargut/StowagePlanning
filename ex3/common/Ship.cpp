@@ -142,13 +142,29 @@ bool Ship::findFreePos(int &res_x, int &res_y, int &res_z, std::optional<std::pa
                     res_y = y;
                     res_z = z;
                     return true;
-                    // TODO copy back
-//                    m_plan.loadContainer(z, y, x, container_to_load);
-//                    result.push_back(Instruction(Instruction::Load, container_to_load->getId(), z, y, x));
-//                    return;
                 }
             }
         }
     }
     return false;
+}
+
+int Ship::countFreePos()
+{
+    int free_positions = 0;
+
+    for (int z = 0; z < int(m_plan.size()); z++)
+    {
+        for (int y = 0; y < int(m_plan[0].size()); y++)
+        {
+            for (int x = 0; x < int(m_plan[0][0].size()); x++)
+            {
+                if (m_plan[z][y][x] == FREE_POS)
+                {
+                    free_positions++;
+                }
+            }
+        }
+    }
+    return free_positions;
 }

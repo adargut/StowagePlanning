@@ -51,6 +51,12 @@ void GenericAlgorithm::getInstructionsForUnloading(Instructions& instructions)
             containers_to_unload.push_back(curr_container->getId());
         }
     }
+    // Unload higher containers first to optimize performance
+    // TODO check on Coliru
+    std::sort(containers_to_unload.begin(), containers_to_unload.end(),
+            [&,ship_map](std::shared_ptr<Container> c1, std::shared_ptr<Container> c2)
+            { return ship_map.find(c1->getId())->second.second[0] > ship_map.find(c2->getId())->second.second[0]; });
+
     for (auto &container_to_unload : containers_to_unload) {
         tmp_instructions.clear();
         containers_to_return.clear();
@@ -195,16 +201,21 @@ int GenericAlgorithm::getInstructionsForCargo(const std::string& input_full_path
 
     getInstructionsForUnloading(instructions);
     std::sort(valid_containers_to_load.begin(), valid_containers_to_load.end(), distance_to_destination);
+    size_t free_positions = m_ship.countFreePos();
 
+    // Reject all containers that are farthest and there's no place to load them
+    while (valid_containers_to_load.size() > free_positions)
+    {
+        instructions.push_back(Instruction(Instruction::Reject, valid_containers_to_load.back()->getId()));
+        valid_containers_to_load.pop_back();
+        m_algorithmErrors.setBit(AlgorithmError::ContainersExceedingCapacity);
+    }
+
+//     Load far away containers first
+    std::reverse(valid_containers_to_load.begin(), valid_containers_to_load.end());
     for (auto& container : valid_containers_to_load)
-    {        
-        // Check ship is full and report error
-        if(m_ship.isShipFull())
-        {
-            m_algorithmErrors.setBit(AlgorithmError::ContainersExceedingCapacity);
-            instructions.push_back(Instruction(Instruction::Reject, container->getId()));
-        }
-        else getInstructionForLoadingContainer(container, instructions);
+    {
+        getInstructionForLoadingContainer(container, instructions);
     }
     m_ship.advanceCurrentPortIdx();
 
