@@ -1,4 +1,4 @@
-COMP = g++
+COMP = g++-9.3.0
 CommonDir = ../common
 OBJS = main.o Simulation.o Error.o AlgorithmError.o Container.o DistanceToDestinationComparator.o GeneralUtility.o InputUtility.o ISO_6346.o OutputUtility.o Port.o Ship.o WeightBalanceCalculator.o AlgorithmManager.o AlgorithmRegistration.o Instruction.o SimulationUtility.o PreProcessingTasksProducer.o SimulationTasksProducer.o TravelData.o
 EXEC = simulator
