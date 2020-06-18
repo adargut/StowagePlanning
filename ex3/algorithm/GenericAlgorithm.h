@@ -41,6 +41,9 @@ public:
     int setWeightBalanceCalculator(WeightBalanceCalculator& calculator) override;
     int getInstructionsForCargo(const std::string& input_full_path_and_file_name,
                                 const std::string& output_full_path_and_file_name) override;
+    int minFreeFloor(int x, int y);
+    bool findFreePos(int &res_x, int &res_y, int &res_z, std::optional<std::pair<int, int>> illegal_x_y = {});
+    bool findRandomFreePos(int &res_x, int &res_y, int &res_z, std::optional<std::pair<int, int>> illegal_x_y = {});
     void getInstructionsForUnloading(Instructions& instructions);
     virtual void getInstructionForLoadingContainer(std::shared_ptr<Container> container_to_load, Instructions& instructions) = 0;
     void setRealDestinations(ContainersVector& containers);

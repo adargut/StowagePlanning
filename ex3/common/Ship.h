@@ -28,7 +28,6 @@ public:
     void advanceCurrentPortIdx();
     bool isShipFull();
     bool hasContainer(const std::string &container_id);
-    bool findFreePos(int &res_x, int &res_y, int &res_z, std::optional<std::pair<int, int>> illegal_x_y = {});
     int countFreePos();
 private:
     void updatePlan(int floor, int row, int col, const string& val);

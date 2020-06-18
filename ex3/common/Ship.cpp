@@ -126,29 +126,6 @@ void Ship::eraseContainerMap(int floor, int row, int col)
     m_containers.erase(m_plan[floor][row][col]);
 }
 
-bool Ship::findFreePos(int &res_x, int &res_y, int &res_z, std::optional<std::pair<int, int>> illegal_x_y)
-{
-    for (int z = 0; z < int(m_plan.size()); z++)
-    {
-        for (int y = 0; y < int(m_plan[0].size()); y++)
-        {
-            for (int x = 0; x < int(m_plan[0][0].size()); x++)
-            {
-                // Ignore unwanted free positions
-                if (illegal_x_y.has_value() && illegal_x_y->first == x && illegal_x_y->second == y) continue;
-                if (m_plan[z][y][x] == FREE_POS)
-                {
-                    res_x = x;
-                    res_y = y;
-                    res_z = z;
-                    return true;
-                }
-            }
-        }
-    }
-    return false;
-}
-
 int Ship::countFreePos()
 {
     int free_positions = 0;

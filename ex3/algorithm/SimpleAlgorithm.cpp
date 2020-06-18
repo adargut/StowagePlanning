@@ -20,7 +20,7 @@ void SimpleAlgorithm::getInstructionForLoadingContainer(std::shared_ptr<Containe
     }
 
     int z, y, x;
-    if (m_ship.findFreePos(x, y, z))
+    if (findFreePos(m_ship.getPlan(), x, y, z))
     {
         m_ship.loadContainer(z, y, x, container_to_load);
         result.push_back(Instruction(Instruction::Load, container_to_load->getId(), z, y, x));

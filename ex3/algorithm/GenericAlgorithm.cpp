@@ -33,6 +33,95 @@ int GenericAlgorithm::setWeightBalanceCalculator(WeightBalanceCalculator& calcul
     return 0;
 }
 
+// Find minimum Z value that is free for given <x, y>
+int GenericAlgorithm::minFreeFloor(int x, int y)
+{
+    const Plan& plan = m_ship.getPlan();
+    for (int z = 0; z < int(plan.size()); z++)
+    {
+        if (plan[z][y][x] == FREE_POS) return z;
+    }
+    return -1;
+}
+
+bool GenericAlgorithm::findFreePos(int &res_x, int &res_y, int &res_z, std::optional<std::pair<int, int>> illegal_x_y)
+{
+    const Plan& plan = m_ship.getPlan();
+    for (int z = 0; z < int(plan.size()); z++)
+    {
+        for (int y = 0; y < int(plan[0].size()); y++)
+        {
+            for (int x = 0; x < int(plan[0][0].size()); x++)
+            {
+                // Ignore unwanted free positions
+                if (illegal_x_y.has_value() && illegal_x_y->first == x && illegal_x_y->second == y) continue;
+                if (plan[z][y][x] == FREE_POS)
+                {
+                    res_x = x;
+                    res_y = y;
+                    res_z = z;
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+// Generate all pairs of format {x, y} with x, y upto max_x, max_y respectively
+bool GenericAlgorithm::generateAllPairs(int max_x, int max_y, std::vector<std::pair<int, int>>& res)
+{
+    //TODO only insert valid position
+    for (int i = 0; i < max_x; ++i)
+    {
+        for (int j = 0; j < max_y; ++j)
+        {
+
+            res.emplace_back(i, j); //TODO maybe just i,j
+        }
+    }
+    //TODO if no valid position found return false
+}
+
+bool GenericAlgorithm::findRandomFreePos(int& res_x, int& res_y, int& res_z,
+                                         std::optional<std::pair<int, int>> illegal_x_y)
+{
+    //TODO complete
+    const Plan& plan = m_ship.getPlan();
+    int max_y = int(plan[0].size()) - 1, max_x = int(plan[0][0].size()) - 1;
+    PossiblePairs pairs;
+    generateAllPairs(0, 0, max_x, max_y, pairs);
+
+    while (!pairs.empty())
+    {
+        int random_idx = rand() % pairs.size();
+        int curr_idx = 0;
+        string res_pair;
+
+        // Generate a random "<x><y>" style triplet
+        for (auto &pair : pairs)
+        {
+            if (curr_idx++ == random_idx)
+            {
+                res_pair = pair;
+                pairs.erase(res_pair);
+                break;
+            }
+        }
+        int x = res_pair[0] - '0', y = res_pair[1] - '0';
+        int z = minFreeFloor(x, y);
+        // Found valid free pos
+        if (z != -1)
+        {
+            m_ship.loadContainer(z, y, x, container_to_load);
+            result.push_back(Instruction(Instruction::Load, container_to_load->getId(), z, y, x));
+            return;
+        }
+    }
+    // No valid free position triplet was found, so we reject
+    return false;
+}
+
 // Updates instructions for unloading cargo
 void GenericAlgorithm::getInstructionsForUnloading(Instructions& instructions)
 {
@@ -54,8 +143,10 @@ void GenericAlgorithm::getInstructionsForUnloading(Instructions& instructions)
     // Unload higher containers first to optimize performance
     // TODO check on Coliru
     std::sort(containers_to_unload.begin(), containers_to_unload.end(),
-            [&,ship_map](std::shared_ptr<Container> c1, std::shared_ptr<Container> c2)
-            { return ship_map.find(c1->getId())->second.second[0] > ship_map.find(c2->getId())->second.second[0]; });
+            [&,ship_map](const string& c1, const string& c2) -> bool
+            {
+                return ship_map.find(c1)->second.second[0] > ship_map.find(c2)->second.second[0];
+            });
 
     for (auto &container_to_unload : containers_to_unload) {
         tmp_instructions.clear();
@@ -73,7 +164,7 @@ void GenericAlgorithm::getInstructionsForUnloading(Instructions& instructions)
             {
                 int res_x, res_y, res_z;
                 auto illegal_x_y = std::make_pair(x, y);
-                if (m_ship.findFreePos(res_x, res_y, res_z, illegal_x_y))
+                if (findFreePos(res_x, res_y, res_z, illegal_x_y))
                 {
                     tmp_instructions.push_back(Instruction(Instruction::Move, container_above_id, z_above, y, x, res_z, res_y, res_x));
                     auto container_moved = ship_map.find(container_above_id)->second.first;
@@ -243,3 +334,5 @@ void GenericAlgorithm::setRealDestinations(ContainersVector &containers)
         }
     }
 }
+
+
