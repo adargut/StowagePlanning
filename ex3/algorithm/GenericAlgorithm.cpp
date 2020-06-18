@@ -1,5 +1,4 @@
 #include "GenericAlgorithm.h"
-#include "../common/AlgorithmRegistration.h"
 
 // Read plan for usage of algorithm
 int GenericAlgorithm::readShipPlan(const std::string& full_path_and_file_name)
@@ -59,15 +58,28 @@ void GenericAlgorithm::getInstructionsForUnloading(Instructions& instructions)
         int z = container_pos[0];
         int y = container_pos[1];
         int x = container_pos[2];
+
         for (int z_above = m_ship.getPlan().size() - 1; z_above > z; z_above--)
         {
             std::string container_above_id = ship_plan[z_above][y][x];
             // Position of a container above container to be unloaded
             if (container_above_id != FREE_POS && container_above_id != ILLEGAL_POS)
             {
-                containers_to_return.push_back(ship_map.find(container_above_id)->second.first);
-                m_ship.unloadContainer(z_above, y, x);
-                tmp_instructions.push_back(Instruction(Instruction::Unload, container_above_id, z_above, y, x));
+                int res_x, res_y, res_z;
+                auto illegal_x_y = std::make_pair(x, y);
+                if (m_ship.findFreePos(res_x, res_y, res_z, illegal_x_y))
+                {
+                    tmp_instructions.push_back(Instruction(Instruction::Move, container_above_id, z_above, y, x, res_z, res_y, res_x));
+                    auto container_moved = ship_map.find(container_above_id)->second.first;
+                    m_ship.unloadContainer(z_above, y, x);
+                    m_ship.loadContainer(res_z, res_y, res_x, container_moved);
+                }
+                else
+                {
+                    containers_to_return.push_back(ship_map.find(container_above_id)->second.first);
+                    m_ship.unloadContainer(z_above, y, x);
+                    tmp_instructions.push_back(Instruction(Instruction::Unload, container_above_id, z_above, y, x));
+                }
             }
         }
         m_ship.unloadContainer(z, y, x); // Unload container originally intended for unloading
@@ -81,7 +93,7 @@ void GenericAlgorithm::getInstructionsForUnloading(Instructions& instructions)
             m_ship.loadContainer(new_z, y, x, container_to_return);
             tmp_instructions.push_back(Instruction(Instruction::Load, container_to_return->getId(), new_z, y, x));
         }
-        for (Instruction instruction : tmp_instructions)
+        for (const Instruction& instruction : tmp_instructions)
         {
             instructions.push_back(instruction);
         }

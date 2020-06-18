@@ -21,7 +21,7 @@ private:
     const int new_col;
 
 public:
-    explicit Instruction(Operation _op = None, const std::string& _container_id = "", int _floor = -1,
+    explicit Instruction(Operation _op = None, std::string  _container_id = "", int _floor = -1,
                          int _row = -1, int _col = -1, int _new_floor = -1, int _new_row = -1, int _new_col = -1);
     const std::string& getContainerId() const;
     Operation getOp() const;

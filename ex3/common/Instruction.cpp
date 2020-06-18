@@ -1,5 +1,7 @@
 #include "Instruction.h"
 
+#include <utility>
+
 // Converts load/unload/reject/move operation to string
 string Instruction::opToString(Operation oper)
 {
@@ -19,9 +21,9 @@ string Instruction::opToString(Operation oper)
 }
 
 // Constructor
-Instruction::Instruction(Instruction::Operation _op, const std::string& _container_id, int _floor, int _row, int _col,
+Instruction::Instruction(Instruction::Operation _op, std::string  _container_id, int _floor, int _row, int _col,
                          int _new_floor, int _new_row, int _new_col) :
-        op(_op), container_id(_container_id), floor(_floor), row(_row), col(_col),
+        op(_op), container_id(std::move(_container_id)), floor(_floor), row(_row), col(_col),
         new_floor(_new_floor), new_row(_new_row), new_col(_new_col){}
 
 // Getter for operation

@@ -23,33 +23,13 @@ int registerAlgorithms(const string& algorithmDir, const std::vector<string>& al
     return 0;
 }
 
-// Run all <travel, algorithm> pairs
-int runSimulations(std::vector<string>& travelPaths, std::vector<string>& algorithmNames, string& outputPath)
-{
-    std::vector<string> travelNames;
-    // Initialize vector of travel names
-    for (auto& travel : travelPaths)
-    {
-        string travelName = std::filesystem::path(travel).filename();
-        travelNames.push_back(std::move(travelName));
-    }
-    AlgorithmTravelResultsMap resultsMap;
-    for (auto& algorithmName : algorithmNames) {
-        for (auto &travel : travelPaths) {
-            (void) algorithmName;
-            (void) travel;
-        }
-    }
-    OutputUtility::writeResults(outputPath + "/" + RESULTS_FILENAME, resultsMap, travelNames);
-    return 0;
-}
-
 int main(int argc, char** argv)
 {
     (void)argc;
     (void)argv;
     std::cout << "-----PROGRAM STARTED------\n";
 
+    // TODO make sure it creates out even with no algorithms
     std::vector<string> travel_paths;
     string algorithmDir;
     std::vector<string> algorithmNames;
