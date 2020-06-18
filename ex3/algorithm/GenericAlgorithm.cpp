@@ -68,60 +68,6 @@ bool GenericAlgorithm::findFreePos(int &res_x, int &res_y, int &res_z, std::opti
     return false;
 }
 
-// Generate all pairs of format {x, y} with x, y upto max_x, max_y respectively
-bool GenericAlgorithm::generateAllPairs(int max_x, int max_y, std::vector<std::pair<int, int>>& res)
-{
-    //TODO only insert valid position
-    for (int i = 0; i < max_x; ++i)
-    {
-        for (int j = 0; j < max_y; ++j)
-        {
-
-            res.emplace_back(i, j); //TODO maybe just i,j
-        }
-    }
-    //TODO if no valid position found return false
-}
-
-bool GenericAlgorithm::findRandomFreePos(int& res_x, int& res_y, int& res_z,
-                                         std::optional<std::pair<int, int>> illegal_x_y)
-{
-    //TODO complete
-    const Plan& plan = m_ship.getPlan();
-    int max_y = int(plan[0].size()) - 1, max_x = int(plan[0][0].size()) - 1;
-    PossiblePairs pairs;
-    generateAllPairs(0, 0, max_x, max_y, pairs);
-
-    while (!pairs.empty())
-    {
-        int random_idx = rand() % pairs.size();
-        int curr_idx = 0;
-        string res_pair;
-
-        // Generate a random "<x><y>" style triplet
-        for (auto &pair : pairs)
-        {
-            if (curr_idx++ == random_idx)
-            {
-                res_pair = pair;
-                pairs.erase(res_pair);
-                break;
-            }
-        }
-        int x = res_pair[0] - '0', y = res_pair[1] - '0';
-        int z = minFreeFloor(x, y);
-        // Found valid free pos
-        if (z != -1)
-        {
-            m_ship.loadContainer(z, y, x, container_to_load);
-            result.push_back(Instruction(Instruction::Load, container_to_load->getId(), z, y, x));
-            return;
-        }
-    }
-    // No valid free position triplet was found, so we reject
-    return false;
-}
-
 // Updates instructions for unloading cargo
 void GenericAlgorithm::getInstructionsForUnloading(Instructions& instructions)
 {
@@ -332,6 +278,35 @@ void GenericAlgorithm::setRealDestinations(ContainersVector &containers)
                 break;
             }
         }
+    }
+}
+
+// Fetch instructions for loading
+void GenericAlgorithm::getInstructionForLoadingContainer(std::shared_ptr<Container> container_to_load, Instructions &result)
+{
+    bool destination_in_route = false;
+    for (int i = m_ship.getCurrentPortIdx() + 1; i < int(m_ship.getRoute().size()); ++i)
+    {
+        if (container_to_load->getPortCode() == m_ship.getRoute()[i]) destination_in_route = true;
+    }
+
+    // Container destination unreachable
+    if (!destination_in_route)
+    {
+        result.push_back(Instruction(Instruction::Reject,
+                                     container_to_load->getId(), -1, -1, -1));
+        return;
+    }
+
+    int z, y, x;
+    if (findFreePos(x, y, z, {}))
+    {
+        m_ship.loadContainer(z, y, x, container_to_load);
+        result.push_back(Instruction(Instruction::Load, container_to_load->getId(), z, y, x));
+    }
+    else
+    {
+        result.push_back(Instruction(Instruction::Reject, container_to_load->getId(), -1, -1, -1));
     }
 }
 

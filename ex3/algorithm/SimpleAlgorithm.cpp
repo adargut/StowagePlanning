@@ -2,31 +2,27 @@
 
 REGISTER_ALGORITHM(SimpleAlgorithm)
 
-// Fetch instructions for loading
-void SimpleAlgorithm::getInstructionForLoadingContainer(std::shared_ptr<Container> container_to_load, Instructions &result) 
+bool SimpleAlgorithm::findFreePos(int &res_x, int &res_y, int &res_z, std::optional<std::pair<int, int>> illegal_x_y)
 {
-    bool destination_in_route = false;
-    for (int i = m_ship.getCurrentPortIdx() + 1; i < int(m_ship.getRoute().size()); ++i)
+    const Plan& plan = m_ship.getPlan();
+    for (int z = 0; z < int(plan.size()); z++)
     {
-        if (container_to_load->getPortCode() == m_ship.getRoute()[i]) destination_in_route = true;
+        for (int y = 0; y < int(plan[0].size()); y++)
+        {
+            for (int x = 0; x < int(plan[0][0].size()); x++)
+            {
+                // Ignore unwanted free positions
+                if (illegal_x_y.has_value() && illegal_x_y->first == x && illegal_x_y->second == y) continue;
+                if (plan[z][y][x] == FREE_POS)
+                {
+                    res_x = x;
+                    res_y = y;
+                    res_z = z;
+                    return true;
+                }
+            }
+        }
     }
-
-    // Container destination unreachable
-    if (!destination_in_route)
-    {
-        result.push_back(Instruction(Instruction::Reject,
-                                     container_to_load->getId(), -1, -1, -1));
-        return;
-    }
-
-    int z, y, x;
-    if (findFreePos(m_ship.getPlan(), x, y, z))
-    {
-        m_ship.loadContainer(z, y, x, container_to_load);
-        result.push_back(Instruction(Instruction::Load, container_to_load->getId(), z, y, x));
-    }
-    else
-    {
-        result.push_back(Instruction(Instruction::Reject, container_to_load->getId(), -1, -1, -1));
-    }
+    return false;
 }
+

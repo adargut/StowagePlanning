@@ -3,20 +3,18 @@
 
 #include "GenericAlgorithm.h"
 
-using PossiblePairs = std::unordered_set<string>;
+using PossiblePairs = std::vector<std::pair<int, int>>;
 
 /**
  * @brief RandomAlgorithm.h implements a non-deterministic algorithm for loading cargo
  * 
  */
- // TODO add more randomization, unload top containers first by sorting based on number of containers above
 class RandomAlgorithm : public GenericAlgorithm
 {
 public:
-    void getInstructionForLoadingContainer(std::shared_ptr<Container> container_to_load, Instructions& instructions) override;
+    bool findFreePos(int &res_x, int &res_y, int &res_z, std::optional<std::pair<int, int>> illegal_x_y) override;
 private:
-    int minFreeFloor(int x, int y);
-    void generateAllPairs(int x, int y, int max_x, int max_y, PossiblePairs &res);
+    bool generateAllPairs(PossiblePairs& res, std::optional<std::pair<int, int>> illegal_x_y);
 };
 
 

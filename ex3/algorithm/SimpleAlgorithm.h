@@ -7,13 +7,10 @@
  * @brief SimpleAlgorithm.h implements a determinstic algorithm for loading containers
  * 
  */
-// TODO unload top containers first by sorting based on number of containers above, another optimization:
-//  after first sort by destination take first k containers (k=number of empty spots) and sort them reversed with
-//  same comparator
 class SimpleAlgorithm : public GenericAlgorithm
 {
 public:
-    void getInstructionForLoadingContainer(std::shared_ptr<Container> container_to_load, Instructions& instructions) override;
+    bool findFreePos(int &res_x, int &res_y, int &res_z, std::optional<std::pair<int, int>> illegal_x_y) override;
 };
 
 
